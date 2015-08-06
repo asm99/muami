@@ -34,3 +34,6 @@ FORMS    += src/gui/gen/mainwindow.ui \
     src/gui/gen/addaccount.ui \
     src/gui/gen/handleissues.ui \
     src/gui/gen/attachfilewindow.ui
+
+RESOURCES += \
+    src/gui/pictures.qrc

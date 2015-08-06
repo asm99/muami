@@ -567,7 +567,7 @@ void MailBox::delAccountTriggered()
         QLabel *img = new QLabel(tab) ;
         img->resize(tab->width(), (tab->height())/2);
 
-        QPixmap pixmap(":res/arrow_down.png");
+        QPixmap pixmap(":/picture/res/arrow_down.png");
         img->setPixmap(pixmap.scaled(img->width(), img->height(), Qt::KeepAspectRatio));
         img->setScaledContents(true);
 
