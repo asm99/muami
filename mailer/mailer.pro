@@ -17,7 +17,8 @@ SOURCES += src/gui/main.cpp\
     src/gui/addressbook.cpp \
     src/gui/addaccount.cpp \
     src/gui/handleissues.cpp \
-    src/gui/attachfilewindow.cpp
+    src/gui/attachfilewindow.cpp \
+    src/gui/login.cpp
 
 HEADERS  += src/gui/mainwindow.h \
     src/gui/mailbox.h \
@@ -25,7 +26,8 @@ HEADERS  += src/gui/mainwindow.h \
     src/gui/addressbook.h \
     src/gui/addaccount.h \
     src/gui/handleissues.h \
-    src/gui/attachfilewindow.h
+    src/gui/attachfilewindow.h \
+    src/gui/login.h
 	
 FORMS    += src/gui/gen/mainwindow.ui \
     src/gui/gen/mailbox.ui \
@@ -33,7 +35,8 @@ FORMS    += src/gui/gen/mainwindow.ui \
     src/gui/gen/addressbook.ui \
     src/gui/gen/addaccount.ui \
     src/gui/gen/handleissues.ui \
-    src/gui/gen/attachfilewindow.ui
+    src/gui/gen/attachfilewindow.ui \
+    src/gui/gen/login.ui
 
 RESOURCES += \
     src/gui/pictures.qrc

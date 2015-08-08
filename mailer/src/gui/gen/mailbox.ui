@@ -35,6 +35,12 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <widget class="QTabWidget" name="multiBox">
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="currentIndex">
           <number>0</number>
          </property>
@@ -47,6 +53,24 @@
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
               <widget class="QTreeWidget" name="inbox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>300</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est votre boite de réception&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
@@ -67,6 +91,12 @@
                    <verstretch>1</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
+                 </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cliquez pour ajouter un compte&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
@@ -82,6 +112,12 @@
                    <horstretch>0</horstretch>
                    <verstretch>1</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>27</height>
+                  </size>
                  </property>
                  <property name="text">
                   <string>Supprimer</string>
@@ -318,8 +354,17 @@ jointe</string>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QLabel" name="emptyLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -327,6 +372,12 @@ jointe</string>
           </item>
           <item>
            <widget class="QLabel" name="emptyLabel_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -352,7 +403,7 @@ jointe</string>
             <item>
              <layout class="QFormLayout" name="formLayout">
               <property name="verticalSpacing">
-               <number>2</number>
+               <number>0</number>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="toLabel">
@@ -790,7 +841,7 @@ jointe</string>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>500</width>
+                  <width>16777215</width>
                   <height>82</height>
                  </size>
                 </property>
@@ -825,14 +876,12 @@ jointe</string>
           </widget>
          </widget>
         </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4"/>
-        </item>
        </layout>
       </item>
      </layout>
     </item>
    </layout>
+   <zorder></zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

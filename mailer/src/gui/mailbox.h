@@ -47,6 +47,8 @@ private slots:
 
     void get_actionQuitter_triggered();
 
+    void accountRegistered();
+
     void on_addAccount_clicked();
 
     void addNewAccount(QString, QString) ;

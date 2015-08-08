@@ -15,6 +15,7 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     QRegion *region = new QRegion(*rect, QRegion::Ellipse);
     ui->help->setMask(*region);
 
+    QString way = "/home";
     QDir *path = new QDir("/home");             // Compte principal
 
     QFileInfoList filesList = path->entryInfoList();
@@ -28,6 +29,8 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
             item->setWhatsThis(fileInfo.filePath());
         }
     }
+
+    ui->pathAccessor->setText(way);
 
     connect(ui->pathAccessor,
             SIGNAL(returnPressed()),
@@ -53,6 +56,14 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     connect(ui->help,
             SIGNAL(clicked()),
             SLOT(openHelper()));
+
+    connect(ui->backButton,
+            SIGNAL(clicked()),
+            SLOT(onBackButtonClicked()));
+
+    connect(ui->goButton,
+            SIGNAL(clicked()),
+            SLOT(onGoButtonClicked()));
 }
 
 AttachFileWindow::~AttachFileWindow()
@@ -68,6 +79,7 @@ void AttachFileWindow::on_folderList_itemDoubleClicked(QListWidgetItem *item)
     QFileInfoList filesList = path->entryInfoList();
 
     ui->folderList->clear();
+    ui->fileDetails->clear();
 
     foreach(QFileInfo fileInfo, filesList)
     {
@@ -78,6 +90,7 @@ void AttachFileWindow::on_folderList_itemDoubleClicked(QListWidgetItem *item)
             item->setWhatsThis(fileInfo.filePath());
         }
     }
+    ui->pathAccessor->setText(str);
 }
 
 void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
@@ -87,6 +100,7 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
     QFileInfoList filesList = path->entryInfoList();
 
     ui->contentList->clear();
+    ui->fileDetails->clear();
 
     foreach(QFileInfo fileInfo, filesList)
     {
@@ -107,6 +121,58 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
 
             item->setWhatsThis(details);
         }
+    }
+}
+
+void AttachFileWindow::onBackButtonClicked()
+{
+    QString path = ui->pathAccessor->text();
+    QStringList split_path = path.split("/");
+    split_path.removeLast();
+    path = split_path.join("/");
+
+    QDir *new_path = new QDir(path) ;
+    QFileInfoList filesList = new_path->entryInfoList();
+
+    ui->folderList->clear();
+    ui->contentList->clear();
+    ui->fileDetails->clear();
+
+    foreach(QFileInfo fileInfo, filesList)
+    {
+        if (fileInfo.isDir())
+        {
+            QListWidgetItem *item = new QListWidgetItem(ui->folderList) ;
+            item->setText(fileInfo.fileName());
+            item->setWhatsThis(fileInfo.filePath());
+        }
+
+        if (!fileInfo.isDir())
+        {
+            QString file = fileInfo.fileName() ;
+            QListWidgetItem *item = new QListWidgetItem(ui->contentList) ;
+            item->setText(fileInfo.fileName());
+
+            QString details = "Chemin du fichier :\n";
+            details.append(fileInfo.filePath());
+            details.append("\n\nDate de création :\n");
+            details.append(fileInfo.created().toString());
+            details.append("\n\nDate de dernière modification :\n");
+            details.append(fileInfo.lastModified().toString());
+            details.append("\n\nType de fichier :\n");
+            details.append(fileInfo.suffix());
+
+            item->setWhatsThis(details);
+        }
+    }
+    ui->pathAccessor->setText(path);
+}
+
+void AttachFileWindow::onGoButtonClicked()
+{
+    if(ui->folderList->currentItem())
+    {
+        on_folderList_itemDoubleClicked(ui->folderList->currentItem());
     }
 }
 
@@ -175,6 +241,7 @@ void AttachFileWindow::addFile()
         emit sendFileToMail(filepath) ;
     }
 }
+
 
 void AttachFileWindow::on_contentList_itemDoubleClicked(QListWidgetItem *itm)
 {
