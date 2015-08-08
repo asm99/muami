@@ -27,6 +27,10 @@ private slots:
 
     void on_folderList_itemClicked(QListWidgetItem *item);
 
+    void onBackButtonClicked();
+
+    void onGoButtonClicked();
+
     void accessToFolder();
 
     void displayPathContent(QString str);

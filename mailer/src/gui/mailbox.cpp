@@ -42,7 +42,7 @@ MailBox::MailBox(QWidget *parent) :
 
     toggleFields(false) ;
     toggleButtons(false) ;
-
+/*
     QDir *path = new QDir("/home");             // Compte principal
 
     QFileInfoList filesList = path->entryInfoList();
@@ -57,7 +57,11 @@ MailBox::MailBox(QWidget *parent) :
             item->setWhatsThis(0, fileInfo.filePath());
             addChildren(item,fileInfo.filePath());
         }
-    }
+    }*/
+
+    ui->multiBox->removeTab(0); // Tester présence de comptes enregistrés
+    accountRegistered();
+
     ui->inbox->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->inbox,
             SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -451,6 +455,55 @@ void MailBox::get_actionQuitter_triggered()
 }
 /** ~~ Quitter l'appli ~~ **/
 
+/** ++ Présence de comptes ++ **/
+void MailBox::accountRegistered()
+{
+    if(ui->multiBox->count() == 0)
+    {
+        ui->inboxButton->setVisible(false);
+        ui->newButton->setVisible(false);
+        ui->groupBox->setVisible(false);
+        ui->multiBox->setVisible(true);
+        QTabWidget *tab = new QTabWidget() ;
+        ui->multiBox->addTab(tab, "");
+
+        QVBoxLayout *layout = new QVBoxLayout;
+
+        QString string = "Aucun compte de messagerie n'est actuellement associé\
+ à l'application.\n\nPour associer un compte de messagerie à l'application et\
+ vous permettre de traiter votre courrier électronique, cliquez sur \
+\"Ajouter\"";
+        QLabel *str = new QLabel(tab);
+        str->setStyleSheet("color:#333536; background-color:#FFFFFF");
+        str->setText(string) ;
+        str->setWordWrap(true);
+        str->resize(tab->width(), (tab->height())/2);
+
+        QLabel *img = new QLabel(tab) ;
+        img->resize(tab->width(), (tab->height())/2);
+
+        QPixmap pixmap(":/picture/res/arrow_down.png");
+        img->setPixmap(pixmap.scaled(img->width(), img->height(), Qt::KeepAspectRatio));
+        img->setScaledContents(true);
+
+        QPushButton *addButton = new QPushButton(this) ;
+        addButton->setText("Ajouter");
+
+        layout->addWidget(str);
+        layout->addWidget(img);
+        layout->addWidget(addButton);
+        tab->setLayout(layout);
+
+        toggleNakedApp(true) ;
+
+        connect(addButton,
+                SIGNAL(clicked()),
+                SLOT(on_addAccount_clicked()));
+    }
+}
+
+/** ~~ Présence de comptes ~~ **/
+
 
 /** ++ Ajout de comptes ++ **/
 void MailBox::on_addAccount_clicked()
@@ -469,6 +522,9 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
     if(ui->multiBox->tabText(0) == "")
     {
         ui->multiBox->removeTab(0);
+        ui->inboxButton->setVisible(true);
+        ui->newButton->setVisible(true);
+        ui->groupBox->setVisible(true);
     }
 
     toggleNakedApp(false);
@@ -547,44 +603,7 @@ void MailBox::delAccountTriggered()
     ui->mailList->clear();
     ui->displayer->clear() ;
 
-    if(ui->multiBox->count() == 0)
-    {
-        QTabWidget *tab = new QTabWidget() ;
-        ui->multiBox->addTab(tab, "");
-
-        QVBoxLayout *layout = new QVBoxLayout;
-
-        QString string = "Aucun compte de messagerie n'est actuellement associé\
- à l'application.\n\nPour associer un compte de messagerie à l'application et\
- vous permettre de traiter votre courrier électronique, cliquez sur \
-\"Ajouter\"";
-        QLabel *str = new QLabel(tab);
-        str->setStyleSheet("color:#333536; background-color:#FFFFFF");
-        str->setText(string) ;
-        str->setWordWrap(true);
-        str->resize(tab->width(), (tab->height())/2);
-
-        QLabel *img = new QLabel(tab) ;
-        img->resize(tab->width(), (tab->height())/2);
-
-        QPixmap pixmap(":/picture/res/arrow_down.png");
-        img->setPixmap(pixmap.scaled(img->width(), img->height(), Qt::KeepAspectRatio));
-        img->setScaledContents(true);
-
-        QPushButton *addButton = new QPushButton(this) ;
-        addButton->setText("Ajouter");
-
-        layout->addWidget(str);
-        layout->addWidget(img);
-        layout->addWidget(addButton);
-        tab->setLayout(layout);
-
-        toggleNakedApp(true) ;
-
-        connect(addButton,
-                SIGNAL(clicked()),
-                SLOT(on_addAccount_clicked()));
-    }
+    accountRegistered();
 }
 /** ~~ Suppression de comptes ~~ **/
 
