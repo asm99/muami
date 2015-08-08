@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
                         border-radius:3px;\
                         color:#333536;}\
 \
-        QListWidget {background-color: #DCE0E3;\
+        QListWidget {background-color: #FFFFFF;\
                         border:1px solid gray;\
                         border-radius:3px}\
 \
@@ -54,10 +54,12 @@ int main(int argc, char *argv[])
         QPushButton:hover   {background-color: #333536;\
                                 color: #DCE0E3}\
 \
-        QListWidget::item:hover {background-color: white;\
+        QListWidget::item   {border-bottom:1px solid gray;}\
+\
+        QListWidget::item:hover {background-color: #DCE0E3;\
                                     color: #333536}\
 \
-        QListWidget::item:selected {background-color: white;\
+        QListWidget::item:selected {background-color: #DCE0E3;\
                                     color: #333536;}\
 \
         QTreeWidget::itemBelow:hover {background-color: white;\

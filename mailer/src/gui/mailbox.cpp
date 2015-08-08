@@ -1,8 +1,8 @@
 #include <QDir>
 #include <QDesktopWidget>
 #include <QPixmap>
-#include "src/gui/mailbox.h"
 #include "ui_mailbox.h"
+#include "src/gui/mailbox.h"
 #include "src/gui/writemail.h"
 #include "src/gui/addaccount.h"
 #include "src/gui/handleissues.h"
@@ -165,12 +165,12 @@ void MailBox::showFolderContent(QTreeWidgetItem* item, int n)
         ui->mailList->addItem(item);
         if (bit == 0)
         {
-            item->setBackgroundColor("#C7D1D6");
+            item->setBackgroundColor("#FFFFFF");
             bit = 1 ;
         }
         else if (bit == 1)
         {
-            item->setBackgroundColor("#DCE0E3");
+            item->setBackgroundColor("#FFFFFF");
             bit = 0 ;
         }
     }
