@@ -29,7 +29,6 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -47,6 +46,11 @@ public:
     QAction *actionAdd;
     QAction *actionAlert;
     QAction *actionCancel_confirmed;
+    QAction *actionSupprimer_le_compte;
+    QAction *actionR_pondre_tous;
+    QAction *actionAttacher_des_pi_ces_jointes;
+    QAction *actionSupprimer_la_pi_ce_jointe;
+    QAction *actionEnvoyer;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_5;
     QHBoxLayout *horizontalLayout_4;
@@ -55,7 +59,7 @@ public:
     QWidget *tab_3;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout;
-    QTreeWidget *inbox;
+    QListWidget *inbox;
     QHBoxLayout *horizontalLayout;
     QPushButton *addAccount;
     QPushButton *delAccount;
@@ -77,8 +81,11 @@ public:
     QLabel *emptyLabel;
     QLabel *emptyLabel_2;
     QSplitter *splitter;
-    QListWidget *mailList;
     QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_4;
+    QLineEdit *mailField;
+    QListWidget *mailList;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_3;
     QFormLayout *formLayout;
     QLabel *toLabel;
@@ -92,7 +99,6 @@ public:
     QListWidget *attachedFileList;
     QLabel *attachedLabel;
     QTextEdit *displayer;
-    QVBoxLayout *verticalLayout_4;
     QMenuBar *menubar;
     QMenu *menuFichier;
     QToolBar *toolBar;
@@ -132,10 +138,26 @@ public:
         actionIsoler->setFont(font);
         actionAdd = new QAction(MailBox);
         actionAdd->setObjectName(QStringLiteral("actionAdd"));
+        actionAdd->setFont(font);
         actionAlert = new QAction(MailBox);
         actionAlert->setObjectName(QStringLiteral("actionAlert"));
         actionCancel_confirmed = new QAction(MailBox);
         actionCancel_confirmed->setObjectName(QStringLiteral("actionCancel_confirmed"));
+        actionSupprimer_le_compte = new QAction(MailBox);
+        actionSupprimer_le_compte->setObjectName(QStringLiteral("actionSupprimer_le_compte"));
+        actionSupprimer_le_compte->setFont(font);
+        actionR_pondre_tous = new QAction(MailBox);
+        actionR_pondre_tous->setObjectName(QStringLiteral("actionR_pondre_tous"));
+        actionR_pondre_tous->setFont(font);
+        actionAttacher_des_pi_ces_jointes = new QAction(MailBox);
+        actionAttacher_des_pi_ces_jointes->setObjectName(QStringLiteral("actionAttacher_des_pi_ces_jointes"));
+        actionAttacher_des_pi_ces_jointes->setFont(font);
+        actionSupprimer_la_pi_ce_jointe = new QAction(MailBox);
+        actionSupprimer_la_pi_ce_jointe->setObjectName(QStringLiteral("actionSupprimer_la_pi_ce_jointe"));
+        actionSupprimer_la_pi_ce_jointe->setFont(font);
+        actionEnvoyer = new QAction(MailBox);
+        actionEnvoyer->setObjectName(QStringLiteral("actionEnvoyer"));
+        actionEnvoyer->setFont(font);
         centralwidget = new QWidget(MailBox);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_5 = new QHBoxLayout(centralwidget);
@@ -147,17 +169,16 @@ public:
         splitter_2->setOrientation(Qt::Horizontal);
         multiBox = new QTabWidget(splitter_2);
         multiBox->setObjectName(QStringLiteral("multiBox"));
+        multiBox->setMaximumSize(QSize(220, 16777215));
         tab_3 = new QWidget();
         tab_3->setObjectName(QStringLiteral("tab_3"));
         verticalLayout_6 = new QVBoxLayout(tab_3);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        inbox = new QTreeWidget(tab_3);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QStringLiteral("1"));
-        inbox->setHeaderItem(__qtreewidgetitem);
+        inbox = new QListWidget(tab_3);
         inbox->setObjectName(QStringLiteral("inbox"));
+        inbox->setMaximumSize(QSize(16777215, 16777215));
 
         verticalLayout->addWidget(inbox);
 
@@ -170,6 +191,7 @@ public:
         sizePolicy1.setVerticalStretch(1);
         sizePolicy1.setHeightForWidth(addAccount->sizePolicy().hasHeightForWidth());
         addAccount->setSizePolicy(sizePolicy1);
+        addAccount->setMaximumSize(QSize(16777215, 27));
 
         horizontalLayout->addWidget(addAccount);
 
@@ -177,6 +199,7 @@ public:
         delAccount->setObjectName(QStringLiteral("delAccount"));
         sizePolicy1.setHeightForWidth(delAccount->sizePolicy().hasHeightForWidth());
         delAccount->setSizePolicy(sizePolicy1);
+        delAccount->setMaximumSize(QSize(16777215, 27));
 
         horizontalLayout->addWidget(delAccount);
 
@@ -292,14 +315,22 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(3);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         emptyLabel = new QLabel(centralwidget);
         emptyLabel->setObjectName(QStringLiteral("emptyLabel"));
+        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(1);
+        sizePolicy5.setVerticalStretch(1);
+        sizePolicy5.setHeightForWidth(emptyLabel->sizePolicy().hasHeightForWidth());
+        emptyLabel->setSizePolicy(sizePolicy5);
 
         horizontalLayout_2->addWidget(emptyLabel);
 
         emptyLabel_2 = new QLabel(centralwidget);
         emptyLabel_2->setObjectName(QStringLiteral("emptyLabel_2"));
+        sizePolicy5.setHeightForWidth(emptyLabel_2->sizePolicy().hasHeightForWidth());
+        emptyLabel_2->setSizePolicy(sizePolicy5);
 
         horizontalLayout_2->addWidget(emptyLabel_2);
 
@@ -308,20 +339,48 @@ public:
 
         splitter = new QSplitter(centralwidget);
         splitter->setObjectName(QStringLiteral("splitter"));
+        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(1);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(splitter->sizePolicy().hasHeightForWidth());
+        splitter->setSizePolicy(sizePolicy6);
         splitter->setOrientation(Qt::Horizontal);
-        mailList = new QListWidget(splitter);
-        mailList->setObjectName(QStringLiteral("mailList"));
-        splitter->addWidget(mailList);
         layoutWidget = new QWidget(splitter);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        verticalLayout_3 = new QVBoxLayout(layoutWidget);
+        verticalLayout_4 = new QVBoxLayout(layoutWidget);
+        verticalLayout_4->setSpacing(3);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        mailField = new QLineEdit(layoutWidget);
+        mailField->setObjectName(QStringLiteral("mailField"));
+        mailField->setEnabled(true);
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy7.setHorizontalStretch(1);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(mailField->sizePolicy().hasHeightForWidth());
+        mailField->setSizePolicy(sizePolicy7);
+
+        verticalLayout_4->addWidget(mailField);
+
+        mailList = new QListWidget(layoutWidget);
+        mailList->setObjectName(QStringLiteral("mailList"));
+        mailList->setMinimumSize(QSize(0, 0));
+        mailList->setBaseSize(QSize(0, 0));
+
+        verticalLayout_4->addWidget(mailList);
+
+        splitter->addWidget(layoutWidget);
+        layoutWidget1 = new QWidget(splitter);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget1);
         verticalLayout_3->setSpacing(0);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
         formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
-        formLayout->setVerticalSpacing(2);
-        toLabel = new QLabel(layoutWidget);
+        formLayout->setHorizontalSpacing(3);
+        formLayout->setVerticalSpacing(0);
+        toLabel = new QLabel(layoutWidget1);
         toLabel->setObjectName(QStringLiteral("toLabel"));
         QPalette palette;
         QBrush brush(QColor(220, 224, 227, 255));
@@ -341,12 +400,12 @@ public:
 
         formLayout->setWidget(0, QFormLayout::LabelRole, toLabel);
 
-        to = new QLineEdit(layoutWidget);
+        to = new QLineEdit(layoutWidget1);
         to->setObjectName(QStringLiteral("to"));
 
         formLayout->setWidget(0, QFormLayout::FieldRole, to);
 
-        ccLabel = new QLabel(layoutWidget);
+        ccLabel = new QLabel(layoutWidget1);
         ccLabel->setObjectName(QStringLiteral("ccLabel"));
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
@@ -362,12 +421,12 @@ public:
 
         formLayout->setWidget(1, QFormLayout::LabelRole, ccLabel);
 
-        cc = new QLineEdit(layoutWidget);
+        cc = new QLineEdit(layoutWidget1);
         cc->setObjectName(QStringLiteral("cc"));
 
         formLayout->setWidget(1, QFormLayout::FieldRole, cc);
 
-        bccLabel = new QLabel(layoutWidget);
+        bccLabel = new QLabel(layoutWidget1);
         bccLabel->setObjectName(QStringLiteral("bccLabel"));
         QPalette palette2;
         palette2.setBrush(QPalette::Active, QPalette::WindowText, brush);
@@ -383,12 +442,12 @@ public:
 
         formLayout->setWidget(2, QFormLayout::LabelRole, bccLabel);
 
-        bcc = new QLineEdit(layoutWidget);
+        bcc = new QLineEdit(layoutWidget1);
         bcc->setObjectName(QStringLiteral("bcc"));
 
         formLayout->setWidget(2, QFormLayout::FieldRole, bcc);
 
-        titleLabel = new QLabel(layoutWidget);
+        titleLabel = new QLabel(layoutWidget1);
         titleLabel->setObjectName(QStringLiteral("titleLabel"));
         QPalette palette3;
         palette3.setBrush(QPalette::Active, QPalette::WindowText, brush);
@@ -404,24 +463,24 @@ public:
 
         formLayout->setWidget(3, QFormLayout::LabelRole, titleLabel);
 
-        title = new QLineEdit(layoutWidget);
+        title = new QLineEdit(layoutWidget1);
         title->setObjectName(QStringLiteral("title"));
 
         formLayout->setWidget(3, QFormLayout::FieldRole, title);
 
-        attachedFileList = new QListWidget(layoutWidget);
+        attachedFileList = new QListWidget(layoutWidget1);
         attachedFileList->setObjectName(QStringLiteral("attachedFileList"));
-        QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Minimum);
-        sizePolicy5.setHorizontalStretch(1);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(attachedFileList->sizePolicy().hasHeightForWidth());
-        attachedFileList->setSizePolicy(sizePolicy5);
+        QSizePolicy sizePolicy8(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        sizePolicy8.setHorizontalStretch(1);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(attachedFileList->sizePolicy().hasHeightForWidth());
+        attachedFileList->setSizePolicy(sizePolicy8);
         attachedFileList->setMinimumSize(QSize(80, 27));
-        attachedFileList->setMaximumSize(QSize(500, 82));
+        attachedFileList->setMaximumSize(QSize(16777215, 82));
 
         formLayout->setWidget(4, QFormLayout::FieldRole, attachedFileList);
 
-        attachedLabel = new QLabel(layoutWidget);
+        attachedLabel = new QLabel(layoutWidget1);
         attachedLabel->setObjectName(QStringLiteral("attachedLabel"));
         attachedLabel->setFont(font);
 
@@ -430,20 +489,16 @@ public:
 
         verticalLayout_3->addLayout(formLayout);
 
-        displayer = new QTextEdit(layoutWidget);
+        displayer = new QTextEdit(layoutWidget1);
         displayer->setObjectName(QStringLiteral("displayer"));
+        displayer->setMinimumSize(QSize(0, 0));
         displayer->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextEditable|Qt::TextEditorInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse);
 
         verticalLayout_3->addWidget(displayer);
 
-        splitter->addWidget(layoutWidget);
+        splitter->addWidget(layoutWidget1);
 
         horizontalLayout_3->addWidget(splitter);
-
-        verticalLayout_4 = new QVBoxLayout();
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-
-        horizontalLayout_3->addLayout(verticalLayout_4);
 
 
         horizontalLayout_4->addLayout(horizontalLayout_3);
@@ -468,10 +523,20 @@ public:
         menubar->addAction(menuFichier->menuAction());
         menuFichier->addAction(actionNouveau_courrier);
         menuFichier->addAction(actionR_pondre);
+        menuFichier->addAction(actionR_pondre_tous);
         menuFichier->addAction(actionTransf_rer);
         menuFichier->addAction(actionSupprimer);
+        menuFichier->addAction(actionIsoler);
+        menuFichier->addAction(actionEnvoyer);
+        menuFichier->addSeparator();
+        menuFichier->addAction(actionAttacher_des_pi_ces_jointes);
+        menuFichier->addAction(actionSupprimer_la_pi_ce_jointe);
+        menuFichier->addSeparator();
+        menuFichier->addAction(actionAdd);
+        menuFichier->addAction(actionSupprimer_le_compte);
         menuFichier->addSeparator();
         menuFichier->addAction(actionQuitter);
+        menuFichier->addSeparator();
         toolBar->addAction(actionNouveau_courrier);
         toolBar->addAction(actionSupprimer);
         toolBar->addAction(actionR_pondre);
@@ -503,16 +568,21 @@ public:
         actionQuitter->setShortcut(QApplication::translate("MailBox", "Alt+Q", 0));
         actionIsoler->setText(QApplication::translate("MailBox", "Isoler", 0));
         actionIsoler->setShortcut(QApplication::translate("MailBox", "Ctrl+I", 0));
-        actionAdd->setText(QApplication::translate("MailBox", "Ajouter", 0));
+        actionAdd->setText(QApplication::translate("MailBox", "Ajouter un compte", 0));
 #ifndef QT_NO_TOOLTIP
         actionAdd->setToolTip(QApplication::translate("MailBox", "Ajouter un compte ", 0));
 #endif // QT_NO_TOOLTIP
         actionAdd->setShortcut(QApplication::translate("MailBox", "Ctrl+A", 0));
         actionAlert->setText(QApplication::translate("MailBox", "alert", 0));
         actionCancel_confirmed->setText(QApplication::translate("MailBox", "cancel_confirmed", 0));
-#ifndef QT_NO_TOOLTIP
-        inbox->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p>Ceci est votre boite de r\303\251ception</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
+        actionSupprimer_le_compte->setText(QApplication::translate("MailBox", "Supprimer le compte", 0));
+        actionR_pondre_tous->setText(QApplication::translate("MailBox", "R\303\251pondre \303\240 tous", 0));
+        actionR_pondre_tous->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+R", 0));
+        actionAttacher_des_pi_ces_jointes->setText(QApplication::translate("MailBox", "Attacher des pi\303\250ces jointes", 0));
+        actionAttacher_des_pi_ces_jointes->setShortcut(QApplication::translate("MailBox", "Ctrl+J", 0));
+        actionSupprimer_la_pi_ce_jointe->setText(QApplication::translate("MailBox", "Supprimer la pi\303\250ce jointe", 0));
+        actionEnvoyer->setText(QApplication::translate("MailBox", "Envoyer", 0));
+        actionEnvoyer->setShortcut(QApplication::translate("MailBox", "Ctrl+E", 0));
 #ifndef QT_NO_TOOLTIP
         addAccount->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p><span style=\" font-weight:600;\">Cliquez pour ajouter un compte</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
@@ -535,7 +605,8 @@ public:
 #ifndef QT_NO_TOOLTIP
         repAllButton->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur du courrier en surbrillance ainsi que tous les destinataires de ce courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
-        repAllButton->setText(QApplication::translate("MailBox", "R\303\251p \303\240 tous", 0));
+        repAllButton->setText(QApplication::translate("MailBox", "R\303\251pondre\n"
+"\303\240 tous", 0));
 #ifndef QT_NO_TOOLTIP
         transferButton->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p>Envoyer le courrier en surbrillance \303\240 quelqu'un d'autre</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP

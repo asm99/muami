@@ -30,19 +30,18 @@ class Ui_AttachFileWindow
 {
 public:
     QWidget *centralwidget;
-    QVBoxLayout *verticalLayout_3;
-    QSplitter *splitter;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
+    QSplitter *splitter;
+    QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_2;
     QLineEdit *pathAccessor;
-    QPushButton *help;
     QListWidget *folderList;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *goButton;
     QPushButton *backButton;
-    QWidget *layoutWidget;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout;
+    QLineEdit *findFile;
     QListWidget *contentList;
     QHBoxLayout *horizontalLayout;
     QPushButton *addButton;
@@ -56,91 +55,107 @@ public:
         AttachFileWindow->resize(800, 600);
         centralwidget = new QWidget(AttachFileWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        verticalLayout_3 = new QVBoxLayout(centralwidget);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        horizontalLayout_3 = new QHBoxLayout(centralwidget);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         splitter = new QSplitter(centralwidget);
         splitter->setObjectName(QStringLiteral("splitter"));
         splitter->setOrientation(Qt::Horizontal);
-        widget = new QWidget(splitter);
-        widget->setObjectName(QStringLiteral("widget"));
-        verticalLayout_2 = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(splitter);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        verticalLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        pathAccessor = new QLineEdit(widget);
+        pathAccessor = new QLineEdit(layoutWidget);
         pathAccessor->setObjectName(QStringLiteral("pathAccessor"));
-
-        horizontalLayout_3->addWidget(pathAccessor);
-
-        help = new QPushButton(widget);
-        help->setObjectName(QStringLiteral("help"));
-        help->setEnabled(true);
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(help->sizePolicy().hasHeightForWidth());
-        help->setSizePolicy(sizePolicy);
-        help->setMinimumSize(QSize(50, 50));
-        help->setMaximumSize(QSize(50, 50));
+        sizePolicy.setHeightForWidth(pathAccessor->sizePolicy().hasHeightForWidth());
+        pathAccessor->setSizePolicy(sizePolicy);
+        pathAccessor->setMaximumSize(QSize(16777215, 16777215));
 
-        horizontalLayout_3->addWidget(help);
+        verticalLayout_2->addWidget(pathAccessor);
 
-
-        verticalLayout_2->addLayout(horizontalLayout_3);
-
-        folderList = new QListWidget(widget);
+        folderList = new QListWidget(layoutWidget);
         folderList->setObjectName(QStringLiteral("folderList"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(folderList->sizePolicy().hasHeightForWidth());
+        folderList->setSizePolicy(sizePolicy1);
+        folderList->setMaximumSize(QSize(16777215, 16777215));
 
         verticalLayout_2->addWidget(folderList);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        goButton = new QPushButton(widget);
+        horizontalLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
+        goButton = new QPushButton(layoutWidget);
         goButton->setObjectName(QStringLiteral("goButton"));
+        sizePolicy.setHeightForWidth(goButton->sizePolicy().hasHeightForWidth());
+        goButton->setSizePolicy(sizePolicy);
+        goButton->setMaximumSize(QSize(16777215, 16777215));
 
         horizontalLayout_2->addWidget(goButton);
 
-        backButton = new QPushButton(widget);
+        backButton = new QPushButton(layoutWidget);
         backButton->setObjectName(QStringLiteral("backButton"));
+        sizePolicy.setHeightForWidth(backButton->sizePolicy().hasHeightForWidth());
+        backButton->setSizePolicy(sizePolicy);
+        backButton->setMaximumSize(QSize(16777215, 16777215));
 
         horizontalLayout_2->addWidget(backButton);
 
 
         verticalLayout_2->addLayout(horizontalLayout_2);
 
-        splitter->addWidget(widget);
-        layoutWidget = new QWidget(splitter);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+        splitter->addWidget(layoutWidget);
+        layoutWidget1 = new QWidget(splitter);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        verticalLayout = new QVBoxLayout(layoutWidget1);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        contentList = new QListWidget(layoutWidget);
+        findFile = new QLineEdit(layoutWidget1);
+        findFile->setObjectName(QStringLiteral("findFile"));
+
+        verticalLayout->addWidget(findFile);
+
+        contentList = new QListWidget(layoutWidget1);
         contentList->setObjectName(QStringLiteral("contentList"));
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(1);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(contentList->sizePolicy().hasHeightForWidth());
+        contentList->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(contentList);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        addButton = new QPushButton(layoutWidget);
+        addButton = new QPushButton(layoutWidget1);
         addButton->setObjectName(QStringLiteral("addButton"));
+        sizePolicy.setHeightForWidth(addButton->sizePolicy().hasHeightForWidth());
+        addButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(addButton);
 
-        leaveButton = new QPushButton(layoutWidget);
+        leaveButton = new QPushButton(layoutWidget1);
         leaveButton->setObjectName(QStringLiteral("leaveButton"));
+        sizePolicy.setHeightForWidth(leaveButton->sizePolicy().hasHeightForWidth());
+        leaveButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(leaveButton);
 
 
         verticalLayout->addLayout(horizontalLayout);
 
-        splitter->addWidget(layoutWidget);
+        splitter->addWidget(layoutWidget1);
         fileDetails = new QTextEdit(splitter);
         fileDetails->setObjectName(QStringLiteral("fileDetails"));
         splitter->addWidget(fileDetails);
 
-        verticalLayout_3->addWidget(splitter);
+        horizontalLayout_3->addWidget(splitter);
 
         AttachFileWindow->setCentralWidget(centralwidget);
 
@@ -154,12 +169,10 @@ public:
         AttachFileWindow->setWindowTitle(QApplication::translate("AttachFileWindow", "MainWindow", 0));
         pathAccessor->setText(QString());
         pathAccessor->setPlaceholderText(QApplication::translate("AttachFileWindow", "Chemin d'acc\303\250s", 0));
-        help->setText(QApplication::translate("AttachFileWindow", "?", 0));
         goButton->setText(QApplication::translate("AttachFileWindow", "Parcourir", 0));
         backButton->setText(QApplication::translate("AttachFileWindow", "Revenir", 0));
         addButton->setText(QApplication::translate("AttachFileWindow", "Ajouter", 0));
         leaveButton->setText(QApplication::translate("AttachFileWindow", "Quitter", 0));
-        fileDetails->setPlaceholderText(QString());
     } // retranslateUi
 
 };

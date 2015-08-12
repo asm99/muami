@@ -33,15 +33,17 @@ private slots:
 
     void accessToFolder();
 
+    void findFile(QString);
+
     void displayPathContent(QString str);
+
+    void displayHelper();
 
     void showDetails(QListWidgetItem *item);
 
     void addFile();
 
     void on_contentList_itemDoubleClicked(QListWidgetItem *item);
-
-    void openHelper();
 
 private:
     Ui::AttachFileWindow *ui;

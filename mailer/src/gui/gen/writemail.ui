@@ -949,6 +949,15 @@ jointes</string>
     <property name="title">
      <string>Fichier</string>
     </property>
+    <addaction name="actionR_pondre"/>
+    <addaction name="actionR_pondre_tous"/>
+    <addaction name="actionTransf_rer"/>
+    <addaction name="actionEnvoyer"/>
+    <addaction name="separator"/>
+    <addaction name="actionAttacher_des_pi_ces_jointes"/>
+    <addaction name="actionDeleteAddedFile"/>
+    <addaction name="separator"/>
+    <addaction name="actionFermer"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
@@ -958,11 +967,6 @@ jointes</string>
     <addaction name="actionCouper"/>
     <addaction name="actionColler"/>
     <addaction name="actionSupprimer"/>
-    <addaction name="actionPolice"/>
-    <addaction name="actionCouleur"/>
-    <addaction name="actionGras"/>
-    <addaction name="actionItalique"/>
-    <addaction name="actionSoulign"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
@@ -985,31 +989,6 @@ jointes</string>
   <action name="actionSupprimer">
    <property name="text">
     <string>Supprimer</string>
-   </property>
-  </action>
-  <action name="actionPolice">
-   <property name="text">
-    <string>Police</string>
-   </property>
-  </action>
-  <action name="actionCouleur">
-   <property name="text">
-    <string>Couleur</string>
-   </property>
-  </action>
-  <action name="actionGras">
-   <property name="text">
-    <string>Gras</string>
-   </property>
-  </action>
-  <action name="actionItalique">
-   <property name="text">
-    <string>Italique</string>
-   </property>
-  </action>
-  <action name="actionSoulign">
-   <property name="text">
-    <string>Souligné</string>
    </property>
   </action>
   <action name="actionSend">
@@ -1055,6 +1034,92 @@ jointes</string>
   <action name="actionAttach">
    <property name="text">
     <string>attach</string>
+   </property>
+  </action>
+  <action name="actionEnvoyer">
+   <property name="text">
+    <string>Envoyer</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionR_pondre">
+   <property name="text">
+    <string>Répondre</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionR_pondre_tous">
+   <property name="text">
+    <string>Répondre à tous</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  <action name="actionTransf_rer">
+   <property name="text">
+    <string>Transférer</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionAttacher_des_pi_ces_jointes">
+   <property name="text">
+    <string>Attacher des pièces jointes</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionFermer">
+   <property name="text">
+    <string>Fermer</string>
+   </property>
+  </action>
+  <action name="actionDeleteAddedFile">
+   <property name="text">
+    <string>Supprimer la pièce jointe</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
   </action>
  </widget>

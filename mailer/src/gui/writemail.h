@@ -51,9 +51,17 @@ private slots:
 
     void on_sendButton_clicked();
 
+    void on_actionEnvoyer_triggered();
+
     void on_replyButton_clicked();
 
+    void on_actionR_pondre_triggered();
+
+    void on_actionR_pondre_tous_triggered();
+
     void on_replyAllButton_clicked();
+
+    void on_actionTransf_rer_triggered();
 
     void on_transferButton_clicked();
 
@@ -70,6 +78,10 @@ private slots:
     void addFile(QString);
 
     void deleteAttachedFile();
+
+    void on_actionAttachFiletriggered();
+
+    void on_actionDeleteAddedFile_triggered();
 
 private:
     Ui::WriteMail *ui;

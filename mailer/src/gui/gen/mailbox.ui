@@ -37,7 +37,7 @@
         <widget class="QTabWidget" name="multiBox">
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>220</width>
            <height>16777215</height>
           </size>
          </property>
@@ -52,33 +52,13 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QTreeWidget" name="inbox">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>200</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="QListWidget" name="inbox">
                <property name="maximumSize">
                 <size>
-                 <width>300</width>
+                 <width>16777215</width>
                  <height>16777215</height>
                 </size>
                </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est votre boite de réception&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <column>
-                <property name="text">
-                 <string notr="true">1</string>
-                </property>
-               </column>
               </widget>
              </item>
              <item>
@@ -229,7 +209,8 @@
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Répondre à l'expéditeur du courrier en surbrillance ainsi que tous les destinataires de ce courrier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
-             <string>Rép à tous</string>
+             <string>Répondre
+à tous</string>
             </property>
            </widget>
           </item>
@@ -387,13 +368,53 @@ jointe</string>
         </item>
         <item>
          <widget class="QSplitter" name="splitter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <widget class="QListWidget" name="mailList">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est la liste des courriers de votre boite de réception&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="mailField">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="mailList">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est la liste des courriers de votre boite de réception&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="layoutWidget">
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -402,6 +423,9 @@ jointe</string>
             </property>
             <item>
              <layout class="QFormLayout" name="formLayout">
+              <property name="horizontalSpacing">
+               <number>3</number>
+              </property>
               <property name="verticalSpacing">
                <number>0</number>
               </property>
@@ -864,6 +888,12 @@ jointe</string>
             </item>
             <item>
              <widget class="QTextEdit" name="displayer">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est le contenu du courrier en surbrillance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
@@ -898,10 +928,20 @@ jointe</string>
     </property>
     <addaction name="actionNouveau_courrier"/>
     <addaction name="actionR_pondre"/>
+    <addaction name="actionR_pondre_tous"/>
     <addaction name="actionTransf_rer"/>
     <addaction name="actionSupprimer"/>
+    <addaction name="actionIsoler"/>
+    <addaction name="actionEnvoyer"/>
+    <addaction name="separator"/>
+    <addaction name="actionAttacher_des_pi_ces_jointes"/>
+    <addaction name="actionSupprimer_la_pi_ce_jointe"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd"/>
+    <addaction name="actionSupprimer_le_compte"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFichier"/>
   </widget>
@@ -1010,10 +1050,16 @@ jointe</string>
   </action>
   <action name="actionAdd">
    <property name="text">
-    <string>Ajouter</string>
+    <string>Ajouter un compte</string>
    </property>
    <property name="toolTip">
     <string>Ajouter un compte </string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
@@ -1027,6 +1073,70 @@ jointe</string>
   <action name="actionCancel_confirmed">
    <property name="text">
     <string>cancel_confirmed</string>
+   </property>
+  </action>
+  <action name="actionSupprimer_le_compte">
+   <property name="text">
+    <string>Supprimer le compte</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionR_pondre_tous">
+   <property name="text">
+    <string>Répondre à tous</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+R</string>
+   </property>
+  </action>
+  <action name="actionAttacher_des_pi_ces_jointes">
+   <property name="text">
+    <string>Attacher des pièces jointes</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="actionSupprimer_la_pi_ce_jointe">
+   <property name="text">
+    <string>Supprimer la pièce jointe</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="actionEnvoyer">
+   <property name="text">
+    <string>Envoyer</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

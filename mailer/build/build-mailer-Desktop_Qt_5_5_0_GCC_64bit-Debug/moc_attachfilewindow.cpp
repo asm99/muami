@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_AttachFileWindow_t {
-    QByteArrayData data[14];
-    char stringdata0[215];
+    QByteArrayData data[17];
+    char stringdata0[265];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,22 +36,25 @@ QT_MOC_LITERAL(3, 33, 31), // "on_folderList_itemDoubleClicked"
 QT_MOC_LITERAL(4, 65, 16), // "QListWidgetItem*"
 QT_MOC_LITERAL(5, 82, 4), // "item"
 QT_MOC_LITERAL(6, 87, 25), // "on_folderList_itemClicked"
-QT_MOC_LITERAL(7, 113, 14), // "accessToFolder"
-QT_MOC_LITERAL(8, 128, 18), // "displayPathContent"
-QT_MOC_LITERAL(9, 147, 3), // "str"
-QT_MOC_LITERAL(10, 151, 11), // "showDetails"
-QT_MOC_LITERAL(11, 163, 7), // "addFile"
-QT_MOC_LITERAL(12, 171, 32), // "on_contentList_itemDoubleClicked"
-QT_MOC_LITERAL(13, 204, 10) // "openHelper"
+QT_MOC_LITERAL(7, 113, 19), // "onBackButtonClicked"
+QT_MOC_LITERAL(8, 133, 17), // "onGoButtonClicked"
+QT_MOC_LITERAL(9, 151, 14), // "accessToFolder"
+QT_MOC_LITERAL(10, 166, 8), // "findFile"
+QT_MOC_LITERAL(11, 175, 18), // "displayPathContent"
+QT_MOC_LITERAL(12, 194, 3), // "str"
+QT_MOC_LITERAL(13, 198, 13), // "displayHelper"
+QT_MOC_LITERAL(14, 212, 11), // "showDetails"
+QT_MOC_LITERAL(15, 224, 7), // "addFile"
+QT_MOC_LITERAL(16, 232, 32) // "on_contentList_itemDoubleClicked"
 
     },
     "AttachFileWindow\0sendFileToMail\0\0"
     "on_folderList_itemDoubleClicked\0"
     "QListWidgetItem*\0item\0on_folderList_itemClicked\0"
-    "accessToFolder\0displayPathContent\0str\0"
-    "showDetails\0addFile\0"
-    "on_contentList_itemDoubleClicked\0"
-    "openHelper"
+    "onBackButtonClicked\0onGoButtonClicked\0"
+    "accessToFolder\0findFile\0displayPathContent\0"
+    "str\0displayHelper\0showDetails\0addFile\0"
+    "on_contentList_itemDoubleClicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +64,7 @@ static const uint qt_meta_data_AttachFileWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,17 +72,20 @@ static const uint qt_meta_data_AttachFileWindow[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   59,    2, 0x06 /* Public */,
+       1,    1,   74,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   62,    2, 0x08 /* Private */,
-       6,    1,   65,    2, 0x08 /* Private */,
-       7,    0,   68,    2, 0x08 /* Private */,
-       8,    1,   69,    2, 0x08 /* Private */,
-      10,    1,   72,    2, 0x08 /* Private */,
-      11,    0,   75,    2, 0x08 /* Private */,
-      12,    1,   76,    2, 0x08 /* Private */,
-      13,    0,   79,    2, 0x08 /* Private */,
+       3,    1,   77,    2, 0x08 /* Private */,
+       6,    1,   80,    2, 0x08 /* Private */,
+       7,    0,   83,    2, 0x08 /* Private */,
+       8,    0,   84,    2, 0x08 /* Private */,
+       9,    0,   85,    2, 0x08 /* Private */,
+      10,    1,   86,    2, 0x08 /* Private */,
+      11,    1,   89,    2, 0x08 /* Private */,
+      13,    0,   92,    2, 0x08 /* Private */,
+      14,    1,   93,    2, 0x08 /* Private */,
+      15,    0,   96,    2, 0x08 /* Private */,
+      16,    1,   97,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    2,
@@ -88,11 +94,14 @@ static const uint qt_meta_data_AttachFileWindow[] = {
     QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    9,
-    QMetaType::Void, 0x80000000 | 4,    5,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void, QMetaType::QString,   12,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 4,    5,
 
        0        // eod
 };
@@ -106,12 +115,15 @@ void AttachFileWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 0: _t->sendFileToMail((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->on_folderList_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         case 2: _t->on_folderList_itemClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 3: _t->accessToFolder(); break;
-        case 4: _t->displayPathContent((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: _t->showDetails((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 6: _t->addFile(); break;
-        case 7: _t->on_contentList_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 8: _t->openHelper(); break;
+        case 3: _t->onBackButtonClicked(); break;
+        case 4: _t->onGoButtonClicked(); break;
+        case 5: _t->accessToFolder(); break;
+        case 6: _t->findFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 7: _t->displayPathContent((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 8: _t->displayHelper(); break;
+        case 9: _t->showDetails((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 10: _t->addFile(); break;
+        case 11: _t->on_contentList_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -151,13 +163,13 @@ int AttachFileWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 12)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 12;
     }
     return _id;
 }

@@ -20,6 +20,7 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
             )
         ) ;
 
+    ui->attachedFiles->setStyleSheet("QListWidget::item{border-bottom:0px}");
     ui->title->setMaxLength(80);
     ui->message->setFontPointSize(11);
     ui->message->setFontWeight(40) ;
@@ -109,6 +110,11 @@ void WriteMail::on_sendButton_clicked()
     on_actionSend_triggered();
 }
 
+void WriteMail::on_actionEnvoyer_triggered()
+{
+    on_actionSend_triggered();
+}
+
 void WriteMail::on_actionSend_triggered()
 {
     QString alarm ;
@@ -172,6 +178,11 @@ void WriteMail::on_replyButton_clicked()
     on_actionReply_triggered();
 }
 
+void WriteMail::on_actionR_pondre_triggered()
+{
+    on_actionReply_triggered();
+}
+
 void WriteMail::on_actionReply_triggered()
 {
     setStuff() ;
@@ -184,6 +195,11 @@ void WriteMail::on_replyAllButton_clicked()
     on_actionReplyAll_triggered();
 }
 
+void WriteMail::on_actionR_pondre_tous_triggered()
+{
+    on_actionReplyAll_triggered();
+}
+
 void WriteMail::on_actionReplyAll_triggered()
 {
     setStuff() ;
@@ -192,6 +208,11 @@ void WriteMail::on_actionReplyAll_triggered()
 
 
 void WriteMail::on_transferButton_clicked()
+{
+    on_actionTransfer_triggered();
+}
+
+void WriteMail::on_actionTransf_rer_triggered()
 {
     on_actionTransfer_triggered();
 }
@@ -275,6 +296,11 @@ void WriteMail::setStuff()
 
 
 /** ++ Gestion des pièces jointes ++ **/
+void WriteMail::on_actionAttachFiletriggered()
+{
+    on_actionAttach_triggered();
+}
+
 void WriteMail::on_attachButton_clicked()
 {
     on_actionAttach_triggered() ;
@@ -308,6 +334,11 @@ void WriteMail::addFileToMail(QString filepath)
     item->setText(file);
 }
 
+void WriteMail::on_actionDeleteAddedFile_triggered()
+{
+    deleteAttachedFile();
+}
+
 void WriteMail::deleteAttachedFile()
 {
     if(ui->attachedFiles->currentItem())
@@ -315,5 +346,4 @@ void WriteMail::deleteAttachedFile()
         delete ui->attachedFiles->currentItem();
     }
 }
-
 /** ~~ Gestion des pièces jointes ~~ **/

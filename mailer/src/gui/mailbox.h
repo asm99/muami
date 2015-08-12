@@ -27,7 +27,9 @@ private slots:
 
     void addChildren(QTreeWidgetItem *, QString);
 
-    void showFolderContent(QTreeWidgetItem*, int);
+    void showFolderContent(QListWidgetItem*);
+
+    void changeBackgroundColor(QListWidgetItem*);
 
     void showFolderMenu(const QPoint &pos);
 
@@ -48,6 +50,8 @@ private slots:
     void get_actionQuitter_triggered();
 
     void accountRegistered();
+
+    void findMail(QString);
 
     void on_addAccount_clicked();
 
@@ -77,7 +81,7 @@ private slots:
 
     void on_actionTransf_rer_triggered();
 
-    void on_mailList_itemDoubleClicked(QListWidgetItem *);
+    void on_mailList_itemDoubleClicked();
 
     void deleteFileAction() ;
 
@@ -100,6 +104,16 @@ private slots:
     void openAttachFileWindow();
 
     void addFile(QString);
+
+    void on_actionSupprimer_le_compte_triggered();
+
+    void on_actionR_pondre_tous_triggered();
+
+    void on_actionAttacher_des_pi_ces_jointes_triggered();
+
+    void on_actionSupprimer_la_pi_ce_jointe_triggered();
+
+    void on_actionEnvoyer_triggered();
 
 private:
     Ui::MailBox *ui;

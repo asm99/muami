@@ -13,13 +13,15 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -33,12 +35,21 @@ public:
     QAction *actionQuitter;
     QAction *actionFermet_le_carnet;
     QWidget *centralwidget;
+    QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *addToMailButton;
+    QPushButton *deleteButton;
+    QPushButton *closeButton;
+    QListWidget *addressList;
     QVBoxLayout *verticalLayout;
-    QTreeWidget *treeWidget;
+    QLineEdit *addressField;
+    QHBoxLayout *horizontalLayout_2;
+    QPushButton *addToListButton;
+    QPushButton *findButton;
     QMenuBar *menubar;
     QMenu *menuFichier;
     QStatusBar *statusbar;
-    QToolBar *toolBar;
 
     void setupUi(QMainWindow *AddressBook)
     {
@@ -55,15 +66,62 @@ public:
         actionFermet_le_carnet->setObjectName(QStringLiteral("actionFermet_le_carnet"));
         centralwidget = new QWidget(AddressBook);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        verticalLayout = new QVBoxLayout(centralwidget);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        treeWidget = new QTreeWidget(centralwidget);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QStringLiteral("1"));
-        treeWidget->setHeaderItem(__qtreewidgetitem);
-        treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        horizontalLayout_3 = new QHBoxLayout(centralwidget);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        addToMailButton = new QPushButton(centralwidget);
+        addToMailButton->setObjectName(QStringLiteral("addToMailButton"));
 
-        verticalLayout->addWidget(treeWidget);
+        horizontalLayout->addWidget(addToMailButton);
+
+        deleteButton = new QPushButton(centralwidget);
+        deleteButton->setObjectName(QStringLiteral("deleteButton"));
+
+        horizontalLayout->addWidget(deleteButton);
+
+        closeButton = new QPushButton(centralwidget);
+        closeButton->setObjectName(QStringLiteral("closeButton"));
+
+        horizontalLayout->addWidget(closeButton);
+
+
+        verticalLayout_2->addLayout(horizontalLayout);
+
+        addressList = new QListWidget(centralwidget);
+        addressList->setObjectName(QStringLiteral("addressList"));
+
+        verticalLayout_2->addWidget(addressList);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        addressField = new QLineEdit(centralwidget);
+        addressField->setObjectName(QStringLiteral("addressField"));
+
+        verticalLayout->addWidget(addressField);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        addToListButton = new QPushButton(centralwidget);
+        addToListButton->setObjectName(QStringLiteral("addToListButton"));
+
+        horizontalLayout_2->addWidget(addToListButton);
+
+        findButton = new QPushButton(centralwidget);
+        findButton->setObjectName(QStringLiteral("findButton"));
+
+        horizontalLayout_2->addWidget(findButton);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
+
+
+        horizontalLayout_3->addLayout(verticalLayout_2);
 
         AddressBook->setCentralWidget(centralwidget);
         menubar = new QMenuBar(AddressBook);
@@ -75,18 +133,12 @@ public:
         statusbar = new QStatusBar(AddressBook);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         AddressBook->setStatusBar(statusbar);
-        toolBar = new QToolBar(AddressBook);
-        toolBar->setObjectName(QStringLiteral("toolBar"));
-        AddressBook->addToolBar(Qt::TopToolBarArea, toolBar);
 
         menubar->addAction(menuFichier->menuAction());
         menuFichier->addAction(actionAjouter_une_adresse);
         menuFichier->addAction(actionSupprimer_l_adresse);
         menuFichier->addSeparator();
         menuFichier->addAction(actionQuitter);
-        toolBar->addAction(actionAjouter_une_adresse);
-        toolBar->addAction(actionSupprimer_l_adresse);
-        toolBar->addAction(actionFermet_le_carnet);
 
         retranslateUi(AddressBook);
 
@@ -100,8 +152,12 @@ public:
         actionSupprimer_l_adresse->setText(QApplication::translate("AddressBook", "Supprimer l'adresse", 0));
         actionQuitter->setText(QApplication::translate("AddressBook", "Quitter", 0));
         actionFermet_le_carnet->setText(QApplication::translate("AddressBook", "Fermer", 0));
+        addToMailButton->setText(QApplication::translate("AddressBook", "Ajouter au courrier", 0));
+        deleteButton->setText(QApplication::translate("AddressBook", "Supprimer ", 0));
+        closeButton->setText(QApplication::translate("AddressBook", "Fermer", 0));
+        addToListButton->setText(QApplication::translate("AddressBook", "Ajouter au carnet", 0));
+        findButton->setText(QApplication::translate("AddressBook", "Chercher", 0));
         menuFichier->setTitle(QApplication::translate("AddressBook", "Fichier", 0));
-        toolBar->setWindowTitle(QApplication::translate("AddressBook", "toolBar", 0));
     } // retranslateUi
 
 };

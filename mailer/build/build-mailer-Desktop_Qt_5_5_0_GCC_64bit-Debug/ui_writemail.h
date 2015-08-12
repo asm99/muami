@@ -36,11 +36,6 @@ public:
     QAction *actionColler;
     QAction *actionCouper;
     QAction *actionSupprimer;
-    QAction *actionPolice;
-    QAction *actionCouleur;
-    QAction *actionGras;
-    QAction *actionItalique;
-    QAction *actionSoulign;
     QAction *actionSend;
     QAction *actionReply;
     QAction *actionReplyAll;
@@ -50,6 +45,13 @@ public:
     QAction *actionSave;
     QAction *actionClose;
     QAction *actionAttach;
+    QAction *actionEnvoyer;
+    QAction *actionR_pondre;
+    QAction *actionR_pondre_tous;
+    QAction *actionTransf_rer;
+    QAction *actionAttacher_des_pi_ces_jointes;
+    QAction *actionFermer;
+    QAction *actionDeleteAddedFile;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
@@ -97,16 +99,6 @@ public:
         actionCouper->setObjectName(QStringLiteral("actionCouper"));
         actionSupprimer = new QAction(WriteMail);
         actionSupprimer->setObjectName(QStringLiteral("actionSupprimer"));
-        actionPolice = new QAction(WriteMail);
-        actionPolice->setObjectName(QStringLiteral("actionPolice"));
-        actionCouleur = new QAction(WriteMail);
-        actionCouleur->setObjectName(QStringLiteral("actionCouleur"));
-        actionGras = new QAction(WriteMail);
-        actionGras->setObjectName(QStringLiteral("actionGras"));
-        actionItalique = new QAction(WriteMail);
-        actionItalique->setObjectName(QStringLiteral("actionItalique"));
-        actionSoulign = new QAction(WriteMail);
-        actionSoulign->setObjectName(QStringLiteral("actionSoulign"));
         actionSend = new QAction(WriteMail);
         actionSend->setObjectName(QStringLiteral("actionSend"));
         actionReply = new QAction(WriteMail);
@@ -125,6 +117,29 @@ public:
         actionClose->setObjectName(QStringLiteral("actionClose"));
         actionAttach = new QAction(WriteMail);
         actionAttach->setObjectName(QStringLiteral("actionAttach"));
+        actionEnvoyer = new QAction(WriteMail);
+        actionEnvoyer->setObjectName(QStringLiteral("actionEnvoyer"));
+        QFont font;
+        font.setBold(true);
+        font.setWeight(75);
+        actionEnvoyer->setFont(font);
+        actionR_pondre = new QAction(WriteMail);
+        actionR_pondre->setObjectName(QStringLiteral("actionR_pondre"));
+        actionR_pondre->setFont(font);
+        actionR_pondre_tous = new QAction(WriteMail);
+        actionR_pondre_tous->setObjectName(QStringLiteral("actionR_pondre_tous"));
+        actionR_pondre_tous->setFont(font);
+        actionTransf_rer = new QAction(WriteMail);
+        actionTransf_rer->setObjectName(QStringLiteral("actionTransf_rer"));
+        actionTransf_rer->setFont(font);
+        actionAttacher_des_pi_ces_jointes = new QAction(WriteMail);
+        actionAttacher_des_pi_ces_jointes->setObjectName(QStringLiteral("actionAttacher_des_pi_ces_jointes"));
+        actionAttacher_des_pi_ces_jointes->setFont(font);
+        actionFermer = new QAction(WriteMail);
+        actionFermer->setObjectName(QStringLiteral("actionFermer"));
+        actionDeleteAddedFile = new QAction(WriteMail);
+        actionDeleteAddedFile->setObjectName(QStringLiteral("actionDeleteAddedFile"));
+        actionDeleteAddedFile->setFont(font);
         centralwidget = new QWidget(WriteMail);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         verticalLayout = new QVBoxLayout(centralwidget);
@@ -135,9 +150,6 @@ public:
         attachedLabel->setObjectName(QStringLiteral("attachedLabel"));
         attachedLabel->setMinimumSize(QSize(0, 0));
         attachedLabel->setMaximumSize(QSize(50, 16777215));
-        QFont font;
-        font.setBold(true);
-        font.setWeight(75);
         attachedLabel->setFont(font);
 
         horizontalLayout->addWidget(attachedLabel);
@@ -386,15 +398,19 @@ public:
 
         menubar->addAction(menuFichier->menuAction());
         menubar->addAction(menuEdition->menuAction());
+        menuFichier->addAction(actionR_pondre);
+        menuFichier->addAction(actionR_pondre_tous);
+        menuFichier->addAction(actionTransf_rer);
+        menuFichier->addAction(actionEnvoyer);
+        menuFichier->addSeparator();
+        menuFichier->addAction(actionAttacher_des_pi_ces_jointes);
+        menuFichier->addAction(actionDeleteAddedFile);
+        menuFichier->addSeparator();
+        menuFichier->addAction(actionFermer);
         menuEdition->addAction(actionCopier);
         menuEdition->addAction(actionCouper);
         menuEdition->addAction(actionColler);
         menuEdition->addAction(actionSupprimer);
-        menuEdition->addAction(actionPolice);
-        menuEdition->addAction(actionCouleur);
-        menuEdition->addAction(actionGras);
-        menuEdition->addAction(actionItalique);
-        menuEdition->addAction(actionSoulign);
 
         retranslateUi(WriteMail);
 
@@ -408,11 +424,6 @@ public:
         actionColler->setText(QApplication::translate("WriteMail", "Coller", 0));
         actionCouper->setText(QApplication::translate("WriteMail", "Couper", 0));
         actionSupprimer->setText(QApplication::translate("WriteMail", "Supprimer", 0));
-        actionPolice->setText(QApplication::translate("WriteMail", "Police", 0));
-        actionCouleur->setText(QApplication::translate("WriteMail", "Couleur", 0));
-        actionGras->setText(QApplication::translate("WriteMail", "Gras", 0));
-        actionItalique->setText(QApplication::translate("WriteMail", "Italique", 0));
-        actionSoulign->setText(QApplication::translate("WriteMail", "Soulign\303\251", 0));
         actionSend->setText(QApplication::translate("WriteMail", "send", 0));
         actionReply->setText(QApplication::translate("WriteMail", "reply", 0));
         actionReplyAll->setText(QApplication::translate("WriteMail", "replyAll", 0));
@@ -422,6 +433,18 @@ public:
         actionSave->setText(QApplication::translate("WriteMail", "save", 0));
         actionClose->setText(QApplication::translate("WriteMail", "close", 0));
         actionAttach->setText(QApplication::translate("WriteMail", "attach", 0));
+        actionEnvoyer->setText(QApplication::translate("WriteMail", "Envoyer", 0));
+        actionEnvoyer->setShortcut(QApplication::translate("WriteMail", "Ctrl+E", 0));
+        actionR_pondre->setText(QApplication::translate("WriteMail", "R\303\251pondre", 0));
+        actionR_pondre->setShortcut(QApplication::translate("WriteMail", "Ctrl+R", 0));
+        actionR_pondre_tous->setText(QApplication::translate("WriteMail", "R\303\251pondre \303\240 tous", 0));
+        actionR_pondre_tous->setShortcut(QApplication::translate("WriteMail", "Ctrl+Shift+R", 0));
+        actionTransf_rer->setText(QApplication::translate("WriteMail", "Transf\303\251rer", 0));
+        actionTransf_rer->setShortcut(QApplication::translate("WriteMail", "Ctrl+T", 0));
+        actionAttacher_des_pi_ces_jointes->setText(QApplication::translate("WriteMail", "Attacher des pi\303\250ces jointes", 0));
+        actionAttacher_des_pi_ces_jointes->setShortcut(QApplication::translate("WriteMail", "Ctrl+A", 0));
+        actionFermer->setText(QApplication::translate("WriteMail", "Fermer", 0));
+        actionDeleteAddedFile->setText(QApplication::translate("WriteMail", "Supprimer la pi\303\250ce jointe", 0));
         attachedLabel->setText(QApplication::translate("WriteMail", "Pi\303\250ces\n"
 "jointes", 0));
 #ifndef QT_NO_TOOLTIP

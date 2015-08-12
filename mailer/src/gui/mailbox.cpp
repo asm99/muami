@@ -25,13 +25,11 @@ MailBox::MailBox(QWidget *parent) :
     this->setWindowFlags(Qt::FramelessWindowHint) ;
 
     ui->multiBox->setVisible(false);
-    ui->multiBox->resize(this->width()/4, this->height());
-    ui->inbox->setColumnCount(1);
-    ui->mailList->resize(this->width()/4, this->height());
-    ui->splitter->resize(this->width()/10, this->height());
+//    ui->inbox->setColumnCount(1);
 
     ui->toolBar->setVisible(false);
     ui->deleteFile->setVisible(false);
+    ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->attachedLabel->setVisible(false);
     ui->attachedFileList->setVisible(false);
 
@@ -68,8 +66,8 @@ MailBox::MailBox(QWidget *parent) :
             SLOT(showFolderMenu(const QPoint &)));
 
     connect(ui->inbox,
-            SIGNAL(itemClicked(QTreeWidgetItem*,int)),
-            SLOT(showFolderContent(QTreeWidgetItem*, int)));
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(showFolderContent(QListWidgetItem*)));
 
     connect(ui->delAccount,
             SIGNAL(clicked()),
@@ -84,6 +82,9 @@ MailBox::MailBox(QWidget *parent) :
             SIGNAL(itemClicked(QListWidgetItem*)),
             SLOT(showMailContent(QListWidgetItem*)));
 
+    connect(ui->mailList,
+           SIGNAL(itemChanged(QListWidgetItem*)),
+           SLOT(changeBackgroundColor(QListWidgetItem*)));
 
     connect(ui->attachButton,
             SIGNAL(clicked()),
@@ -92,6 +93,10 @@ MailBox::MailBox(QWidget *parent) :
     connect(ui->deleteFile,
             SIGNAL(clicked()),
             SLOT(deleteFileAction()));
+
+    connect(ui->mailField,
+            SIGNAL(textChanged(QString)),
+            SLOT(findMail(QString)));
 }
 
 
@@ -142,7 +147,7 @@ void MailBox::showFolderMenu(const QPoint &pos)
     QAction *selectedItem = myMenu.exec(globalPos);
 }
 
-void MailBox::showFolderContent(QTreeWidgetItem* item, int n)
+void MailBox::showFolderContent(QListWidgetItem* item)
 {
     ui->mailList->clear();
     ui->actionTransf_rer->setVisible(false);
@@ -150,36 +155,36 @@ void MailBox::showFolderContent(QTreeWidgetItem* item, int n)
     ui->actionIsoler->setVisible(false);
     ui->actionSupprimer->setVisible(false);
 
-    QString str = item->whatsThis(0) ;
+    QString str = item->whatsThis() ;
     QDir *path = new QDir(str) ;
     QFileInfoList filesList = path->entryInfoList();
     filesList.removeFirst();    // Vire le .
     filesList.removeFirst();    // et .. des listes
-    int bit = 0 ;
     foreach(QFileInfo fileInfo, filesList)
     {
-//        item->setText(0,fileInfo.fileName());
-        QString date = fileInfo.fileName() ;
-        date.append("\nSubject\n") ;
-        date.append(fileInfo.created().toString()) ;
-//        QString date = fileInfo.created().toString();
-        QListWidgetItem *item = new QListWidgetItem(ui->mailList) ;
-        item->setWhatsThis(fileInfo.filePath());
-        item->setText(date);
-        ui->mailList->addItem(item);
-        if (bit == 0)
+        if (!fileInfo.isDir())
         {
-            item->setBackgroundColor("#FFFFFF");
-            bit = 1 ;
-        }
-        else if (bit == 1)
-        {
-            item->setBackgroundColor("#FFFFFF");
-            bit = 0 ;
+            QString date = fileInfo.fileName() ;
+            date.append("\nSubject\n") ;
+            date.append(fileInfo.created().toString()) ;
+            QListWidgetItem *item = new QListWidgetItem(ui->mailList);
+            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+            item->setCheckState(Qt::Unchecked);
+            item->setWhatsThis(fileInfo.filePath());
+            item->setText(date);
+            ui->mailList->addItem(item);
         }
     }
 
     ui->multiBox->setVisible(false);
+}
+
+void MailBox::changeBackgroundColor(QListWidgetItem* item)
+{
+    if(item->checkState() == Qt::Checked)
+    {
+
+    }
 }
 
 void MailBox::showMailMenu(const QPoint &pos)
@@ -203,7 +208,6 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->actionTransf_rer->setVisible(true);
     ui->actionR_pondre->setVisible(true);
     ui->actionIsoler->setVisible(false);
-    ui->actionSupprimer->setVisible(true);
     ui->multiBox->setVisible(false);
 
     QString letter = mail->whatsThis() ;
@@ -217,10 +221,13 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->displayer->setText(doc);
     ui->displayer->setReadOnly(true);
     ui->deleteButton->setVisible(true);
+    ui->actionSupprimer->setVisible(true);
     toggleFields(false) ;
     toggleButtons(true) ;
     ui->sendButton->setVisible(false);
+    ui->actionEnvoyer->setVisible(false);
     ui->attachButton->setVisible(false);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
     ui->cancelButton->setVisible(false);
 }
 /** ~~ Gestion des dossiers + leur contenu ~~ **/
@@ -249,7 +256,20 @@ void MailBox::on_deleteButton_clicked()
 
 void MailBox::on_actionSupprimer_triggered()
 {
-    if (ui->mailList->currentItem())
+    int checked = 0 ;
+    for(int x = 0; x < ui->mailList->count(); x++)
+    {
+        QListWidgetItem *mail = ui->mailList->item(x) ;
+        if (mail->checkState() == Qt::Checked) checked++ ;
+    }
+    if (checked > 1)
+    {
+        QString str = "Voulez-vous supprimer ces courriers ?" ;
+        HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
+        box->show();
+    }
+
+    else if (checked == 1)
     {
         QString str = "Voulez-vous supprimer ce courrier ?" ;
         HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
@@ -259,7 +279,17 @@ void MailBox::on_actionSupprimer_triggered()
 
 void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
 {                                // LA FONCTION A ETE IMPLEMENTE
-    delete ui->mailList->currentItem();
+    int x = 0 ;
+    while(x < ui->mailList->count())
+    {
+        QListWidgetItem *mail = ui->mailList->item(x) ;
+        if (mail->checkState() == Qt::Checked)
+        {
+            delete mail ;
+            x = 0;
+        }
+        else x++ ;
+    }
     showMailContent(ui->mailList->currentItem());
 }
 /** ~~ Supprimer le courrier ~~ **/
@@ -277,10 +307,13 @@ void MailBox::on_actionCancel_confirmed_triggered()
 {
     showMailContent(ui->mailList->currentItem());
     ui->mailList->setVisible(true);
+    ui->mailField->setVisible(true);
     ui->attachedFileList->setVisible(false);
     ui->attachedLabel->setVisible(false);
     ui->deleteFile->setVisible(false);
+    ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->attachButton->setVisible(false);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
 }
 /** ~~ Annulation ~~ **/
 
@@ -310,7 +343,12 @@ void MailBox::on_actionR_pondre_triggered()  // REMPLIR LES CHAMPS TO, CC, ETC
     }
 }
 
-void MailBox::on_repAllButton_clicked()     // REMPLIR LES CHAMPS TO, CC, ETC
+void MailBox::on_repAllButton_clicked()
+{
+    on_actionR_pondre_tous_triggered();
+}
+
+void MailBox::on_actionR_pondre_tous_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
 {
     if(ui->mailList->currentItem())
     {
@@ -356,7 +394,7 @@ void MailBox::on_actionTransf_rer_triggered()
 
 
 /** ++ Isoler ++ **/
-void MailBox::on_mailList_itemDoubleClicked(QListWidgetItem *item)
+void MailBox::on_mailList_itemDoubleClicked()
 {
     on_actionIsoler_triggered();
 }
@@ -423,7 +461,9 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     ui->attachedFileList->setVisible(false);
     ui->attachedLabel->setVisible(false);
     ui->deleteFile->setVisible(false);
+    ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->mailList->setVisible(true);
+    ui->mailField->setVisible(true);
     ui->mailList->resize(resizer/2, ui->mailList->height());
     ui->displayer->resize(resizer/2, ui->displayer->height());
 }
@@ -441,6 +481,30 @@ void MailBox::mouseMoveEvent(QMouseEvent *e)
 }
 */
 
+/** ++ Recherche ++ **/
+void MailBox::findMail(QString toFind)
+{
+    QRegExp finder(".*"+toFind+".*") ;
+    finder.setCaseSensitivity(Qt::CaseInsensitive);
+    finder.setPatternSyntax(QRegExp::RegExp);
+
+    for(int x = 0; x < ui->mailList->count(); x++)
+    {
+        QListWidgetItem *item = ui->mailList->item(x);
+        QString match = item->text();
+        if (!finder.exactMatch(match))
+        {
+            item->setHidden(true);
+        }
+        else
+        {
+            item->setHidden(false);
+        }
+    }
+}
+/** ~~ Recherche ~~ **/
+
+
 /** ++ Quitter l'appli ++ **/
 void MailBox::on_actionQuitter_triggered()
 {
@@ -455,6 +519,7 @@ void MailBox::get_actionQuitter_triggered()
 }
 /** ~~ Quitter l'appli ~~ **/
 
+
 /** ++ Présence de comptes ++ **/
 void MailBox::accountRegistered()
 {
@@ -462,6 +527,8 @@ void MailBox::accountRegistered()
     {
         ui->inboxButton->setVisible(false);
         ui->newButton->setVisible(false);
+        ui->actionNouveau_courrier->setVisible(false);
+        ui->actionSupprimer_le_compte->setVisible(false);
         ui->groupBox->setVisible(false);
         ui->multiBox->setVisible(true);
         QTabWidget *tab = new QTabWidget() ;
@@ -500,8 +567,13 @@ void MailBox::accountRegistered()
                 SIGNAL(clicked()),
                 SLOT(on_addAccount_clicked()));
     }
-}
 
+    else
+    {
+        if (ui->mailList->currentItem())
+            showMailContent(ui->mailList->currentItem());
+    }
+}
 /** ~~ Présence de comptes ~~ **/
 
 
@@ -524,6 +596,7 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
         ui->multiBox->removeTab(0);
         ui->inboxButton->setVisible(true);
         ui->newButton->setVisible(true);
+        ui->actionNouveau_courrier->setVisible(true);
         ui->groupBox->setVisible(true);
     }
 
@@ -531,11 +604,10 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
     QTabWidget *tab = new QTabWidget() ;
     ui->multiBox->addTab(tab, tabName);
 
-    QTreeWidget *tree = new QTreeWidget(tab) ;
+    QListWidget *tree = new QListWidget(tab);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(tree);
     tab->setLayout(layout);
-    tree->setColumnCount(1);
     QHBoxLayout *hLayout = new QHBoxLayout;
     QPushButton *addButton = new QPushButton(this);
     addButton->setText("Ajouter");
@@ -554,10 +626,10 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
     {
         if (fileInfo.isDir())
         {
-            QTreeWidgetItem *item = new QTreeWidgetItem(tree) ;
-            item->setText(0,fileInfo.fileName());
-            item->setWhatsThis(0, fileInfo.filePath());
-            addChildren(item,fileInfo.filePath());
+            QListWidgetItem *item = new QListWidgetItem(tree);
+            item->setText(fileInfo.fileName());
+            item->setWhatsThis(fileInfo.filePath());
+            item->setSizeHint(QSize(item->sizeHint().width(), 30));
         }
     }
 
@@ -567,8 +639,8 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
             SLOT(showFolderMenu(const QPoint &)));
 
     connect(tree,
-            SIGNAL(itemClicked(QTreeWidgetItem*,int)),
-            SLOT(showFolderContent(QTreeWidgetItem*, int)));
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(showFolderContent(QListWidgetItem*)));
 
     connect(ui->mailList,
             SIGNAL(itemClicked(QListWidgetItem*)),
@@ -586,6 +658,11 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
 
 
 /** ++ Suppression de comptes ++ **/
+void MailBox::on_actionSupprimer_le_compte_triggered()
+{
+    delAccount();
+}
+
 void MailBox::delAccount()
 {
     QString str = "Souhaitez-vous retirer le compte "\
@@ -612,6 +689,11 @@ void MailBox::delAccountTriggered()
 void MailBox::on_sendButton_clicked()
 {
     on_actionAlert_triggered() ;
+}
+
+void MailBox::on_actionEnvoyer_triggered()
+{
+    on_actionAlert_triggered();
 }
 
 void MailBox::on_actionAlert_triggered()
@@ -666,10 +748,18 @@ void MailBox::on_actionAlert_triggered()
 
 
 /** ++ Gestion des pièces jointes ++ **/
+void MailBox::on_actionAttacher_des_pi_ces_jointes_triggered()
+{
+    openAttachFileWindow();
+}
+
 void MailBox::openAttachFileWindow()
 {
-    AttachFileWindow *box = new AttachFileWindow(this);
-    box->show();
+    if (!ui->displayer->isReadOnly())
+    {
+        AttachFileWindow *box = new AttachFileWindow(this);
+        box->show();
+    }
 }
 
 void MailBox::addFile(QString filepath)
@@ -677,12 +767,20 @@ void MailBox::addFile(QString filepath)
     QStringList parts = filepath.split("\\");
     QString file = parts.last();
     ui->deleteFile->setVisible(true);
+    ui->actionSupprimer_la_pi_ce_jointe->setVisible(true);
     ui->attachedLabel->setVisible(true);
     ui->attachedFileList->setVisible(true);
+    ui->actionSupprimer->setVisible(true);
     ui->deleteButton->setVisible(true);
     ui->mailList->setVisible(false);
+    ui->mailField->setVisible(false);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFileList);
     item->setText(file);
+}
+
+void MailBox::on_actionSupprimer_la_pi_ce_jointe_triggered()
+{
+    deleteFileAction();
 }
 
 void MailBox::deleteFileAction()
@@ -713,21 +811,32 @@ void MailBox::toggleFields(bool n)
 void MailBox::toggleButtons(bool n)
 {
     ui->isolateButton->setVisible(n);
+    ui->actionIsoler->setVisible(n);
     ui->repButton->setVisible(n);
+    ui->actionR_pondre->setVisible(n);
     ui->repAllButton->setVisible(n);
+    ui->actionR_pondre_tous->setVisible(n);
     ui->transferButton->setVisible(n);
+    ui->actionTransf_rer->setVisible(n);
     ui->deleteButton->setVisible(n);
+    ui->actionSupprimer->setVisible(n);
     ui->sendButton->setVisible(n);
+    ui->actionEnvoyer->setVisible(n);
     ui->attachButton->setVisible(n);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(n);
     ui->cancelButton->setVisible(n);
 }
 
 void MailBox::openedMailButtons()
 {
     ui->isolateButton->setVisible(true);
+    ui->actionIsoler->setVisible(true);
     ui->deleteButton->setVisible(true);
+    ui->actionSupprimer->setVisible(true);
     ui->sendButton->setVisible(true);
+    ui->actionEnvoyer->setVisible(true);
     ui->attachButton->setVisible(true);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(true);
     ui->cancelButton->setVisible(true);
 }
 
@@ -735,28 +844,29 @@ void MailBox::toggleNakedApp(bool n)
 {
     if (n)
     {
-        QList<int> sizes ;
-        sizes << (ui->mailList->width())*2
-              << (ui->mailList->height())*2 ;
-
+        this->setMaximumSize(this->width(), this->height());
+        this->setMinimumSize(this->width(), this->height());
+        ui->multiBox->setMaximumWidth(this->width()/3);
+        ui->multiBox->resize(this->width()/3, this->height());
         ui->emptyLabel->setVisible(n);
-        ui->emptyLabel->setStyleSheet("background-color:#DCE0E3;\
+        ui->emptyLabel->setStyleSheet("background-color:#FFFFFF;\
                                         color:#333536;\
                                         border:1px solid gray;\
                                         border-radius:3px");
         ui->emptyLabel->setWordWrap(true);
-        ui->emptyLabel->resize(sizes[0]/2, sizes[1]/2);
+        ui->emptyLabel->resize(this->width()/3, this->height());
 
         ui->emptyLabel_2->setVisible(n);
-        ui->emptyLabel_2->setStyleSheet("background-color:#DCE0E3;\
+        ui->emptyLabel_2->setStyleSheet("background-color:#FFFFFF;\
                                         color:#333536;\
                                         border:1px solid gray;\
                                         border-radius:3px");
-        ui->emptyLabel_2->resize(sizes[0]/2, sizes[1]/2);
+        ui->emptyLabel_2->resize(this->width()/3, this->height());
         ui->emptyLabel_2->setWordWrap(true);
 
         ui->displayer->setVisible(!n);
         ui->mailList->setVisible(!n);
+        ui->mailField->setVisible(!n);
         ui->attachedFileList->setVisible(!n);
         ui->attachedLabel->setVisible(!n);
 
@@ -772,15 +882,12 @@ sélectionné dans la liste des courriers du volet à gauche";
 
     else
     {
-        QList<int> sizes ;
-        sizes << (ui->mailList->width())*2
-              << (ui->mailList->height())*2 ;
-
+        this->setMaximumSize(999999, 999999);
+        ui->multiBox->setMaximumWidth(225);
         ui->emptyLabel->setVisible(n);
         ui->emptyLabel_2->setVisible(n);
-        ui->mailList->resize(sizes[0]/2, sizes[1]/2);
-        ui->displayer->resize(sizes[0]/2, sizes[1]/2);
         ui->mailList->setVisible(!n);
+        ui->mailField->setVisible(!n);
         ui->displayer->setVisible(!n);
     }
 }
