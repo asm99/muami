@@ -1,8 +1,8 @@
-#include "src/gui/attachfilewindow.h"
+#include <QDir>
 #include "ui_attachfilewindow.h"
+#include "src/gui/attachfilewindow.h"
 #include "src/gui/writemail.h"
 #include "src/gui/handleissues.h"
-#include <QDir>
 
 AttachFileWindow::AttachFileWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -56,6 +56,11 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     connect(ui->leaveButton,
             SIGNAL(clicked()),
             SLOT(close()));
+
+    connect(ui->leaveButton,
+            SIGNAL(clicked()),
+            this->parentWidget(),
+            SLOT(openAttachFileWindow()));
 
     connect(ui->backButton,
             SIGNAL(clicked()),
@@ -283,7 +288,6 @@ void AttachFileWindow::findFile(QString toFind)
 /** ++ Ajout de pièces jointes ++ **/
 void AttachFileWindow::addFile()
 {
-    int checked = 0 ;
     for(int x = 0; x < ui->contentList->count(); x++)
     {
         QListWidgetItem *file = ui->contentList->item(x);

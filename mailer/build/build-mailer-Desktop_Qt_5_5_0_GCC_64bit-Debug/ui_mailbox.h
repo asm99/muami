@@ -73,6 +73,7 @@ public:
     QPushButton *isolateButton;
     QPushButton *attachButton;
     QPushButton *deleteFile;
+    QPushButton *addressBook;
     QPushButton *sendButton;
     QPushButton *cancelButton;
     QPushButton *deleteButton;
@@ -287,6 +288,13 @@ public:
 
         verticalLayout_2->addWidget(deleteFile);
 
+        addressBook = new QPushButton(groupBox);
+        addressBook->setObjectName(QStringLiteral("addressBook"));
+        sizePolicy3.setHeightForWidth(addressBook->sizePolicy().hasHeightForWidth());
+        addressBook->setSizePolicy(sizePolicy3);
+
+        verticalLayout_2->addWidget(addressBook);
+
         sendButton = new QPushButton(groupBox);
         sendButton->setObjectName(QStringLiteral("sendButton"));
         sizePolicy3.setHeightForWidth(sendButton->sizePolicy().hasHeightForWidth());
@@ -313,9 +321,10 @@ public:
         horizontalLayout_4->addWidget(splitter_2);
 
         horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(0);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setSpacing(3);
+        horizontalLayout_2->setSpacing(2);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         emptyLabel = new QLabel(centralwidget);
         emptyLabel->setObjectName(QStringLiteral("emptyLabel"));
@@ -364,7 +373,7 @@ public:
 
         mailList = new QListWidget(layoutWidget);
         mailList->setObjectName(QStringLiteral("mailList"));
-        mailList->setMinimumSize(QSize(0, 0));
+        mailList->setMinimumSize(QSize(250, 0));
         mailList->setBaseSize(QSize(0, 0));
 
         verticalLayout_4->addWidget(mailList);
@@ -624,6 +633,9 @@ public:
         deleteFile->setText(QApplication::translate("MailBox", "Supprimer\n"
 "pi\303\250ce\n"
 "jointe", 0));
+        addressBook->setText(QApplication::translate("MailBox", "Ouvrir le\n"
+"carnet \n"
+"d'adresses", 0));
 #ifndef QT_NO_TOOLTIP
         sendButton->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p>Envoyer le courrier </p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
@@ -638,6 +650,7 @@ public:
         deleteButton->setText(QApplication::translate("MailBox", "Supprimer", 0));
         emptyLabel->setText(QString());
         emptyLabel_2->setText(QString());
+        mailField->setPlaceholderText(QApplication::translate("MailBox", "Recherche", 0));
 #ifndef QT_NO_TOOLTIP
         mailList->setToolTip(QApplication::translate("MailBox", "<html><head/><body><p>Ceci est la liste des courriers de votre boite de r\303\251ception</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP

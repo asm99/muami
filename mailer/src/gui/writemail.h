@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QtCore>
 #include <QFrame>
+#include <QListWidget>
 
 namespace Ui {
 class WriteMail;
@@ -25,9 +26,7 @@ public:
 private slots:
     void on_cancelButton_clicked();
 
-    void addAddressBook();
-
-    void setVisibleBookButton(bool);
+    void openAddressBook();
 
     void on_actionSend_triggered();
 
@@ -71,17 +70,21 @@ private slots:
 
     void on_closeButton_clicked();
 
-    void on_actionAttach_triggered();
+    void openAttachFileWindow();
 
     void on_attachButton_clicked();
 
     void addFile(QString);
+
+    void changeButtonText(QListWidgetItem *);
 
     void deleteAttachedFile();
 
     void on_actionAttachFiletriggered();
 
     void on_actionDeleteAddedFile_triggered();
+
+    void addToAddressField(QString);
 
 private:
     Ui::WriteMail *ui;

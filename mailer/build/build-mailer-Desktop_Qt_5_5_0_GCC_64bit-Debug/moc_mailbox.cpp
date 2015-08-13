@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MailBox_t {
-    QByteArrayData data[50];
-    char stringdata0[1073];
+    QByteArrayData data[54];
+    char stringdata0[1129];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -78,7 +78,11 @@ QT_MOC_LITERAL(45, 882, 38), // "on_actionSupprimer_le_compte_..."
 QT_MOC_LITERAL(46, 921, 32), // "on_actionR_pondre_tous_triggered"
 QT_MOC_LITERAL(47, 954, 46), // "on_actionAttacher_des_pi_ces_..."
 QT_MOC_LITERAL(48, 1001, 44), // "on_actionSupprimer_la_pi_ce_j..."
-QT_MOC_LITERAL(49, 1046, 26) // "on_actionEnvoyer_triggered"
+QT_MOC_LITERAL(49, 1046, 26), // "on_actionEnvoyer_triggered"
+QT_MOC_LITERAL(50, 1073, 17), // "addToAddressField"
+QT_MOC_LITERAL(51, 1091, 15), // "openAddressBook"
+QT_MOC_LITERAL(52, 1107, 16), // "changeButtonText"
+QT_MOC_LITERAL(53, 1124, 4) // "item"
 
     },
     "MailBox\0addChildren\0\0QTreeWidgetItem*\0"
@@ -113,7 +117,8 @@ QT_MOC_LITERAL(49, 1046, 26) // "on_actionEnvoyer_triggered"
     "on_actionR_pondre_tous_triggered\0"
     "on_actionAttacher_des_pi_ces_jointes_triggered\0"
     "on_actionSupprimer_la_pi_ce_jointe_triggered\0"
-    "on_actionEnvoyer_triggered"
+    "on_actionEnvoyer_triggered\0addToAddressField\0"
+    "openAddressBook\0changeButtonText\0item"
 };
 #undef QT_MOC_LITERAL
 
@@ -123,7 +128,7 @@ static const uint qt_meta_data_MailBox[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      45,   14, // methods
+      48,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -131,51 +136,54 @@ static const uint qt_meta_data_MailBox[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    2,  239,    2, 0x08 /* Private */,
-       4,    1,  244,    2, 0x08 /* Private */,
-       6,    1,  247,    2, 0x08 /* Private */,
-       7,    1,  250,    2, 0x08 /* Private */,
-       9,    1,  253,    2, 0x08 /* Private */,
-      10,    1,  256,    2, 0x08 /* Private */,
-      11,    0,  259,    2, 0x08 /* Private */,
-      12,    0,  260,    2, 0x08 /* Private */,
-      13,    0,  261,    2, 0x08 /* Private */,
-      14,    0,  262,    2, 0x08 /* Private */,
-      15,    0,  263,    2, 0x08 /* Private */,
-      16,    0,  264,    2, 0x08 /* Private */,
-      17,    0,  265,    2, 0x08 /* Private */,
-      18,    1,  266,    2, 0x08 /* Private */,
-      19,    0,  269,    2, 0x08 /* Private */,
-      20,    2,  270,    2, 0x08 /* Private */,
-      21,    0,  275,    2, 0x08 /* Private */,
-      22,    0,  276,    2, 0x08 /* Private */,
-      23,    0,  277,    2, 0x08 /* Private */,
-      24,    0,  278,    2, 0x08 /* Private */,
-      25,    0,  279,    2, 0x08 /* Private */,
-      26,    0,  280,    2, 0x08 /* Private */,
-      27,    0,  281,    2, 0x08 /* Private */,
-      28,    0,  282,    2, 0x08 /* Private */,
-      29,    0,  283,    2, 0x08 /* Private */,
-      30,    0,  284,    2, 0x08 /* Private */,
-      31,    0,  285,    2, 0x08 /* Private */,
-      32,    0,  286,    2, 0x08 /* Private */,
-      33,    0,  287,    2, 0x08 /* Private */,
-      34,    0,  288,    2, 0x08 /* Private */,
-      35,    1,  289,    2, 0x08 /* Private */,
-      36,    1,  292,    2, 0x08 /* Private */,
-      37,    1,  295,    2, 0x08 /* Private */,
-      38,    0,  298,    2, 0x08 /* Private */,
-      39,    0,  299,    2, 0x08 /* Private */,
-      40,    0,  300,    2, 0x08 /* Private */,
-      41,    0,  301,    2, 0x08 /* Private */,
-      42,    0,  302,    2, 0x08 /* Private */,
-      43,    0,  303,    2, 0x08 /* Private */,
-      44,    1,  304,    2, 0x08 /* Private */,
-      45,    0,  307,    2, 0x08 /* Private */,
-      46,    0,  308,    2, 0x08 /* Private */,
-      47,    0,  309,    2, 0x08 /* Private */,
-      48,    0,  310,    2, 0x08 /* Private */,
-      49,    0,  311,    2, 0x08 /* Private */,
+       1,    2,  254,    2, 0x08 /* Private */,
+       4,    1,  259,    2, 0x08 /* Private */,
+       6,    1,  262,    2, 0x08 /* Private */,
+       7,    1,  265,    2, 0x08 /* Private */,
+       9,    1,  268,    2, 0x08 /* Private */,
+      10,    1,  271,    2, 0x08 /* Private */,
+      11,    0,  274,    2, 0x08 /* Private */,
+      12,    0,  275,    2, 0x08 /* Private */,
+      13,    0,  276,    2, 0x08 /* Private */,
+      14,    0,  277,    2, 0x08 /* Private */,
+      15,    0,  278,    2, 0x08 /* Private */,
+      16,    0,  279,    2, 0x08 /* Private */,
+      17,    0,  280,    2, 0x08 /* Private */,
+      18,    1,  281,    2, 0x08 /* Private */,
+      19,    0,  284,    2, 0x08 /* Private */,
+      20,    2,  285,    2, 0x08 /* Private */,
+      21,    0,  290,    2, 0x08 /* Private */,
+      22,    0,  291,    2, 0x08 /* Private */,
+      23,    0,  292,    2, 0x08 /* Private */,
+      24,    0,  293,    2, 0x08 /* Private */,
+      25,    0,  294,    2, 0x08 /* Private */,
+      26,    0,  295,    2, 0x08 /* Private */,
+      27,    0,  296,    2, 0x08 /* Private */,
+      28,    0,  297,    2, 0x08 /* Private */,
+      29,    0,  298,    2, 0x08 /* Private */,
+      30,    0,  299,    2, 0x08 /* Private */,
+      31,    0,  300,    2, 0x08 /* Private */,
+      32,    0,  301,    2, 0x08 /* Private */,
+      33,    0,  302,    2, 0x08 /* Private */,
+      34,    0,  303,    2, 0x08 /* Private */,
+      35,    1,  304,    2, 0x08 /* Private */,
+      36,    1,  307,    2, 0x08 /* Private */,
+      37,    1,  310,    2, 0x08 /* Private */,
+      38,    0,  313,    2, 0x08 /* Private */,
+      39,    0,  314,    2, 0x08 /* Private */,
+      40,    0,  315,    2, 0x08 /* Private */,
+      41,    0,  316,    2, 0x08 /* Private */,
+      42,    0,  317,    2, 0x08 /* Private */,
+      43,    0,  318,    2, 0x08 /* Private */,
+      44,    1,  319,    2, 0x08 /* Private */,
+      45,    0,  322,    2, 0x08 /* Private */,
+      46,    0,  323,    2, 0x08 /* Private */,
+      47,    0,  324,    2, 0x08 /* Private */,
+      48,    0,  325,    2, 0x08 /* Private */,
+      49,    0,  326,    2, 0x08 /* Private */,
+      50,    1,  327,    2, 0x08 /* Private */,
+      51,    0,  330,    2, 0x08 /* Private */,
+      52,    1,  331,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3, QMetaType::QString,    2,    2,
@@ -223,6 +231,9 @@ static const uint qt_meta_data_MailBox[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 5,   53,
 
        0        // eod
 };
@@ -278,6 +289,9 @@ void MailBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 42: _t->on_actionAttacher_des_pi_ces_jointes_triggered(); break;
         case 43: _t->on_actionSupprimer_la_pi_ce_jointe_triggered(); break;
         case 44: _t->on_actionEnvoyer_triggered(); break;
+        case 45: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 46: _t->openAddressBook(); break;
+        case 47: _t->changeButtonText((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -308,13 +322,13 @@ int MailBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 45)
+        if (_id < 48)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 45;
+        _id -= 48;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 45)
+        if (_id < 48)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 45;
+        _id -= 48;
     }
     return _id;
 }

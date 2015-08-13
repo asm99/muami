@@ -113,7 +113,11 @@
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLineEdit" name="findFile"/>
+         <widget class="QLineEdit" name="findFile">
+          <property name="placeholderText">
+           <string>Recherche</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QListWidget" name="contentList">

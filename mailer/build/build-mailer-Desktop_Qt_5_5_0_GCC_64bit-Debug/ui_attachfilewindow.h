@@ -171,6 +171,7 @@ public:
         pathAccessor->setPlaceholderText(QApplication::translate("AttachFileWindow", "Chemin d'acc\303\250s", 0));
         goButton->setText(QApplication::translate("AttachFileWindow", "Parcourir", 0));
         backButton->setText(QApplication::translate("AttachFileWindow", "Revenir", 0));
+        findFile->setPlaceholderText(QApplication::translate("AttachFileWindow", "Recherche", 0));
         addButton->setText(QApplication::translate("AttachFileWindow", "Ajouter", 0));
         leaveButton->setText(QApplication::translate("AttachFileWindow", "Quitter", 0));
     } // retranslateUi

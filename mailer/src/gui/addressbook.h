@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtGui>
 #include <QtCore>
+#include <QListWidgetItem>
 
 namespace Ui {
 class AddressBook;
@@ -17,8 +18,21 @@ public:
     explicit AddressBook(QWidget *parent = 0);
     ~AddressBook();
     
-private slots:
+signals:
+    void addToMail(QString);
 
+private slots:
+    void addToBook();
+
+    void findAddress(QString);
+
+    void clickToAdd();
+
+    void forceAddAddress(QListWidgetItem *);
+
+    void deleteAddress();
+
+    void confirmDelete();
 
 private:
     Ui::AddressBook *ui;

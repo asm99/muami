@@ -120,13 +120,23 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
                 SIGNAL(clicked()),
                 SLOT(close())) ;
     }
+
+    if(type == "deleteAddress")
+    {
+        ui->okButton->setVisible(false);
+        ui->saveButton->setVisible(false);
+
+        connect(ui->ouiButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(confirmDelete()));
+    }
 }
 
 HandleIssues::~HandleIssues()
 {
     delete ui;
 }
-
 
 void HandleIssues::on_ouiButton_clicked()
 {

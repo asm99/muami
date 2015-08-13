@@ -79,20 +79,7 @@ jointes</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ouvre le carnet d'adresses&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Carnet d'adresses</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="closeAddressBook">
-          <property name="maximumSize">
-           <size>
-            <width>226</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Fermer le carnet</string>
+           <string>Ouvrir le carnet d'adresses</string>
           </property>
          </widget>
         </item>

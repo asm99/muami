@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
                         border:1px solid gray;\
                         border-radius:3px}\
 \
-        QLabel  {color: #DCE0E3}\
+        QLabel  {color: #000000}\
 \
         QCheckBox   {color: #DCE0E3}\
 \
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
                                 color: #000000}\
 \
         QListWidget::item   {border-bottom: 1px solid qlineargradient"
-                                           "(spread:pad, x1:0 y1:0, x2:0.7 y2:0,"
+                                           "(spread:pad, x1:0 y1:0, x2:0.5 y2:0,"
                                            "stop:0 rgba(95, 112, 122, 255), "
                                            "stop:1 rgba(237, 242, 245, 255));}\
 \

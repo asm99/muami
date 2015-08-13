@@ -1,6 +1,6 @@
 #include <QDesktopWidget>
-#include "src/gui/writemail.h"
 #include "ui_writemail.h"
+#include "src/gui/writemail.h"
 #include "src/gui/addressbook.h"
 #include "src/gui/handleissues.h"
 #include "src/gui/attachfilewindow.h"
@@ -24,14 +24,21 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
     ui->title->setMaxLength(80);
     ui->message->setFontPointSize(11);
     ui->message->setFontWeight(40) ;
-    ui->closeAddressBook->setVisible(false);
     ui->attachedFiles->setVisible(false);
     ui->deleteFile->setVisible(false);
     ui->attachedLabel->setVisible(false);
 
     connect(ui->addressBookButton,
             SIGNAL(clicked()),
-            SLOT(addAddressBook())) ;
+            SLOT(openAddressBook())) ;
+
+    connect(ui->deleteFile,
+            SIGNAL(clicked()),
+            SLOT(deleteAttachedFile()));
+
+    connect(ui->attachedFiles,
+            SIGNAL(itemChanged(QListWidgetItem*)),
+            SLOT(changeButtonText(QListWidgetItem*)));
 
     if (!display)
     {
@@ -59,7 +66,6 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
         ui->closeButton->setVisible(false);
         ui->deleteButton->setVisible(false);
     }
-
 }
 
 WriteMail::~WriteMail()
@@ -75,34 +81,6 @@ void WriteMail::addContent(QStringList content)
     ui->title->setText(content[3]);
     ui->message->setText(content[4]);
 }
-
-
-void WriteMail::addAddressBook()
-{
-    AddressBook *book = new AddressBook(this);
-    book->show();
-    ui->closeAddressBook->setVisible(true);
-
-    connect(ui->closeAddressBook,
-            SIGNAL(clicked()),
-            book,
-            SLOT(close()));
-
-    connect(ui->closeAddressBook,
-            SIGNAL(clicked(bool)),
-            ui->closeAddressBook,
-            SLOT(setVisible(bool)));
-
-    connect(ui->deleteButton,
-            SIGNAL(clicked()),
-            SLOT(deleteAttachedFile()));
-}
-
-void WriteMail::setVisibleBookButton(bool n)
-{
-    ui->closeAddressBook->setVisible(n);
-}
-
 
 /** ++ Gestion de l'envoi ++ **/
 void WriteMail::on_sendButton_clicked()
@@ -295,21 +273,33 @@ void WriteMail::setStuff()
 /** ~~ Gestion des actions diverses ~~ **/
 
 
-/** ++ Gestion des pièces jointes ++ **/
+/** ++ Gestion des pièces jointes et carnet d'adresses ++ **/
 void WriteMail::on_actionAttachFiletriggered()
 {
-    on_actionAttach_triggered();
+    openAttachFileWindow();
 }
 
 void WriteMail::on_attachButton_clicked()
 {
-    on_actionAttach_triggered() ;
+    openAttachFileWindow() ;
 }
 
-void WriteMail::on_actionAttach_triggered()
+void WriteMail::openAttachFileWindow()
 {
-    AttachFileWindow *box = new AttachFileWindow(this) ;
-    box->show();
+    AttachFileWindow *child = this->findChild<AttachFileWindow *>();
+    if (!child)
+    {
+        AttachFileWindow *box = new AttachFileWindow(this) ;
+        box->show();
+        ui->attachButton->setText("Fermer l'explorateur");
+        delete child ;
+    }
+    else
+    {
+        child->close();
+        ui->attachButton->setText("Attacher une pièce jointe");
+        delete child ;
+    }
 }
 
 void WriteMail::addFile(QString filepath)
@@ -320,6 +310,8 @@ void WriteMail::addFile(QString filepath)
     ui->deleteFile->setVisible(true);
     ui->attachedLabel->setVisible(true);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFiles);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Unchecked);
     item->setText(file);
 }
 
@@ -331,7 +323,21 @@ void WriteMail::addFileToMail(QString filepath)
     ui->deleteFile->setVisible(true);
     ui->attachedLabel->setVisible(true);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFiles);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Unchecked);
     item->setText(file);
+}
+
+void WriteMail::changeButtonText(QListWidgetItem *item)
+{
+    int val = 0;
+    for(int x = 0; x < ui->attachedFiles->count(); x++)
+    {
+        QListWidgetItem *itm = ui->attachedFiles->item(x);
+        if (itm->checkState() == Qt::Checked) val++;
+    }
+    if (val > 1) ui->deleteFile->setText("Supprimer les pièces jointes");
+    else ui->deleteFile->setText("Supprimer la pièce jointe");
 }
 
 void WriteMail::on_actionDeleteAddedFile_triggered()
@@ -341,9 +347,59 @@ void WriteMail::on_actionDeleteAddedFile_triggered()
 
 void WriteMail::deleteAttachedFile()
 {
-    if(ui->attachedFiles->currentItem())
+    int x = 0 ;
+    while(x < ui->attachedFiles->count())
     {
-        delete ui->attachedFiles->currentItem();
+        QListWidgetItem *file = ui->attachedFiles->item(x) ;
+        if (file->checkState() == Qt::Checked)
+        {
+            delete file ;
+            x = 0;
+        }
+        else x++ ;
+    }
+
+    ui->deleteFile->setText("Supprimer la pièce jointe");
+
+    if (ui->attachedFiles->count() == 0)
+    {
+        ui->attachedFiles->setVisible(false);
+        ui->deleteFile->setVisible(false);
+        ui->attachedLabel->setVisible(false);
     }
 }
-/** ~~ Gestion des pièces jointes ~~ **/
+
+void WriteMail::openAddressBook()
+{
+    AddressBook *child = this->findChild<AddressBook *>();
+    if (!child)
+    {
+        ui->addressBookButton->setText("Fermer le carnet d'adresses");
+        AddressBook *book = new AddressBook(this);
+        book->show();
+        delete child ;
+    }
+    else
+    {
+        child->close();
+        ui->addressBookButton->setText("Ouvrir le carnet d'adresses");
+        delete child ;
+    }
+}
+
+void WriteMail::addToAddressField(QString address)
+{
+    QString addresses = ui->to->text();
+    if (addresses == "")
+    {
+        addresses.append(address);
+        ui->to->setText(addresses);
+    }
+    else
+    {
+        addresses.append("; ");
+        addresses.append(address);
+        ui->to->setText(addresses);
+    }
+}
+/** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/

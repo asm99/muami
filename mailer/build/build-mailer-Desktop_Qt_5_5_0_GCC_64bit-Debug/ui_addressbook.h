@@ -18,10 +18,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -46,10 +43,6 @@ public:
     QLineEdit *addressField;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *addToListButton;
-    QPushButton *findButton;
-    QMenuBar *menubar;
-    QMenu *menuFichier;
-    QStatusBar *statusbar;
 
     void setupUi(QMainWindow *AddressBook)
     {
@@ -109,11 +102,6 @@ public:
 
         horizontalLayout_2->addWidget(addToListButton);
 
-        findButton = new QPushButton(centralwidget);
-        findButton->setObjectName(QStringLiteral("findButton"));
-
-        horizontalLayout_2->addWidget(findButton);
-
 
         verticalLayout->addLayout(horizontalLayout_2);
 
@@ -124,21 +112,6 @@ public:
         horizontalLayout_3->addLayout(verticalLayout_2);
 
         AddressBook->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(AddressBook);
-        menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 500, 25));
-        menuFichier = new QMenu(menubar);
-        menuFichier->setObjectName(QStringLiteral("menuFichier"));
-        AddressBook->setMenuBar(menubar);
-        statusbar = new QStatusBar(AddressBook);
-        statusbar->setObjectName(QStringLiteral("statusbar"));
-        AddressBook->setStatusBar(statusbar);
-
-        menubar->addAction(menuFichier->menuAction());
-        menuFichier->addAction(actionAjouter_une_adresse);
-        menuFichier->addAction(actionSupprimer_l_adresse);
-        menuFichier->addSeparator();
-        menuFichier->addAction(actionQuitter);
 
         retranslateUi(AddressBook);
 
@@ -156,8 +129,6 @@ public:
         deleteButton->setText(QApplication::translate("AddressBook", "Supprimer ", 0));
         closeButton->setText(QApplication::translate("AddressBook", "Fermer", 0));
         addToListButton->setText(QApplication::translate("AddressBook", "Ajouter au carnet", 0));
-        findButton->setText(QApplication::translate("AddressBook", "Chercher", 0));
-        menuFichier->setTitle(QApplication::translate("AddressBook", "Fichier", 0));
     } // retranslateUi
 
 };

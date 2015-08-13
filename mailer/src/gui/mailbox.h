@@ -115,6 +115,12 @@ private slots:
 
     void on_actionEnvoyer_triggered();
 
+    void addToAddressField(QString);
+
+    void openAddressBook();
+
+    void changeButtonText(QListWidgetItem *item);
+
 private:
     Ui::MailBox *ui;
 

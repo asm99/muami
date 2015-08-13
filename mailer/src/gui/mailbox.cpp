@@ -7,6 +7,7 @@
 #include "src/gui/addaccount.h"
 #include "src/gui/handleissues.h"
 #include "src/gui/attachfilewindow.h"
+#include "src/gui/addressbook.h"
 
 MailBox::MailBox(QWidget *parent) :
     QMainWindow(parent),
@@ -30,6 +31,7 @@ MailBox::MailBox(QWidget *parent) :
     ui->toolBar->setVisible(false);
     ui->deleteFile->setVisible(false);
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
+
     ui->attachedLabel->setVisible(false);
     ui->attachedFileList->setVisible(false);
 
@@ -97,6 +99,14 @@ MailBox::MailBox(QWidget *parent) :
     connect(ui->mailField,
             SIGNAL(textChanged(QString)),
             SLOT(findMail(QString)));
+
+    connect(ui->addressBook,
+            SIGNAL(clicked()),
+            SLOT(openAddressBook()));
+
+    connect(ui->attachedFileList,
+            SIGNAL(itemChanged(QListWidgetItem*)),
+            SLOT(changeButtonText(QListWidgetItem*)));
 }
 
 
@@ -228,6 +238,7 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->actionEnvoyer->setVisible(false);
     ui->attachButton->setVisible(false);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
+    ui->addressBook->setVisible(false);
     ui->cancelButton->setVisible(false);
 }
 /** ~~ Gestion des dossiers + leur contenu ~~ **/
@@ -290,7 +301,7 @@ void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
         }
         else x++ ;
     }
-    showMailContent(ui->mailList->currentItem());
+    ui->mailField->clear();
 }
 /** ~~ Supprimer le courrier ~~ **/
 
@@ -747,7 +758,7 @@ void MailBox::on_actionAlert_triggered()
 /** ~~ Envoi ~~ **/
 
 
-/** ++ Gestion des pièces jointes ++ **/
+/** ++ Gestion des pièces jointes et carnet d'adresses ++ **/
 void MailBox::on_actionAttacher_des_pi_ces_jointes_triggered()
 {
     openAttachFileWindow();
@@ -755,10 +766,19 @@ void MailBox::on_actionAttacher_des_pi_ces_jointes_triggered()
 
 void MailBox::openAttachFileWindow()
 {
-    if (!ui->displayer->isReadOnly())
+    AttachFileWindow *child = this->findChild<AttachFileWindow *>();
+    if (!child)
     {
-        AttachFileWindow *box = new AttachFileWindow(this);
+        AttachFileWindow *box = new AttachFileWindow(this) ;
         box->show();
+        ui->attachButton->setText("Fermer\nl'explorateur");
+        delete child ;
+    }
+    else
+    {
+        child->close();
+        ui->attachButton->setText("Attacher\npièce\njointe");
+        delete child ;
     }
 }
 
@@ -775,6 +795,8 @@ void MailBox::addFile(QString filepath)
     ui->mailList->setVisible(false);
     ui->mailField->setVisible(false);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFileList);
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Unchecked);
     item->setText(file);
 }
 
@@ -785,12 +807,74 @@ void MailBox::on_actionSupprimer_la_pi_ce_jointe_triggered()
 
 void MailBox::deleteFileAction()
 {
-    if (ui->attachedFileList->currentItem())
+    int x = 0 ;
+    while(x < ui->attachedFileList->count())
     {
-        delete ui->attachedFileList->currentItem();
+        QListWidgetItem *file = ui->attachedFileList->item(x) ;
+        if (file->checkState() == Qt::Checked)
+        {
+            delete file ;
+            x = 0;
+        }
+        else x++ ;
+    }
+
+    ui->deleteFile->setText("Supprimer\npièce\njointe");
+
+    if (ui->attachedFileList->count() == 0)
+    {
+        ui->attachedFileList->setVisible(false);
+        ui->deleteFile->setVisible(false);
+        ui->attachedLabel->setVisible(false);
     }
 }
-/** ~~ Gestion des pièces jointes ~~ **/
+
+void MailBox::changeButtonText(QListWidgetItem *item)
+{
+    int val = 0;
+    for(int x = 0; x < ui->attachedFileList->count(); x++)
+    {
+        QListWidgetItem *itm = ui->attachedFileList->item(x);
+        if (itm->checkState() == Qt::Checked) val++;
+    }
+    if (val > 1) ui->deleteFile->setText("Supprimer\npièces\njointes");
+    else ui->deleteFile->setText("Supprimer\npièce\njointe");
+}
+
+void MailBox::openAddressBook()
+{
+    AddressBook *child = this->findChild<AddressBook *>();
+    if (!child)
+    {
+        ui->addressBook->setText("Fermer le\ncarnet\nd'adresses");
+        AddressBook *book = new AddressBook(this);
+        book->show();
+        delete child ;
+    }
+    else
+    {
+        child->close();
+        ui->addressBook->setText("Ouvrir le\ncarnet\nd'adresses");
+        delete child ;
+    }
+}
+
+void MailBox::addToAddressField(QString address)
+{
+    QString addresses = ui->to->text();
+    if (addresses == "")
+    {
+        addresses.append(address);
+        ui->to->setText(addresses);
+    }
+    else
+    {
+        addresses.append("; ");
+        addresses.append(address);
+        ui->to->setText(addresses);
+    }
+}
+/** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/
 
 
 /** ++ Gestion de l'affichage ++ **/
@@ -824,6 +908,7 @@ void MailBox::toggleButtons(bool n)
     ui->actionEnvoyer->setVisible(n);
     ui->attachButton->setVisible(n);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(n);
+    ui->addressBook->setVisible(n);
     ui->cancelButton->setVisible(n);
 }
 
@@ -837,6 +922,7 @@ void MailBox::openedMailButtons()
     ui->actionEnvoyer->setVisible(true);
     ui->attachButton->setVisible(true);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(true);
+    ui->addressBook->setVisible(true);
     ui->cancelButton->setVisible(true);
 }
 
@@ -844,8 +930,6 @@ void MailBox::toggleNakedApp(bool n)
 {
     if (n)
     {
-        this->setMaximumSize(this->width(), this->height());
-        this->setMinimumSize(this->width(), this->height());
         ui->multiBox->setMaximumWidth(this->width()/3);
         ui->multiBox->resize(this->width()/3, this->height());
         ui->emptyLabel->setVisible(n);
@@ -882,7 +966,6 @@ sélectionné dans la liste des courriers du volet à gauche";
 
     else
     {
-        this->setMaximumSize(999999, 999999);
         ui->multiBox->setMaximumWidth(225);
         ui->emptyLabel->setVisible(n);
         ui->emptyLabel_2->setVisible(n);

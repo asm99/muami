@@ -59,7 +59,6 @@ public:
     QListWidget *attachedFiles;
     QVBoxLayout *verticalLayout_2;
     QPushButton *addressBookButton;
-    QPushButton *closeAddressBook;
     QPushButton *attachButton;
     QPushButton *deleteFile;
     QFormLayout *formLayout;
@@ -173,12 +172,6 @@ public:
         addressBookButton->setMaximumSize(QSize(226, 16777215));
 
         verticalLayout_2->addWidget(addressBookButton);
-
-        closeAddressBook = new QPushButton(centralwidget);
-        closeAddressBook->setObjectName(QStringLiteral("closeAddressBook"));
-        closeAddressBook->setMaximumSize(QSize(226, 16777215));
-
-        verticalLayout_2->addWidget(closeAddressBook);
 
         attachButton = new QPushButton(centralwidget);
         attachButton->setObjectName(QStringLiteral("attachButton"));
@@ -450,8 +443,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         addressBookButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Ouvre le carnet d'adresses</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
-        addressBookButton->setText(QApplication::translate("WriteMail", "Carnet d'adresses", 0));
-        closeAddressBook->setText(QApplication::translate("WriteMail", "Fermer le carnet", 0));
+        addressBookButton->setText(QApplication::translate("WriteMail", "Ouvrir le carnet d'adresses", 0));
 #ifndef QT_NO_TOOLTIP
         attachButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Attacher un fichier au courrier \303\240 exp\303\251dier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
