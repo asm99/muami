@@ -39,4 +39,4 @@ FORMS    += src/gui/gen/mainwindow.ui \
     src/gui/gen/login.ui
 
 RESOURCES += \
-    src/gui/pictures.qrc
+    src/gui/icons.qrc

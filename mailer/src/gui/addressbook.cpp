@@ -18,6 +18,7 @@ AddressBook::AddressBook(QWidget *parent) :
                     )
                 ) ;
     this->setGeometry(800,0,400,600);
+    ui->menuBar->hide();
 
     connect(ui->addToListButton,
             SIGNAL(clicked()),

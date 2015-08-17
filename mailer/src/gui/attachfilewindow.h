@@ -41,6 +41,8 @@ private slots:
 
     void showDetails(QListWidgetItem *item);
 
+    void infoButton();
+
     void addFile();
 
     void on_contentList_itemDoubleClicked(QListWidgetItem *item);

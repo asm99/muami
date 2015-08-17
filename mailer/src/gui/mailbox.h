@@ -15,9 +15,15 @@ class MailBox : public QMainWindow
 {
     Q_OBJECT
     
+
+
 public:
     explicit MailBox(QWidget *parent = 0);
+
     ~MailBox();
+
+    QList<QStringList> accountList;
+
 /*
 protected :
     void mousePressEvent( QMouseEvent *);
@@ -55,6 +61,12 @@ private slots:
 
     void on_addAccount_clicked();
 
+    void previousAccount();
+
+    void nextAccount();
+
+    void showAccount(QString, QString);
+
     void addNewAccount(QString, QString) ;
 
     void delAccount();
@@ -91,6 +103,14 @@ private slots:
 
     void toggleNakedApp(bool);
 
+    void toggleAccountPanel(bool);
+
+    void inboxButtonsStyle();
+
+    void groupBoxButtonStyle();
+
+    void listStyle();
+
     void openedMailButtons() ;
 
     void on_sendButton_clicked();
@@ -118,8 +138,6 @@ private slots:
     void addToAddressField(QString);
 
     void openAddressBook();
-
-    void changeButtonText(QListWidgetItem *item);
 
 private:
     Ui::MailBox *ui;

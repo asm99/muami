@@ -12,6 +12,7 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     ui->folderList->setStyleSheet("QListWidget::item{border-bottom:0px}");
     ui->contentList->setStyleSheet("QListWidget::item{border-bottom:0px}");
     ui->fileDetails->setReadOnly(true);
+    ui->fileDetails->setVisible(false);
 
     displayHelper();
 
@@ -69,6 +70,10 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     connect(ui->goButton,
             SIGNAL(clicked()),
             SLOT(onGoButtonClicked()));
+
+    connect(ui->infoButton,
+            SIGNAL(clicked()),
+            SLOT(infoButton()));
 }
 
 AttachFileWindow::~AttachFileWindow()
@@ -281,6 +286,13 @@ void AttachFileWindow::findFile(QString toFind)
             item->setHidden(false);
         }
     }
+}
+
+void AttachFileWindow::infoButton()
+{
+    if(ui->fileDetails->isVisible())
+        ui->fileDetails->setVisible(false);
+    else ui->fileDetails->setVisible(true);
 }
 /** ~~ Volet des fichiers + description ~~ **/
 

@@ -18,6 +18,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -32,17 +33,17 @@ public:
     QAction *actionQuitter;
     QAction *actionFermet_le_carnet;
     QWidget *centralwidget;
-    QHBoxLayout *horizontalLayout_3;
-    QVBoxLayout *verticalLayout_2;
-    QHBoxLayout *horizontalLayout;
-    QPushButton *addToMailButton;
-    QPushButton *deleteButton;
-    QPushButton *closeButton;
-    QListWidget *addressList;
-    QVBoxLayout *verticalLayout;
-    QLineEdit *addressField;
     QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout_2;
+    QListWidget *addressList;
+    QLineEdit *addressField;
+    QVBoxLayout *verticalLayout;
+    QPushButton *closeButton;
     QPushButton *addToListButton;
+    QPushButton *deleteButton;
+    QPushButton *addToMailButton;
+    QMenuBar *menuBar;
 
     void setupUi(QMainWindow *AddressBook)
     {
@@ -59,59 +60,95 @@ public:
         actionFermet_le_carnet->setObjectName(QStringLiteral("actionFermet_le_carnet"));
         centralwidget = new QWidget(AddressBook);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        horizontalLayout_3 = new QHBoxLayout(centralwidget);
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        horizontalLayout_2 = new QHBoxLayout(centralwidget);
+        horizontalLayout_2->setSpacing(0);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
         horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        addToMailButton = new QPushButton(centralwidget);
-        addToMailButton->setObjectName(QStringLiteral("addToMailButton"));
-
-        horizontalLayout->addWidget(addToMailButton);
-
-        deleteButton = new QPushButton(centralwidget);
-        deleteButton->setObjectName(QStringLiteral("deleteButton"));
-
-        horizontalLayout->addWidget(deleteButton);
-
-        closeButton = new QPushButton(centralwidget);
-        closeButton->setObjectName(QStringLiteral("closeButton"));
-
-        horizontalLayout->addWidget(closeButton);
-
-
-        verticalLayout_2->addLayout(horizontalLayout);
-
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(0);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         addressList = new QListWidget(centralwidget);
         addressList->setObjectName(QStringLiteral("addressList"));
+        addressList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
         verticalLayout_2->addWidget(addressList);
 
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         addressField = new QLineEdit(centralwidget);
         addressField->setObjectName(QStringLiteral("addressField"));
 
-        verticalLayout->addWidget(addressField);
+        verticalLayout_2->addWidget(addressField);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+
+        horizontalLayout->addLayout(verticalLayout_2);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        closeButton = new QPushButton(centralwidget);
+        closeButton->setObjectName(QStringLiteral("closeButton"));
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(closeButton->sizePolicy().hasHeightForWidth());
+        closeButton->setSizePolicy(sizePolicy);
+        closeButton->setMaximumSize(QSize(50, 16777215));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icon/res/browser-close-2.png"), QSize(), QIcon::Normal, QIcon::Off);
+        closeButton->setIcon(icon);
+        closeButton->setIconSize(QSize(35, 35));
+
+        verticalLayout->addWidget(closeButton);
+
         addToListButton = new QPushButton(centralwidget);
         addToListButton->setObjectName(QStringLiteral("addToListButton"));
+        sizePolicy.setHeightForWidth(addToListButton->sizePolicy().hasHeightForWidth());
+        addToListButton->setSizePolicy(sizePolicy);
+        addToListButton->setMaximumSize(QSize(50, 16777215));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icon/res/user-4-add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addToListButton->setIcon(icon1);
+        addToListButton->setIconSize(QSize(35, 35));
 
-        horizontalLayout_2->addWidget(addToListButton);
+        verticalLayout->addWidget(addToListButton);
+
+        deleteButton = new QPushButton(centralwidget);
+        deleteButton->setObjectName(QStringLiteral("deleteButton"));
+        sizePolicy.setHeightForWidth(deleteButton->sizePolicy().hasHeightForWidth());
+        deleteButton->setSizePolicy(sizePolicy);
+        deleteButton->setMaximumSize(QSize(50, 16777215));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icon/res/user-4-remove.png"), QSize(), QIcon::Normal, QIcon::Off);
+        deleteButton->setIcon(icon2);
+        deleteButton->setIconSize(QSize(35, 35));
+
+        verticalLayout->addWidget(deleteButton);
+
+        addToMailButton = new QPushButton(centralwidget);
+        addToMailButton->setObjectName(QStringLiteral("addToMailButton"));
+        sizePolicy.setHeightForWidth(addToMailButton->sizePolicy().hasHeightForWidth());
+        addToMailButton->setSizePolicy(sizePolicy);
+        addToMailButton->setMaximumSize(QSize(50, 16777215));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/icon/res/mail-incoming.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addToMailButton->setIcon(icon3);
+        addToMailButton->setIconSize(QSize(35, 35));
+
+        verticalLayout->addWidget(addToMailButton);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        horizontalLayout->addLayout(verticalLayout);
 
 
-        verticalLayout_2->addLayout(verticalLayout);
-
-
-        horizontalLayout_3->addLayout(verticalLayout_2);
+        horizontalLayout_2->addLayout(horizontalLayout);
 
         AddressBook->setCentralWidget(centralwidget);
+        menuBar = new QMenuBar(AddressBook);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 500, 25));
+        AddressBook->setMenuBar(menuBar);
 
         retranslateUi(AddressBook);
 
@@ -125,10 +162,11 @@ public:
         actionSupprimer_l_adresse->setText(QApplication::translate("AddressBook", "Supprimer l'adresse", 0));
         actionQuitter->setText(QApplication::translate("AddressBook", "Quitter", 0));
         actionFermet_le_carnet->setText(QApplication::translate("AddressBook", "Fermer", 0));
-        addToMailButton->setText(QApplication::translate("AddressBook", "Ajouter au courrier", 0));
-        deleteButton->setText(QApplication::translate("AddressBook", "Supprimer ", 0));
-        closeButton->setText(QApplication::translate("AddressBook", "Fermer", 0));
-        addToListButton->setText(QApplication::translate("AddressBook", "Ajouter au carnet", 0));
+        addressField->setPlaceholderText(QApplication::translate("AddressBook", "Recherche", 0));
+        closeButton->setText(QString());
+        addToListButton->setText(QString());
+        deleteButton->setText(QString());
+        addToMailButton->setText(QString());
     } // retranslateUi
 
 };
