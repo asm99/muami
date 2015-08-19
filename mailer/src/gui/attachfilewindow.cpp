@@ -9,12 +9,13 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     ui(new Ui::AttachFileWindow)
 {
     ui->setupUi(this);
-    ui->folderList->setStyleSheet("QListWidget::item{border-bottom:0px}");
-    ui->contentList->setStyleSheet("QListWidget::item{border-bottom:0px}");
+
     ui->fileDetails->setReadOnly(true);
     ui->fileDetails->setVisible(false);
 
     displayHelper();
+
+    objStyle();
 
     QString way = "/home";
     QDir *path = new QDir("/home");             // Compte principal
@@ -71,8 +72,16 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
             SIGNAL(clicked()),
             SLOT(onGoButtonClicked()));
 
-    connect(ui->infoButton,
-            SIGNAL(clicked()),
+    connect(ui->infoLabel,
+            SIGNAL(mouseHover()),
+            SLOT(showInfo()));
+
+    connect(ui->infoLabel,
+            SIGNAL(mouseNotHover()),
+            SLOT(hideInfo()));
+
+    connect(ui->infoLabel,
+            SIGNAL(mouseClick()),
             SLOT(infoButton()));
 }
 
@@ -294,6 +303,34 @@ void AttachFileWindow::infoButton()
         ui->fileDetails->setVisible(false);
     else ui->fileDetails->setVisible(true);
 }
+
+void AttachFileWindow::showInfo()
+{
+    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
+    foreach(QPushButton *button, buttons)
+    {
+        button->setIcon(QIcon());
+    }
+
+    ui->addButton->setText("Ajouter\nun fichier");
+    ui->backButton->setText("Remonter\nl'arborescence");
+    ui->goButton->setText("Descendre\nl'arborescence");
+    ui->leaveButton->setText("Fermer");
+}
+
+void AttachFileWindow::hideInfo()
+{
+    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
+    foreach(QPushButton *button, buttons)
+    {
+        button->setText("");
+    }
+    ui->addButton->setIcon(QIcon(":/icon/res/document-add.png"));
+    ui->backButton->setIcon(QIcon(":/icon/res/out.png"));
+    ui->goButton->setIcon(QIcon(":/icon/res/in.png"));
+    ui->leaveButton->setIcon(QIcon(":/icon/res/browser-close-2.png"));
+}
+
 /** ~~ Volet des fichiers + description ~~ **/
 
 
@@ -322,3 +359,29 @@ void AttachFileWindow::on_contentList_itemDoubleClicked(QListWidgetItem *itm)
     emit sendFileToMail(filepath) ;
 }
 /** ~~ Ajout de pièces jointes ~~ **/
+
+void AttachFileWindow::objStyle()
+{
+    QString style = "background-color: #FFFFFF;\
+                        border:0px;";
+    ui->findFile->setStyleSheet(style);
+    ui->pathAccessor->setStyleSheet(style);
+    ui->infoLabel->setStyleSheet("border:0px");
+
+    ui->fileDetails->setStyleSheet("background-color:#252b2b;"
+                                   "color:#9fabaa;"
+                                   "border:0px;\
+                                    border-left:1px solid qlineargradient"
+                                      "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                                      "stop:0 rgba(139, 153, 153, 255), "
+                                      "stop:1 rgba(139, 153, 153, 255));");
+
+    ui->contentList->setStyleSheet("background-color: #FFFFFF;"
+                                   "color:#252b2b;\
+                                    font-weight:600;\
+                                    border:0px;");
+
+    ui->folderList->setStyleSheet("background-color:#252b2b;"
+                                  "color:#9fabaa;"
+                                  "border:0px;");
+}

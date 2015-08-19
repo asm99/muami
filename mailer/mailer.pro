@@ -18,7 +18,8 @@ SOURCES += src/gui/main.cpp\
     src/gui/addaccount.cpp \
     src/gui/handleissues.cpp \
     src/gui/attachfilewindow.cpp \
-    src/gui/login.cpp
+    src/gui/login.cpp \
+    my_qlabel.cpp
 
 HEADERS  += src/gui/mainwindow.h \
     src/gui/mailbox.h \
@@ -27,7 +28,8 @@ HEADERS  += src/gui/mainwindow.h \
     src/gui/addaccount.h \
     src/gui/handleissues.h \
     src/gui/attachfilewindow.h \
-    src/gui/login.h
+    src/gui/login.h \
+    my_qlabel.h
 	
 FORMS    += src/gui/gen/mainwindow.ui \
     src/gui/gen/mailbox.ui \

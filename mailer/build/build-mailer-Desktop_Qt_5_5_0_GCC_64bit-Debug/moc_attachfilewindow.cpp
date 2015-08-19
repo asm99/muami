@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_AttachFileWindow_t {
-    QByteArrayData data[18];
-    char stringdata0[276];
+    QByteArrayData data[21];
+    char stringdata0[303];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,8 +45,11 @@ QT_MOC_LITERAL(12, 194, 3), // "str"
 QT_MOC_LITERAL(13, 198, 13), // "displayHelper"
 QT_MOC_LITERAL(14, 212, 11), // "showDetails"
 QT_MOC_LITERAL(15, 224, 10), // "infoButton"
-QT_MOC_LITERAL(16, 235, 7), // "addFile"
-QT_MOC_LITERAL(17, 243, 32) // "on_contentList_itemDoubleClicked"
+QT_MOC_LITERAL(16, 235, 8), // "showInfo"
+QT_MOC_LITERAL(17, 244, 8), // "hideInfo"
+QT_MOC_LITERAL(18, 253, 8), // "objStyle"
+QT_MOC_LITERAL(19, 262, 7), // "addFile"
+QT_MOC_LITERAL(20, 270, 32) // "on_contentList_itemDoubleClicked"
 
     },
     "AttachFileWindow\0sendFileToMail\0\0"
@@ -55,7 +58,8 @@ QT_MOC_LITERAL(17, 243, 32) // "on_contentList_itemDoubleClicked"
     "onBackButtonClicked\0onGoButtonClicked\0"
     "accessToFolder\0findFile\0displayPathContent\0"
     "str\0displayHelper\0showDetails\0infoButton\0"
-    "addFile\0on_contentList_itemDoubleClicked"
+    "showInfo\0hideInfo\0objStyle\0addFile\0"
+    "on_contentList_itemDoubleClicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -65,7 +69,7 @@ static const uint qt_meta_data_AttachFileWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -73,21 +77,24 @@ static const uint qt_meta_data_AttachFileWindow[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   79,    2, 0x06 /* Public */,
+       1,    1,   94,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   82,    2, 0x08 /* Private */,
-       6,    1,   85,    2, 0x08 /* Private */,
-       7,    0,   88,    2, 0x08 /* Private */,
-       8,    0,   89,    2, 0x08 /* Private */,
-       9,    0,   90,    2, 0x08 /* Private */,
-      10,    1,   91,    2, 0x08 /* Private */,
-      11,    1,   94,    2, 0x08 /* Private */,
-      13,    0,   97,    2, 0x08 /* Private */,
-      14,    1,   98,    2, 0x08 /* Private */,
-      15,    0,  101,    2, 0x08 /* Private */,
-      16,    0,  102,    2, 0x08 /* Private */,
-      17,    1,  103,    2, 0x08 /* Private */,
+       3,    1,   97,    2, 0x08 /* Private */,
+       6,    1,  100,    2, 0x08 /* Private */,
+       7,    0,  103,    2, 0x08 /* Private */,
+       8,    0,  104,    2, 0x08 /* Private */,
+       9,    0,  105,    2, 0x08 /* Private */,
+      10,    1,  106,    2, 0x08 /* Private */,
+      11,    1,  109,    2, 0x08 /* Private */,
+      13,    0,  112,    2, 0x08 /* Private */,
+      14,    1,  113,    2, 0x08 /* Private */,
+      15,    0,  116,    2, 0x08 /* Private */,
+      16,    0,  117,    2, 0x08 /* Private */,
+      17,    0,  118,    2, 0x08 /* Private */,
+      18,    0,  119,    2, 0x08 /* Private */,
+      19,    0,  120,    2, 0x08 /* Private */,
+      20,    1,  121,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    2,
@@ -102,6 +109,9 @@ static const uint qt_meta_data_AttachFileWindow[] = {
     QMetaType::Void, QMetaType::QString,   12,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4,    5,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4,    5,
@@ -126,8 +136,11 @@ void AttachFileWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 8: _t->displayHelper(); break;
         case 9: _t->showDetails((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         case 10: _t->infoButton(); break;
-        case 11: _t->addFile(); break;
-        case 12: _t->on_contentList_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 11: _t->showInfo(); break;
+        case 12: _t->hideInfo(); break;
+        case 13: _t->objStyle(); break;
+        case 14: _t->addFile(); break;
+        case 15: _t->on_contentList_itemDoubleClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -167,13 +180,13 @@ int AttachFileWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 16;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 16)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 16;
     }
     return _id;
 }

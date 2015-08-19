@@ -9,14 +9,19 @@ AddAccount::AddAccount(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-    ui->accountName->setStyleSheet("background-color: #FFFFFF; "
-                                   "border:1px solid gray; "
-                                   "border-radius:3px");
-
-    ui->tabName->setStyleSheet("background-color: #FFFFFF; "
-                               "border:1px solid gray; "
-                               "border-radius:3px");
+    this->setStyleSheet("QLineEdit  "
+                            "{   background-color: #FFFFFF;\
+                                border:0px;\
+                                border-bottom:1px solid qlineargradient"
+                                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                     "stop:0 rgba(38, 124, 153, 255), "
+                                     "stop:1 rgba(38, 124, 153, 255));}"
+                        "QPushButton"
+                            "{  border:0px;\
+                                border-right:1px solid qlineargradient"
+                                    "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                    "stop:0 rgba(38, 124, 153, 255), "
+                                    "stop:1 rgba(38, 124, 153, 255));}");
 
     connect(ui->cancelButton,
             SIGNAL(clicked(bool)),

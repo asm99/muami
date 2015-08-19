@@ -26,7 +26,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_7">
+   <layout class="QHBoxLayout" name="horizontalLayout_9">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -43,7 +43,7 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -66,6 +66,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string/>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -84,6 +87,9 @@
             <width>200</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string/>
           </property>
          </widget>
         </item>
@@ -137,6 +143,9 @@
                <height>50</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -173,7 +182,7 @@
               </size>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cliquez pour ajouter un compte&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string/>
              </property>
              <property name="text">
               <string/>
@@ -210,6 +219,9 @@
                <height>50</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="text">
               <string/>
              </property>
@@ -244,6 +256,9 @@
                <width>16777215</width>
                <height>50</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string/>
              </property>
              <property name="text">
               <string/>
@@ -320,7 +335,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Affiche/cache les boites de courriers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -346,7 +361,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Créer un nouveau courrier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -372,7 +387,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Répondre à l'expéditeur du courrier en surbrillance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -398,7 +413,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Répondre à l'expéditeur du courrier en surbrillance ainsi que tous les destinataires de ce courrier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -424,7 +439,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Envoyer le courrier en surbrillance à quelqu'un d'autre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -450,7 +465,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Isoler le courrier en surbrillance dans une fenêtre séparée&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -476,7 +491,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Envoyer le courrier &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -502,7 +517,7 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Annuler les modifications&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
             </property>
             <property name="text">
              <string/>
@@ -528,7 +543,10 @@
              </sizepolicy>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimer définitivement le courrier en surbrillance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string/>
+            </property>
+            <property name="toolTipDuration">
+             <number>-1</number>
             </property>
             <property name="text">
              <string/>
@@ -550,7 +568,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -588,33 +606,71 @@
          </layout>
         </item>
         <item>
-         <widget class="QSplitter" name="splitter">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="handleWidth">
-           <number>2</number>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <property name="spacing">
              <number>0</number>
             </property>
             <item>
-             <widget class="QLineEdit" name="mailField">
-              <property name="enabled">
-               <bool>true</bool>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <property name="spacing">
+               <number>0</number>
               </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="placeholderText">
-               <string>Recherche</string>
-              </property>
-             </widget>
+              <item>
+               <widget class="QLineEdit" name="mailField">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>1</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string/>
+                </property>
+                <property name="placeholderText">
+                 <string>Recherche</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="my_qlabel" name="infoLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>27</width>
+                  <height>27</height>
+                 </size>
+                </property>
+                <property name="mouseTracking">
+                 <bool>true</bool>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="../icons.qrc">:/icon/res/info-outline.png</pixmap>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QListWidget" name="mailList">
@@ -631,7 +687,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est la liste des courriers de votre boite de réception&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string/>
               </property>
               <property name="verticalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -642,8 +698,8 @@
              </widget>
             </item>
            </layout>
-          </widget>
-          <widget class="QWidget" name="">
+          </item>
+          <item>
            <layout class="QVBoxLayout" name="verticalLayout_5">
             <property name="spacing">
              <number>0</number>
@@ -654,7 +710,7 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QWidget" name="" native="true">
+               <widget class="QWidget" name="widget" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -697,6 +753,9 @@
                      <height>27</height>
                     </size>
                    </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
                    <property name="placeholderText">
                     <string>Destinataire</string>
                    </property>
@@ -715,6 +774,9 @@
                      <width>16777215</width>
                      <height>27</height>
                     </size>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
                    </property>
                    <property name="text">
                     <string/>
@@ -737,6 +799,9 @@
                      <width>16777215</width>
                      <height>27</height>
                     </size>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
                    </property>
                    <property name="placeholderText">
                     <string>Destinataire caché</string>
@@ -762,6 +827,9 @@
                      <kerning>true</kerning>
                     </font>
                    </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
                    <property name="placeholderText">
                     <string>Objet</string>
                    </property>
@@ -771,7 +839,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="" native="true">
+               <widget class="QWidget" name="widget" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -814,6 +882,9 @@
                      <height>50</height>
                     </size>
                    </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -842,6 +913,9 @@
                      <width>50</width>
                      <height>50</height>
                     </size>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
                    </property>
                    <property name="text">
                     <string/>
@@ -888,6 +962,9 @@
                   <height>82</height>
                  </size>
                 </property>
+                <property name="toolTip">
+                 <string/>
+                </property>
                </widget>
               </item>
               <item>
@@ -903,6 +980,9 @@
                   <width>50</width>
                   <height>50</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string/>
                 </property>
                 <property name="text">
                  <string/>
@@ -930,7 +1010,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci est le contenu du courrier en surbrillance&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string/>
               </property>
               <property name="verticalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -941,8 +1021,8 @@
              </widget>
             </item>
            </layout>
-          </widget>
-         </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -950,10 +1030,6 @@
     </item>
    </layout>
    <zorder></zorder>
-   <zorder>addFileButton_2</zorder>
-   <zorder>addressBook_2</zorder>
-   <zorder></zorder>
-   <zorder>deleteFile</zorder>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -1192,6 +1268,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>my_qlabel</class>
+   <extends>QLabel</extends>
+   <header location="global">my_qlabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../icons.qrc"/>
  </resources>

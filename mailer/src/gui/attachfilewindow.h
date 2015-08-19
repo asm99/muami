@@ -43,6 +43,12 @@ private slots:
 
     void infoButton();
 
+    void showInfo();
+
+    void hideInfo();
+
+    void objStyle();
+
     void addFile();
 
     void on_contentList_itemDoubleClicked(QListWidgetItem *item);

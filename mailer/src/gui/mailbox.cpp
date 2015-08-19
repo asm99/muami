@@ -1,6 +1,7 @@
 #include <QDir>
 #include <QDesktopWidget>
-#include <QPixmap>
+#include <QWidget>
+#include <QMouseEvent>
 #include "ui_mailbox.h"
 #include "src/gui/mailbox.h"
 #include "src/gui/writemail.h"
@@ -8,6 +9,7 @@
 #include "src/gui/handleissues.h"
 #include "src/gui/attachfilewindow.h"
 #include "src/gui/addressbook.h"
+#include "my_qlabel.h"
 
 MailBox::MailBox(QWidget *parent) :
     QMainWindow(parent),
@@ -32,6 +34,9 @@ MailBox::MailBox(QWidget *parent) :
 
     ui->displayer->setReadOnly(true);
     ui->displayer->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+
+    ui->infoLabel->setAttribute(Qt::WA_Hover);
+    ui->infoLabel->setMouseTracking(true);
 
     toggleFields(false) ;
     toggleButtons(false) ;
@@ -92,6 +97,18 @@ MailBox::MailBox(QWidget *parent) :
     connect(ui->addressBook_2,
             SIGNAL(clicked()),
             SLOT(openAddressBook()));
+
+    connect(ui->infoLabel,
+            SIGNAL(mouseHover()),
+            SLOT(showInfo()));
+
+    connect(ui->infoLabel,
+            SIGNAL(mouseNotHover()),
+            SLOT(hideInfo()));
+
+    connect(ui->infoLabel,
+            SIGNAL(mouseClick()),
+            SLOT(inboxBarInfo1()));
 }
 
 
@@ -104,7 +121,10 @@ MailBox::~MailBox()
 void MailBox::on_inboxButton_clicked()
 {
     if (ui->inbox->isVisible())
+    {
         toggleAccountPanel(false);
+        ui->groupInbox->setVisible(false);
+    }
     else
     {
         ui->groupInbox->setVisible(true);
@@ -113,7 +133,6 @@ void MailBox::on_inboxButton_clicked()
 }
 
 /** ++ Gestion des dossiers + leur contenu ++ **/
-
 void MailBox::addChildren(QTreeWidgetItem *item, QString filePath)
 {
     QDir* rootDir = new QDir(filePath);
@@ -229,12 +248,10 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->cancelButton->setVisible(false);
     ui->groupInbox->setVisible(false);
 }
-
 /** ~~ Gestion des dossiers + leur contenu ~~ **/
 
 
 /** ++ Créer un courrier ++ **/
-
 void MailBox::on_newButton_clicked()
 {
     on_actionNouveau_courrier_triggered();
@@ -246,12 +263,10 @@ void MailBox::on_actionNouveau_courrier_triggered()
     new_mail->show();
     toggleFields(false) ;
 }
-
 /** ~~ Créer un courrier ~~ **/
 
 
 /** ++ Supprimer le courrier ++ **/
-
 void MailBox::on_deleteButton_clicked()
 {
     on_actionSupprimer_triggered();
@@ -295,12 +310,10 @@ void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
     }
     ui->mailField->clear();
 }
-
 /** ~~ Supprimer le courrier ~~ **/
 
 
 /** ++ Annulation ++ **/
-
 void MailBox::on_cancelButton_clicked()
 {
     QString str = "Voulez-vous annuler les modifications ?" ;
@@ -319,12 +332,10 @@ void MailBox::on_actionCancel_confirmed_triggered()
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
 }
-
 /** ~~ Annulation ~~ **/
 
 
 /** ++ Répondre ++ **/
-
 void MailBox::on_repButton_clicked()
 {
     on_actionR_pondre_triggered();
@@ -396,12 +407,10 @@ void MailBox::on_actionTransf_rer_triggered()
         openedMailButtons() ;
     }
 }
-
 /** ~~ Répondre ~~ **/
 
 
 /** ++ Isoler ++ **/
-
 void MailBox::on_mailList_itemDoubleClicked()
 {
     on_actionIsoler_triggered();
@@ -475,7 +484,6 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     ui->mailList->resize(resizer/2, ui->mailList->height());
     ui->displayer->resize(resizer/2, ui->displayer->height());
 }
-
 /** ~~ Isoler ~~ **/
 
 /*
@@ -490,8 +498,8 @@ void MailBox::mouseMoveEvent(QMouseEvent *e)
 }
 */
 
-/** ++ Recherche ++ **/
 
+/** ++ Recherche & info ++ **/
 void MailBox::findMail(QString toFind)
 {
     QRegExp finder(".*"+toFind+".*") ;
@@ -513,11 +521,99 @@ void MailBox::findMail(QString toFind)
     }
 }
 
+void MailBox::showInfo()
+{
+    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
+    foreach(QPushButton *button, buttons)
+    {
+        button->setIcon(QIcon());
+    }
+    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
+    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
+    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
+    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
+    ui->inboxButton->setText("Boite de\nréception");
+    ui->sendButton->setText("Envoyer");
+    ui->repButton->setText("Répondre");
+    ui->repAllButton->setText("Répondre à\ntous");
+    ui->transferButton->setText("Transférer");
+    ui->newButton->setText("Nouveau\ncourrier");
+    ui->isolateButton->setText("Isoler le\ncourrier");
+    ui->deleteButton->setText("Supprimer le\ncourrier");
+}
+
+void MailBox::inboxBarInfo1()
+{
+    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
+    ui->previousAccount->setText("Accéder au\ncompte précédent");
+    ui->previousAccount->setVisible(true);
+    ui->addAccount->setVisible(false);
+    ui->delAccount->setVisible(false);
+    ui->nextAccount->setVisible(false);
+    QTimer::singleShot(1000, this, SLOT(inboxBarInfo2()));
+}
+
+void MailBox::inboxBarInfo2()
+{
+    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
+    ui->delAccount->setText("Supprimer\nle compte");
+    ui->previousAccount->setVisible(false);
+    ui->addAccount->setVisible(false);
+    ui->delAccount->setVisible(true);
+    ui->nextAccount->setVisible(false);
+    QTimer::singleShot(1000, this, SLOT(inboxBarInfo3()));
+}
+
+void MailBox::inboxBarInfo3()
+{
+    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
+    ui->nextAccount->setText("Accéder au\ncompte suivant");
+    ui->previousAccount->setVisible(false);
+    ui->addAccount->setVisible(false);
+    ui->delAccount->setVisible(false);
+    ui->nextAccount->setVisible(true);
+    QTimer::singleShot(1000, this, SLOT(inboxBarInfo4()));
+}
+
+void MailBox::inboxBarInfo4()
+{
+    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
+    ui->addAccount->setText("Ajouter\nuncompte");
+    ui->previousAccount->setVisible(false);
+    ui->addAccount->setVisible(true);
+    ui->delAccount->setVisible(false);
+    ui->nextAccount->setVisible(false);
+    QTimer::singleShot(1000, this, SLOT(hideInfo()));
+}
+
+void MailBox::hideInfo()
+{
+    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
+    foreach(QPushButton *button, buttons)
+    {
+        button->setText("");
+    }
+    ui->previousAccount->setVisible(true);
+    ui->addAccount->setVisible(true);
+    ui->delAccount->setVisible(true);
+    ui->nextAccount->setVisible(true);
+    ui->inboxButton->setIcon(QIcon(":/icon/res/inbox-2.png"));
+    ui->sendButton->setIcon(QIcon(":/icon/res/send.png"));
+    ui->repButton->setIcon(QIcon(":/icon/res/reply.png"));
+    ui->repAllButton->setIcon(QIcon(":/icon/res/reply-all.png"));
+    ui->transferButton->setIcon(QIcon(":/icon/res/transfer.png"));
+    ui->newButton->setIcon(QIcon(":/icon/res/compose-4.png"));
+    ui->isolateButton->setIcon(QIcon(":/icon/res/windows.png"));
+    ui->deleteButton->setIcon(QIcon(":/icon/res/delete.png"));
+    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
+    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
+    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
+    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
+}
 /** ~~ Recherche ~~ **/
 
 
 /** ++ Quitter l'appli ++ **/
-
 void MailBox::on_actionQuitter_triggered()
 {
     QString str = "Voulez-vous quitter l'application ?" ;
@@ -529,12 +625,10 @@ void MailBox::get_actionQuitter_triggered()
 {
     qApp->quit();
 }
-
 /** ~~ Quitter l'appli ~~ **/
 
 
 /** ++ Présence de comptes ++ **/
-
 void MailBox::accountRegistered()
 {
     ui->actionNouveau_courrier->setVisible(false);
@@ -611,12 +705,10 @@ void MailBox::showAccount(QString tabName, QString accountName)
         }
     }
 }
-
 /** ~~ Présence de comptes ~~ **/
 
 
 /** ++ Ajout de comptes ++ **/
-
 void MailBox::on_addAccount_clicked()
 {
     on_actionAdd_triggered() ;
@@ -655,12 +747,10 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
         }
     }
 }
-
 /** ~~ Ajout de comptes ~~ **/
 
 
 /** ++ Suppression de comptes ++ **/
-
 void MailBox::on_actionSupprimer_le_compte_triggered()
 {
     delAccount();
@@ -699,23 +789,19 @@ void MailBox::delAccountTriggered()
     }
     else accountRegistered();
 }
-
 /** ~~ Suppression de comptes ~~ **/
 
 
 /** ++ Envoi ++ **/
-
 void MailBox::on_sendButton_clicked()
 {
     on_actionAlert_triggered() ;
 }
 
-
 void MailBox::on_actionEnvoyer_triggered()
 {
     on_actionAlert_triggered();
 }
-
 
 void MailBox::on_actionAlert_triggered()
 {
@@ -765,17 +851,14 @@ void MailBox::on_actionAlert_triggered()
         this->close() ;
     }
 }
-
 /** ~~ Envoi ~~ **/
 
 
 /** ++ Gestion des pièces jointes et carnet d'adresses ++ **/
-
 void MailBox::on_actionAttacher_des_pi_ces_jointes_triggered()
 {
     openAttachFileWindow();
 }
-
 
 void MailBox::openAttachFileWindow()
 {
@@ -793,7 +876,6 @@ void MailBox::openAttachFileWindow()
     }
 }
 
-
 void MailBox::addFile(QString filepath)
 {
     QStringList parts = filepath.split("\\");
@@ -809,12 +891,10 @@ void MailBox::addFile(QString filepath)
     item->setText(file);
 }
 
-
 void MailBox::on_actionSupprimer_la_pi_ce_jointe_triggered()
 {
     deleteFileAction();
 }
-
 
 void MailBox::deleteFileAction()
 {
@@ -840,7 +920,6 @@ void MailBox::deleteFileAction()
     }
 }
 
-
 void MailBox::openAddressBook()
 {
     AddressBook *child = this->findChild<AddressBook *>();
@@ -856,7 +935,6 @@ void MailBox::openAddressBook()
         delete child ;
     }
 }
-
 
 void MailBox::addToAddressField(QString address)
 {
@@ -878,7 +956,6 @@ void MailBox::addToAddressField(QString address)
 
 
 /** ++ Gestion de l'affichage ++ **/
-
 void MailBox::toggleFields(bool n)
 {
     ui->title->setVisible(n);
@@ -888,7 +965,6 @@ void MailBox::toggleFields(bool n)
     ui->addFileButton_2->setVisible(n);
     ui->addressBook_2->setVisible(n);
 }
-
 
 void MailBox::toggleButtons(bool n)
 {
@@ -908,7 +984,6 @@ void MailBox::toggleButtons(bool n)
     ui->cancelButton->setVisible(n);
 }
 
-
 void MailBox::openedMailButtons()
 {
     ui->isolateButton->setVisible(true);
@@ -922,7 +997,6 @@ void MailBox::openedMailButtons()
     ui->addFileButton_2->setVisible(true);
     ui->addressBook_2->setVisible(true);
 }
-
 
 void MailBox::toggleNakedApp(bool n)
 {
@@ -954,8 +1028,10 @@ void MailBox::toggleNakedApp(bool n)
         ui->mailList->setVisible(!n);
         ui->mailField->setVisible(!n);
         ui->attachedFileList->setVisible(!n);
+        ui->infoLabel->setVisible(!n);
         toggleAccountPanel(false);
         ui->addAccount->setVisible(true);
+        ui->groupInbox->setVisible(true);
         ui->groupBox->setVisible(false);
         ui->groupInbox->setMaximumWidth(999999);
 
@@ -974,12 +1050,12 @@ sélectionné dans le volet \"Boite\" sous forme d'une liste.\n\nPour afficher d
 sélectionné dans la liste des courriers du volet à gauche";
         ui->emptyLabel_2->setText(bodyDisplayer);
     }
-
     else
     {
         ui->emptyLabel->setVisible(n);
         ui->emptyLabel_2->setVisible(n);
         ui->emptyLabel_3->setVisible(n);
+        ui->infoLabel->setVisible(!n);
         ui->groupBox->setVisible(!n);
         ui->mailList->setVisible(!n);
         ui->displayer->setVisible(!n);
@@ -987,7 +1063,6 @@ sélectionné dans la liste des courriers du volet à gauche";
         ui->groupInbox->setMaximumWidth(200);
     }
 }
-
 
 void MailBox::toggleAccountPanel(bool n)
 {
@@ -997,7 +1072,6 @@ void MailBox::toggleAccountPanel(bool n)
     ui->addAccount->setVisible(n);
     ui->delAccount->setVisible(n);
 }
-
 
 void MailBox::inboxButtonsStyle()
 {
@@ -1019,8 +1093,9 @@ void MailBox::inboxButtonsStyle()
                                           "stop:1 rgba(38, 124, 153, 255));"
                               "font-weight:600;");
     }
-}
 
+    ui->nextAccount->setStyleSheet("border-right:0px");
+}
 
 void MailBox::groupBoxButtonStyle()
 {
@@ -1057,11 +1132,37 @@ void MailBox::groupBoxButtonStyle()
     }
 }
 
-
 void MailBox::listStyle()
 {
     ui->inbox->setStyleSheet("background-color:#252b2b;"
-                             "color:#9fabaa;");
-}
+                             "color:#9fabaa;"
+                             "border:0px;");
 
+    ui->displayer->setStyleSheet("background-color: #FFFFFF;\
+                                  border:0px;\
+                                  border-left:1px solid qlineargradient"
+                                      "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                      "stop:0 rgba(139, 153, 153, 255), "
+                                      "stop:1 rgba(139, 153, 153, 255));");
+
+    ui->mailList->setStyleSheet("background-color: #FFFFFF;"
+                                "color:#252b2b;\
+                                 font-weight:600;\
+                                 border:0px;");
+
+    QString style = "background-color: #FFFFFF;\
+                        border:0px;\
+                        border-left:1px solid qlineargradient"
+                           "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                           "stop:0 rgba(139, 153, 153, 255), "
+                           "stop:1 rgba(139, 153, 153, 255));"
+                       "border-bottom:1px solid qlineargradient"
+                           "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                           "stop:0 rgba(139, 153, 153, 255), "
+                           "stop:1 rgba(139, 153, 153, 255));";
+    ui->cc->setStyleSheet(style);
+    ui->bcc->setStyleSheet(style);
+    ui->title->setStyleSheet(style);
+    ui->to->setStyleSheet(style);
+}
 /** ~~ Gestion de l'affichage ~~ **/

@@ -15,8 +15,6 @@ class MailBox : public QMainWindow
 {
     Q_OBJECT
     
-
-
 public:
     explicit MailBox(QWidget *parent = 0);
 
@@ -24,12 +22,19 @@ public:
 
     QList<QStringList> accountList;
 
-/*
-protected :
-    void mousePressEvent( QMouseEvent *);
-    void mouseMoveEvent( QMouseEvent *);
-*/
 private slots:
+
+    void showInfo();
+
+    void inboxBarInfo1();
+
+    void inboxBarInfo2();
+
+    void inboxBarInfo3();
+
+    void inboxBarInfo4();
+
+    void hideInfo();
 
     void addChildren(QTreeWidgetItem *, QString);
 
