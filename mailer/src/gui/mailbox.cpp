@@ -540,6 +540,7 @@ void MailBox::showInfo()
     ui->newButton->setText("Nouveau\ncourrier");
     ui->isolateButton->setText("Isoler le\ncourrier");
     ui->deleteButton->setText("Supprimer le\ncourrier");
+    ui->cancelButton->setText("Annuler les\nmodifications");
 }
 
 void MailBox::inboxBarInfo1()
@@ -578,7 +579,7 @@ void MailBox::inboxBarInfo3()
 void MailBox::inboxBarInfo4()
 {
     ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
-    ui->addAccount->setText("Ajouter\nuncompte");
+    ui->addAccount->setText("Ajouter\nun compte");
     ui->previousAccount->setVisible(false);
     ui->addAccount->setVisible(true);
     ui->delAccount->setVisible(false);
@@ -604,11 +605,15 @@ void MailBox::hideInfo()
     ui->transferButton->setIcon(QIcon(":/icon/res/transfer.png"));
     ui->newButton->setIcon(QIcon(":/icon/res/compose-4.png"));
     ui->isolateButton->setIcon(QIcon(":/icon/res/windows.png"));
-    ui->deleteButton->setIcon(QIcon(":/icon/res/delete.png"));
+    ui->deleteButton->setIcon(QIcon(":/icon/res/bin-3.png"));
     ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
     ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
     ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
     ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
+    ui->addFileButton_2->setIcon(QIcon(":/icon/res/document-add.png"));
+    ui->addressBook_2->setIcon(QIcon(":/icon/res/address-book-2.png"));
+    ui->deleteFile->setIcon(QIcon(":/icon/res/document-remove.png"));
+    ui->cancelButton->setIcon(QIcon(":/icon/res/delete.png"));
 }
 /** ~~ Recherche ~~ **/
 
@@ -1094,7 +1099,7 @@ void MailBox::inboxButtonsStyle()
                               "font-weight:600;");
     }
 
-    ui->nextAccount->setStyleSheet("border-right:0px");
+    ui->nextAccount->setStyleSheet("border-right:0px; border-bottom:0px;");
 }
 
 void MailBox::groupBoxButtonStyle()

@@ -26,7 +26,6 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
     ui->message->setFontWeight(40) ;
     ui->attachedFiles->setVisible(false);
     ui->deleteFile->setVisible(false);
-    ui->attachedLabel->setVisible(false);
 
     connect(ui->addressBookButton,
             SIGNAL(clicked()),
@@ -43,17 +42,11 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
     if (!display)
     {
         ui->title->setVisible(false);
-        ui->titleLabel->setVisible(false);
         ui->to->setVisible(false);
-        ui->toLabel->setVisible(false);
         ui->cc->setVisible(false);
-        ui->ccLabel->setVisible(false);
         ui->bcc->setVisible(false);
-        ui->bccLabel->setVisible(false);
         ui->addressBookButton->setVisible(false);
         ui->attachButton->setVisible(false);
-        ui->messageLabel->setText("");
-        ui->messageLabel->setStyleSheet("color:#333536");
         ui->sendButton->setVisible(false);
         ui->cancelButton->setVisible(false);
         ui->message->setReadOnly(true);
@@ -251,17 +244,11 @@ void WriteMail::on_actionClose_triggered()
 void WriteMail::setStuff()
 {
     ui->title->setVisible(true);
-    ui->titleLabel->setVisible(true);
     ui->to->setVisible(true);
-    ui->toLabel->setVisible(true);
     ui->cc->setVisible(true);
-    ui->ccLabel->setVisible(true);
     ui->bcc->setVisible(true);
-    ui->bccLabel->setVisible(true);
     ui->addressBookButton->setVisible(true);
     ui->attachButton->setVisible(true);
-    ui->messageLabel->setText("corps :");
-    ui->messageLabel->setStyleSheet("color:#DCE0E3; font:bold");
     ui->sendButton->setVisible(true);
     ui->cancelButton->setVisible(true);
     ui->closeButton->setVisible(false);
@@ -308,7 +295,6 @@ void WriteMail::addFile(QString filepath)
     QString file = parts.last();
     ui->attachedFiles->setVisible(true);
     ui->deleteFile->setVisible(true);
-    ui->attachedLabel->setVisible(true);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFiles);
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Unchecked);
@@ -321,7 +307,6 @@ void WriteMail::addFileToMail(QString filepath)
     QString file = parts.last();
     ui->attachedFiles->setVisible(true);
     ui->deleteFile->setVisible(true);
-    ui->attachedLabel->setVisible(true);
     QListWidgetItem *item = new QListWidgetItem(ui->attachedFiles);
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Unchecked);
@@ -365,7 +350,6 @@ void WriteMail::deleteAttachedFile()
     {
         ui->attachedFiles->setVisible(false);
         ui->deleteFile->setVisible(false);
-        ui->attachedLabel->setVisible(false);
     }
 }
 

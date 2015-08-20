@@ -13,10 +13,8 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QFormLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
@@ -53,34 +51,32 @@ public:
     QAction *actionFermer;
     QAction *actionDeleteAddedFile;
     QWidget *centralwidget;
-    QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *attachedLabel;
-    QListWidget *attachedFiles;
-    QVBoxLayout *verticalLayout_2;
-    QPushButton *addressBookButton;
-    QPushButton *attachButton;
-    QPushButton *deleteFile;
-    QFormLayout *formLayout;
-    QLabel *toLabel;
-    QLineEdit *to;
-    QLabel *ccLabel;
-    QLineEdit *cc;
-    QLabel *bccLabel;
-    QLineEdit *bcc;
-    QLabel *titleLabel;
-    QLineEdit *title;
-    QLabel *messageLabel;
-    QTextEdit *message;
-    QHBoxLayout *horizontalLayout_2;
+    QHBoxLayout *horizontalLayout_4;
+    QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout_3;
+    QPushButton *closeButton;
+    QPushButton *saveButton;
     QPushButton *sendButton;
     QPushButton *replyButton;
     QPushButton *replyAllButton;
     QPushButton *transferButton;
-    QPushButton *deleteButton;
     QPushButton *cancelButton;
-    QPushButton *saveButton;
-    QPushButton *closeButton;
+    QPushButton *deleteButton;
+    QVBoxLayout *verticalLayout_5;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout;
+    QLineEdit *to;
+    QLineEdit *cc;
+    QLineEdit *bcc;
+    QLineEdit *title;
+    QVBoxLayout *verticalLayout_2;
+    QPushButton *addressBookButton;
+    QPushButton *attachButton;
+    QHBoxLayout *horizontalLayout_2;
+    QListWidget *attachedFiles;
+    QPushButton *deleteFile;
+    QTextEdit *message;
     QMenuBar *menubar;
     QMenu *menuFichier;
     QMenu *menuEdition;
@@ -141,243 +137,281 @@ public:
         actionDeleteAddedFile->setFont(font);
         centralwidget = new QWidget(WriteMail);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        verticalLayout = new QVBoxLayout(centralwidget);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        attachedLabel = new QLabel(centralwidget);
-        attachedLabel->setObjectName(QStringLiteral("attachedLabel"));
-        attachedLabel->setMinimumSize(QSize(0, 0));
-        attachedLabel->setMaximumSize(QSize(50, 16777215));
-        attachedLabel->setFont(font);
-
-        horizontalLayout->addWidget(attachedLabel);
-
-        attachedFiles = new QListWidget(centralwidget);
-        attachedFiles->setObjectName(QStringLiteral("attachedFiles"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout_4 = new QHBoxLayout(centralwidget);
+        horizontalLayout_4->setSpacing(0);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(0);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setSpacing(0);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        closeButton = new QPushButton(centralwidget);
+        closeButton->setObjectName(QStringLiteral("closeButton"));
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(30);
-        sizePolicy.setHeightForWidth(attachedFiles->sizePolicy().hasHeightForWidth());
-        attachedFiles->setSizePolicy(sizePolicy);
-        attachedFiles->setMinimumSize(QSize(0, 30));
-        attachedFiles->setMaximumSize(QSize(16777215, 120));
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(closeButton->sizePolicy().hasHeightForWidth());
+        closeButton->setSizePolicy(sizePolicy);
+        closeButton->setMaximumSize(QSize(97, 16777215));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icon/res/browser-close-2.png"), QSize(), QIcon::Normal, QIcon::Off);
+        closeButton->setIcon(icon);
+        closeButton->setIconSize(QSize(48, 48));
 
-        horizontalLayout->addWidget(attachedFiles);
+        verticalLayout_3->addWidget(closeButton);
+
+        saveButton = new QPushButton(centralwidget);
+        saveButton->setObjectName(QStringLiteral("saveButton"));
+        sizePolicy.setHeightForWidth(saveButton->sizePolicy().hasHeightForWidth());
+        saveButton->setSizePolicy(sizePolicy);
+        saveButton->setMaximumSize(QSize(97, 16777215));
+        QPalette palette;
+        QBrush brush(QColor(220, 224, 227, 255));
+        brush.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        QBrush brush1(QColor(159, 158, 158, 255));
+        brush1.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
+        palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
+        saveButton->setPalette(palette);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icon/res/stiffy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        saveButton->setIcon(icon1);
+        saveButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(saveButton);
+
+        sendButton = new QPushButton(centralwidget);
+        sendButton->setObjectName(QStringLiteral("sendButton"));
+        sizePolicy.setHeightForWidth(sendButton->sizePolicy().hasHeightForWidth());
+        sendButton->setSizePolicy(sizePolicy);
+        sendButton->setMaximumSize(QSize(97, 16777215));
+        QPalette palette1;
+        palette1.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette1.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette1.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette1.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        palette1.setBrush(QPalette::Disabled, QPalette::Text, brush1);
+        palette1.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
+        sendButton->setPalette(palette1);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icon/res/send.png"), QSize(), QIcon::Normal, QIcon::Off);
+        sendButton->setIcon(icon2);
+        sendButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(sendButton);
+
+        replyButton = new QPushButton(centralwidget);
+        replyButton->setObjectName(QStringLiteral("replyButton"));
+        sizePolicy.setHeightForWidth(replyButton->sizePolicy().hasHeightForWidth());
+        replyButton->setSizePolicy(sizePolicy);
+        replyButton->setMaximumSize(QSize(97, 16777215));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/icon/res/reply.png"), QSize(), QIcon::Normal, QIcon::Off);
+        replyButton->setIcon(icon3);
+        replyButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(replyButton);
+
+        replyAllButton = new QPushButton(centralwidget);
+        replyAllButton->setObjectName(QStringLiteral("replyAllButton"));
+        sizePolicy.setHeightForWidth(replyAllButton->sizePolicy().hasHeightForWidth());
+        replyAllButton->setSizePolicy(sizePolicy);
+        replyAllButton->setMaximumSize(QSize(97, 16777215));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/icon/res/reply-all.png"), QSize(), QIcon::Normal, QIcon::Off);
+        replyAllButton->setIcon(icon4);
+        replyAllButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(replyAllButton);
+
+        transferButton = new QPushButton(centralwidget);
+        transferButton->setObjectName(QStringLiteral("transferButton"));
+        sizePolicy.setHeightForWidth(transferButton->sizePolicy().hasHeightForWidth());
+        transferButton->setSizePolicy(sizePolicy);
+        transferButton->setMaximumSize(QSize(97, 16777215));
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/icon/res/transfer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        transferButton->setIcon(icon5);
+        transferButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(transferButton);
+
+        cancelButton = new QPushButton(centralwidget);
+        cancelButton->setObjectName(QStringLiteral("cancelButton"));
+        sizePolicy.setHeightForWidth(cancelButton->sizePolicy().hasHeightForWidth());
+        cancelButton->setSizePolicy(sizePolicy);
+        cancelButton->setMaximumSize(QSize(97, 16777215));
+        QPalette palette2;
+        palette2.setBrush(QPalette::Active, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette2.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
+        palette2.setBrush(QPalette::Disabled, QPalette::Text, brush1);
+        palette2.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
+        cancelButton->setPalette(palette2);
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/icon/res/delete.png"), QSize(), QIcon::Normal, QIcon::Off);
+        cancelButton->setIcon(icon6);
+        cancelButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(cancelButton);
+
+        deleteButton = new QPushButton(centralwidget);
+        deleteButton->setObjectName(QStringLiteral("deleteButton"));
+        sizePolicy.setHeightForWidth(deleteButton->sizePolicy().hasHeightForWidth());
+        deleteButton->setSizePolicy(sizePolicy);
+        deleteButton->setMaximumSize(QSize(97, 16777215));
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/icon/res/bin-3.png"), QSize(), QIcon::Normal, QIcon::Off);
+        deleteButton->setIcon(icon7);
+        deleteButton->setIconSize(QSize(48, 48));
+
+        verticalLayout_3->addWidget(deleteButton);
+
+
+        horizontalLayout_3->addLayout(verticalLayout_3);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setSpacing(0);
+        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setSpacing(0);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(0);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        to = new QLineEdit(centralwidget);
+        to->setObjectName(QStringLiteral("to"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Maximum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(to->sizePolicy().hasHeightForWidth());
+        to->setSizePolicy(sizePolicy1);
+        to->setMaximumSize(QSize(16777215, 25));
+
+        verticalLayout->addWidget(to);
+
+        cc = new QLineEdit(centralwidget);
+        cc->setObjectName(QStringLiteral("cc"));
+        sizePolicy1.setHeightForWidth(cc->sizePolicy().hasHeightForWidth());
+        cc->setSizePolicy(sizePolicy1);
+        cc->setMaximumSize(QSize(16777215, 25));
+
+        verticalLayout->addWidget(cc);
+
+        bcc = new QLineEdit(centralwidget);
+        bcc->setObjectName(QStringLiteral("bcc"));
+        sizePolicy1.setHeightForWidth(bcc->sizePolicy().hasHeightForWidth());
+        bcc->setSizePolicy(sizePolicy1);
+        bcc->setMaximumSize(QSize(16777215, 25));
+
+        verticalLayout->addWidget(bcc);
+
+        title = new QLineEdit(centralwidget);
+        title->setObjectName(QStringLiteral("title"));
+        sizePolicy1.setHeightForWidth(title->sizePolicy().hasHeightForWidth());
+        title->setSizePolicy(sizePolicy1);
+        title->setMaximumSize(QSize(16777215, 25));
+
+        verticalLayout->addWidget(title);
+
+
+        horizontalLayout->addLayout(verticalLayout);
 
         verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         addressBookButton = new QPushButton(centralwidget);
         addressBookButton->setObjectName(QStringLiteral("addressBookButton"));
-        addressBookButton->setMaximumSize(QSize(226, 16777215));
+        QSizePolicy sizePolicy2(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(addressBookButton->sizePolicy().hasHeightForWidth());
+        addressBookButton->setSizePolicy(sizePolicy2);
+        addressBookButton->setMaximumSize(QSize(50, 50));
+        QIcon icon8;
+        icon8.addFile(QStringLiteral(":/icon/res/address-book-2.png"), QSize(), QIcon::Normal, QIcon::Off);
+        addressBookButton->setIcon(icon8);
+        addressBookButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(addressBookButton);
 
         attachButton = new QPushButton(centralwidget);
         attachButton->setObjectName(QStringLiteral("attachButton"));
-        attachButton->setMaximumSize(QSize(226, 16777215));
+        sizePolicy2.setHeightForWidth(attachButton->sizePolicy().hasHeightForWidth());
+        attachButton->setSizePolicy(sizePolicy2);
+        attachButton->setMaximumSize(QSize(50, 50));
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/icon/res/document-add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        attachButton->setIcon(icon9);
+        attachButton->setIconSize(QSize(45, 45));
 
         verticalLayout_2->addWidget(attachButton);
-
-        deleteFile = new QPushButton(centralwidget);
-        deleteFile->setObjectName(QStringLiteral("deleteFile"));
-        deleteFile->setMaximumSize(QSize(226, 16777215));
-
-        verticalLayout_2->addWidget(deleteFile);
 
 
         horizontalLayout->addLayout(verticalLayout_2);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout_4->addLayout(horizontalLayout);
 
-        formLayout = new QFormLayout();
-        formLayout->setObjectName(QStringLiteral("formLayout"));
-        toLabel = new QLabel(centralwidget);
-        toLabel->setObjectName(QStringLiteral("toLabel"));
-        QPalette palette;
-        QBrush brush(QColor(220, 224, 227, 255));
-        brush.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        palette.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        QBrush brush1(QColor(159, 158, 158, 255));
-        brush1.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush1);
-        palette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        toLabel->setPalette(palette);
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(0);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        attachedFiles = new QListWidget(centralwidget);
+        attachedFiles->setObjectName(QStringLiteral("attachedFiles"));
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(attachedFiles->sizePolicy().hasHeightForWidth());
+        attachedFiles->setSizePolicy(sizePolicy3);
+        attachedFiles->setMinimumSize(QSize(0, 50));
+        attachedFiles->setMaximumSize(QSize(16777215, 100));
+        attachedFiles->setSizeIncrement(QSize(0, 25));
 
-        formLayout->setWidget(0, QFormLayout::LabelRole, toLabel);
+        horizontalLayout_2->addWidget(attachedFiles);
 
-        to = new QLineEdit(centralwidget);
-        to->setObjectName(QStringLiteral("to"));
+        deleteFile = new QPushButton(centralwidget);
+        deleteFile->setObjectName(QStringLiteral("deleteFile"));
+        sizePolicy2.setHeightForWidth(deleteFile->sizePolicy().hasHeightForWidth());
+        deleteFile->setSizePolicy(sizePolicy2);
+        deleteFile->setMaximumSize(QSize(50, 50));
+        QIcon icon10;
+        icon10.addFile(QStringLiteral(":/icon/res/document-remove.png"), QSize(), QIcon::Normal, QIcon::Off);
+        deleteFile->setIcon(icon10);
+        deleteFile->setIconSize(QSize(45, 45));
 
-        formLayout->setWidget(0, QFormLayout::FieldRole, to);
+        horizontalLayout_2->addWidget(deleteFile);
 
-        ccLabel = new QLabel(centralwidget);
-        ccLabel->setObjectName(QStringLiteral("ccLabel"));
-        QPalette palette1;
-        palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        palette1.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette1.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette1.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette1.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette1.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette1.setBrush(QPalette::Disabled, QPalette::WindowText, brush1);
-        palette1.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette1.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        ccLabel->setPalette(palette1);
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, ccLabel);
+        verticalLayout_4->addLayout(horizontalLayout_2);
 
-        cc = new QLineEdit(centralwidget);
-        cc->setObjectName(QStringLiteral("cc"));
 
-        formLayout->setWidget(1, QFormLayout::FieldRole, cc);
-
-        bccLabel = new QLabel(centralwidget);
-        bccLabel->setObjectName(QStringLiteral("bccLabel"));
-        QPalette palette2;
-        palette2.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        palette2.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette2.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette2.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette2.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette2.setBrush(QPalette::Disabled, QPalette::WindowText, brush1);
-        palette2.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette2.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        bccLabel->setPalette(palette2);
-
-        formLayout->setWidget(2, QFormLayout::LabelRole, bccLabel);
-
-        bcc = new QLineEdit(centralwidget);
-        bcc->setObjectName(QStringLiteral("bcc"));
-
-        formLayout->setWidget(2, QFormLayout::FieldRole, bcc);
-
-        titleLabel = new QLabel(centralwidget);
-        titleLabel->setObjectName(QStringLiteral("titleLabel"));
-        QPalette palette3;
-        palette3.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        palette3.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette3.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette3.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette3.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette3.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette3.setBrush(QPalette::Disabled, QPalette::WindowText, brush1);
-        palette3.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette3.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        titleLabel->setPalette(palette3);
-
-        formLayout->setWidget(11, QFormLayout::LabelRole, titleLabel);
-
-        title = new QLineEdit(centralwidget);
-        title->setObjectName(QStringLiteral("title"));
-
-        formLayout->setWidget(11, QFormLayout::FieldRole, title);
-
-        messageLabel = new QLabel(centralwidget);
-        messageLabel->setObjectName(QStringLiteral("messageLabel"));
-        QPalette palette4;
-        palette4.setBrush(QPalette::Active, QPalette::WindowText, brush);
-        palette4.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette4.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette4.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
-        palette4.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette4.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette4.setBrush(QPalette::Disabled, QPalette::WindowText, brush1);
-        palette4.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette4.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        messageLabel->setPalette(palette4);
-
-        formLayout->setWidget(12, QFormLayout::LabelRole, messageLabel);
+        verticalLayout_5->addLayout(verticalLayout_4);
 
         message = new QTextEdit(centralwidget);
         message->setObjectName(QStringLiteral("message"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(1);
-        sizePolicy1.setHeightForWidth(message->sizePolicy().hasHeightForWidth());
-        message->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(1);
+        sizePolicy4.setHeightForWidth(message->sizePolicy().hasHeightForWidth());
+        message->setSizePolicy(sizePolicy4);
 
-        formLayout->setWidget(12, QFormLayout::FieldRole, message);
-
-
-        verticalLayout->addLayout(formLayout);
-
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        sendButton = new QPushButton(centralwidget);
-        sendButton->setObjectName(QStringLiteral("sendButton"));
-        QPalette palette5;
-        palette5.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette5.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette5.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette5.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette5.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette5.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        sendButton->setPalette(palette5);
-
-        horizontalLayout_2->addWidget(sendButton);
-
-        replyButton = new QPushButton(centralwidget);
-        replyButton->setObjectName(QStringLiteral("replyButton"));
-
-        horizontalLayout_2->addWidget(replyButton);
-
-        replyAllButton = new QPushButton(centralwidget);
-        replyAllButton->setObjectName(QStringLiteral("replyAllButton"));
-
-        horizontalLayout_2->addWidget(replyAllButton);
-
-        transferButton = new QPushButton(centralwidget);
-        transferButton->setObjectName(QStringLiteral("transferButton"));
-
-        horizontalLayout_2->addWidget(transferButton);
-
-        deleteButton = new QPushButton(centralwidget);
-        deleteButton->setObjectName(QStringLiteral("deleteButton"));
-
-        horizontalLayout_2->addWidget(deleteButton);
-
-        cancelButton = new QPushButton(centralwidget);
-        cancelButton->setObjectName(QStringLiteral("cancelButton"));
-        QPalette palette6;
-        palette6.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette6.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette6.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette6.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette6.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette6.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        cancelButton->setPalette(palette6);
-
-        horizontalLayout_2->addWidget(cancelButton);
-
-        saveButton = new QPushButton(centralwidget);
-        saveButton->setObjectName(QStringLiteral("saveButton"));
-        QPalette palette7;
-        palette7.setBrush(QPalette::Active, QPalette::Text, brush);
-        palette7.setBrush(QPalette::Active, QPalette::ButtonText, brush);
-        palette7.setBrush(QPalette::Inactive, QPalette::Text, brush);
-        palette7.setBrush(QPalette::Inactive, QPalette::ButtonText, brush);
-        palette7.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-        palette7.setBrush(QPalette::Disabled, QPalette::ButtonText, brush1);
-        saveButton->setPalette(palette7);
-
-        horizontalLayout_2->addWidget(saveButton);
-
-        closeButton = new QPushButton(centralwidget);
-        closeButton->setObjectName(QStringLiteral("closeButton"));
-
-        horizontalLayout_2->addWidget(closeButton);
+        verticalLayout_5->addWidget(message);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        horizontalLayout_3->addLayout(verticalLayout_5);
+
+
+        horizontalLayout_4->addLayout(horizontalLayout_3);
 
         WriteMail->setCentralWidget(centralwidget);
         menubar = new QMenuBar(WriteMail);
@@ -438,55 +472,48 @@ public:
         actionAttacher_des_pi_ces_jointes->setShortcut(QApplication::translate("WriteMail", "Ctrl+A", 0));
         actionFermer->setText(QApplication::translate("WriteMail", "Fermer", 0));
         actionDeleteAddedFile->setText(QApplication::translate("WriteMail", "Supprimer la pi\303\250ce jointe", 0));
-        attachedLabel->setText(QApplication::translate("WriteMail", "Pi\303\250ces\n"
-"jointes", 0));
-#ifndef QT_NO_TOOLTIP
-        addressBookButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Ouvre le carnet d'adresses</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        addressBookButton->setText(QApplication::translate("WriteMail", "Ouvrir le carnet d'adresses", 0));
-#ifndef QT_NO_TOOLTIP
-        attachButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Attacher un fichier au courrier \303\240 exp\303\251dier</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        attachButton->setText(QApplication::translate("WriteMail", "Attacher une pi\303\250ce jointe", 0));
-        deleteFile->setText(QApplication::translate("WriteMail", "Supprimer la pi\303\250ce jointe", 0));
-        toLabel->setText(QApplication::translate("WriteMail", "<html><head/><body><p align=\"right\"><span style=\" font-weight:600;\">\303\240 :</span></p></body></html>", 0));
-        to->setPlaceholderText(QString());
-        ccLabel->setText(QApplication::translate("WriteMail", "<html><head/><body><p align=\"right\"><span style=\" font-weight:600;\">cc :</span></p></body></html>", 0));
-        cc->setPlaceholderText(QString());
-        bccLabel->setText(QApplication::translate("WriteMail", "<html><head/><body><p align=\"right\"><span style=\" font-weight:600;\">bcc :</span></p></body></html>", 0));
-        bcc->setPlaceholderText(QString());
-        titleLabel->setText(QApplication::translate("WriteMail", "<html><head/><body><p align=\"right\"><span style=\" font-weight:600;\">objet :</span></p></body></html>", 0));
-        title->setPlaceholderText(QString());
-        messageLabel->setText(QApplication::translate("WriteMail", "<html><head/><body><p align=\"right\"><span style=\" font-weight:600;\">corps :</span></p></body></html>", 0));
-#ifndef QT_NO_TOOLTIP
-        sendButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Envoyer le courrier aux destinataires</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        sendButton->setText(QApplication::translate("WriteMail", "Envoyer", 0));
-#ifndef QT_NO_TOOLTIP
-        replyButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur du courrier</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        replyButton->setText(QApplication::translate("WriteMail", "R\303\251pondre", 0));
-#ifndef QT_NO_TOOLTIP
-        replyAllButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur ainsi qu'\303\240 tous les destinataires en copie du courrier</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        replyAllButton->setText(QApplication::translate("WriteMail", "Rep. \303\240 tous", 0));
-#ifndef QT_NO_TOOLTIP
-        transferButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Transmettre le courrier \303\240 quelqu'un d'autre que l'exp\303\251diteur</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        transferButton->setText(QApplication::translate("WriteMail", "Transf\303\251rer", 0));
-#ifndef QT_NO_TOOLTIP
-        deleteButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Supprimer le courrier</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        deleteButton->setText(QApplication::translate("WriteMail", "Supprimer", 0));
-#ifndef QT_NO_TOOLTIP
-        cancelButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Annuler les modifications et revenir \303\240 la boite</p></body></html>", 0));
-#endif // QT_NO_TOOLTIP
-        cancelButton->setText(QApplication::translate("WriteMail", "Annuler", 0));
+        closeButton->setText(QString());
 #ifndef QT_NO_TOOLTIP
         saveButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Sauvegarder une copie du courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
-        saveButton->setText(QApplication::translate("WriteMail", "Sauvegarder", 0));
-        closeButton->setText(QApplication::translate("WriteMail", "Fermer", 0));
+        saveButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        sendButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Envoyer le courrier aux destinataires</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        sendButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        replyButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur du courrier</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        replyButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        replyAllButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur ainsi qu'\303\240 tous les destinataires en copie du courrier</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        replyAllButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        transferButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Transmettre le courrier \303\240 quelqu'un d'autre que l'exp\303\251diteur</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        transferButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        cancelButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Annuler les modifications et revenir \303\240 la boite</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        cancelButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        deleteButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Supprimer le courrier</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        deleteButton->setText(QString());
+        to->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire", 0));
+        cc->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire en copie", 0));
+        bcc->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire cach\303\251", 0));
+        title->setPlaceholderText(QApplication::translate("WriteMail", "Objet", 0));
+#ifndef QT_NO_TOOLTIP
+        addressBookButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Ouvre le carnet d'adresses</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        addressBookButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        attachButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Attacher un fichier au courrier \303\240 exp\303\251dier</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
+        attachButton->setText(QString());
+        deleteFile->setText(QString());
         menuFichier->setTitle(QApplication::translate("WriteMail", "Fichier", 0));
         menuEdition->setTitle(QApplication::translate("WriteMail", "Edition", 0));
     } // retranslateUi
