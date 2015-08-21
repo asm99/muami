@@ -35,9 +35,9 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
             SIGNAL(clicked()),
             SLOT(deleteAttachedFile()));
 
-    connect(ui->attachedFiles,
-            SIGNAL(itemChanged(QListWidgetItem*)),
-            SLOT(changeButtonText(QListWidgetItem*)));
+    connect(ui->addressBookButton,
+            SIGNAL(clicked()),
+            SLOT(loadAddressBook()));
 
     if (!display)
     {
@@ -278,13 +278,11 @@ void WriteMail::openAttachFileWindow()
     {
         AttachFileWindow *box = new AttachFileWindow(this) ;
         box->show();
-        ui->attachButton->setText("Fermer l'explorateur");
         delete child ;
     }
     else
     {
         child->close();
-        ui->attachButton->setText("Attacher une pièce jointe");
         delete child ;
     }
 }
@@ -311,18 +309,6 @@ void WriteMail::addFileToMail(QString filepath)
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Unchecked);
     item->setText(file);
-}
-
-void WriteMail::changeButtonText(QListWidgetItem *item)
-{
-    int val = 0;
-    for(int x = 0; x < ui->attachedFiles->count(); x++)
-    {
-        QListWidgetItem *itm = ui->attachedFiles->item(x);
-        if (itm->checkState() == Qt::Checked) val++;
-    }
-    if (val > 1) ui->deleteFile->setText("Supprimer les pièces jointes");
-    else ui->deleteFile->setText("Supprimer la pièce jointe");
 }
 
 void WriteMail::on_actionDeleteAddedFile_triggered()
@@ -358,7 +344,6 @@ void WriteMail::openAddressBook()
     AddressBook *child = this->findChild<AddressBook *>();
     if (!child)
     {
-        ui->addressBookButton->setText("Fermer le carnet d'adresses");
         AddressBook *book = new AddressBook(this);
         book->show();
         delete child ;
@@ -366,7 +351,6 @@ void WriteMail::openAddressBook()
     else
     {
         child->close();
-        ui->addressBookButton->setText("Ouvrir le carnet d'adresses");
         delete child ;
     }
 }
@@ -384,6 +368,70 @@ void WriteMail::addToAddressField(QString address)
         addresses.append("; ");
         addresses.append(address);
         ui->to->setText(addresses);
+    }
+}
+
+void WriteMail::loadAddressBook()
+{
+    QString addressBook = "" ;
+    QString dir = "";
+    QString appPath = qApp->applicationDirPath();
+
+    QDir *appliPath = new QDir(appPath);
+
+    QFileInfoList dirList = appliPath->entryInfoList();
+    foreach(QFileInfo fileInfo, dirList)
+    {
+        if (fileInfo.isDir())
+        {
+            QString dir = fileInfo.fileName() ;
+            if(dir == "usr")
+            {
+                dir = fileInfo.filePath();
+                QDir *usrPath = new QDir(dir);
+                QFileInfoList files = usrPath->entryInfoList();
+                foreach(QFileInfo fileInfo, files)
+                {
+                    if (fileInfo.isFile())
+                    {
+                        QString file = fileInfo.fileName() ;
+                        if(file == "address_book.txt")
+                        {
+                            addressBook = dir.append("/");
+                            addressBook.append(file);
+                            AddressBook *child = this->findChild<AddressBook*>();
+                            if(child)
+                            {
+                                child->loadAddressFile(addressBook);
+                            }
+                            break ;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                continue ;
+            }
+        }
+    }
+
+    if(dir == "")
+    {
+        appliPath->mkdir("usr");
+        dir = appliPath->path();
+        dir.append("/usr/address_book.txt");
+        QFile file(dir);
+        if(file.open(QIODevice::ReadWrite))
+        {
+            QTextStream stream(&file);
+            stream << "Carnet d'adresses";
+            file.close();
+        }
     }
 }
 /** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/

@@ -154,11 +154,11 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(closeButton->sizePolicy().hasHeightForWidth());
         closeButton->setSizePolicy(sizePolicy);
-        closeButton->setMaximumSize(QSize(97, 16777215));
+        closeButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon;
         icon.addFile(QStringLiteral(":/icon/res/browser-close-2.png"), QSize(), QIcon::Normal, QIcon::Off);
         closeButton->setIcon(icon);
-        closeButton->setIconSize(QSize(48, 48));
+        closeButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(closeButton);
 
@@ -166,7 +166,7 @@ public:
         saveButton->setObjectName(QStringLiteral("saveButton"));
         sizePolicy.setHeightForWidth(saveButton->sizePolicy().hasHeightForWidth());
         saveButton->setSizePolicy(sizePolicy);
-        saveButton->setMaximumSize(QSize(97, 16777215));
+        saveButton->setMaximumSize(QSize(50, 16777215));
         QPalette palette;
         QBrush brush(QColor(220, 224, 227, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -182,7 +182,7 @@ public:
         QIcon icon1;
         icon1.addFile(QStringLiteral(":/icon/res/stiffy.png"), QSize(), QIcon::Normal, QIcon::Off);
         saveButton->setIcon(icon1);
-        saveButton->setIconSize(QSize(48, 48));
+        saveButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(saveButton);
 
@@ -190,7 +190,7 @@ public:
         sendButton->setObjectName(QStringLiteral("sendButton"));
         sizePolicy.setHeightForWidth(sendButton->sizePolicy().hasHeightForWidth());
         sendButton->setSizePolicy(sizePolicy);
-        sendButton->setMaximumSize(QSize(97, 16777215));
+        sendButton->setMaximumSize(QSize(50, 16777215));
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::Text, brush);
         palette1.setBrush(QPalette::Active, QPalette::ButtonText, brush);
@@ -202,7 +202,7 @@ public:
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/icon/res/send.png"), QSize(), QIcon::Normal, QIcon::Off);
         sendButton->setIcon(icon2);
-        sendButton->setIconSize(QSize(48, 48));
+        sendButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(sendButton);
 
@@ -210,11 +210,11 @@ public:
         replyButton->setObjectName(QStringLiteral("replyButton"));
         sizePolicy.setHeightForWidth(replyButton->sizePolicy().hasHeightForWidth());
         replyButton->setSizePolicy(sizePolicy);
-        replyButton->setMaximumSize(QSize(97, 16777215));
+        replyButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/icon/res/reply.png"), QSize(), QIcon::Normal, QIcon::Off);
         replyButton->setIcon(icon3);
-        replyButton->setIconSize(QSize(48, 48));
+        replyButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(replyButton);
 
@@ -222,11 +222,11 @@ public:
         replyAllButton->setObjectName(QStringLiteral("replyAllButton"));
         sizePolicy.setHeightForWidth(replyAllButton->sizePolicy().hasHeightForWidth());
         replyAllButton->setSizePolicy(sizePolicy);
-        replyAllButton->setMaximumSize(QSize(97, 16777215));
+        replyAllButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon4;
         icon4.addFile(QStringLiteral(":/icon/res/reply-all.png"), QSize(), QIcon::Normal, QIcon::Off);
         replyAllButton->setIcon(icon4);
-        replyAllButton->setIconSize(QSize(48, 48));
+        replyAllButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(replyAllButton);
 
@@ -234,11 +234,11 @@ public:
         transferButton->setObjectName(QStringLiteral("transferButton"));
         sizePolicy.setHeightForWidth(transferButton->sizePolicy().hasHeightForWidth());
         transferButton->setSizePolicy(sizePolicy);
-        transferButton->setMaximumSize(QSize(97, 16777215));
+        transferButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/icon/res/transfer.png"), QSize(), QIcon::Normal, QIcon::Off);
         transferButton->setIcon(icon5);
-        transferButton->setIconSize(QSize(48, 48));
+        transferButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(transferButton);
 
@@ -246,7 +246,7 @@ public:
         cancelButton->setObjectName(QStringLiteral("cancelButton"));
         sizePolicy.setHeightForWidth(cancelButton->sizePolicy().hasHeightForWidth());
         cancelButton->setSizePolicy(sizePolicy);
-        cancelButton->setMaximumSize(QSize(97, 16777215));
+        cancelButton->setMaximumSize(QSize(50, 16777215));
         QPalette palette2;
         palette2.setBrush(QPalette::Active, QPalette::Text, brush);
         palette2.setBrush(QPalette::Active, QPalette::ButtonText, brush);
@@ -258,7 +258,7 @@ public:
         QIcon icon6;
         icon6.addFile(QStringLiteral(":/icon/res/delete.png"), QSize(), QIcon::Normal, QIcon::Off);
         cancelButton->setIcon(icon6);
-        cancelButton->setIconSize(QSize(48, 48));
+        cancelButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(cancelButton);
 
@@ -266,11 +266,11 @@ public:
         deleteButton->setObjectName(QStringLiteral("deleteButton"));
         sizePolicy.setHeightForWidth(deleteButton->sizePolicy().hasHeightForWidth());
         deleteButton->setSizePolicy(sizePolicy);
-        deleteButton->setMaximumSize(QSize(97, 16777215));
+        deleteButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon7;
         icon7.addFile(QStringLiteral(":/icon/res/bin-3.png"), QSize(), QIcon::Normal, QIcon::Off);
         deleteButton->setIcon(icon7);
-        deleteButton->setIconSize(QSize(48, 48));
+        deleteButton->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(deleteButton);
 
@@ -341,7 +341,7 @@ public:
         QIcon icon8;
         icon8.addFile(QStringLiteral(":/icon/res/address-book-2.png"), QSize(), QIcon::Normal, QIcon::Off);
         addressBookButton->setIcon(icon8);
-        addressBookButton->setIconSize(QSize(40, 40));
+        addressBookButton->setIconSize(QSize(35, 35));
 
         verticalLayout_2->addWidget(addressBookButton);
 
@@ -353,7 +353,7 @@ public:
         QIcon icon9;
         icon9.addFile(QStringLiteral(":/icon/res/document-add.png"), QSize(), QIcon::Normal, QIcon::Off);
         attachButton->setIcon(icon9);
-        attachButton->setIconSize(QSize(45, 45));
+        attachButton->setIconSize(QSize(35, 35));
 
         verticalLayout_2->addWidget(attachButton);
 
@@ -387,7 +387,7 @@ public:
         QIcon icon10;
         icon10.addFile(QStringLiteral(":/icon/res/document-remove.png"), QSize(), QIcon::Normal, QIcon::Off);
         deleteFile->setIcon(icon10);
-        deleteFile->setIconSize(QSize(45, 45));
+        deleteFile->setIconSize(QSize(35, 35));
 
         horizontalLayout_2->addWidget(deleteFile);
 
@@ -473,34 +473,42 @@ public:
         actionFermer->setText(QApplication::translate("WriteMail", "Fermer", 0));
         actionDeleteAddedFile->setText(QApplication::translate("WriteMail", "Supprimer la pi\303\250ce jointe", 0));
         closeButton->setText(QString());
+        closeButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+Q", 0));
 #ifndef QT_NO_TOOLTIP
         saveButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Sauvegarder une copie du courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         saveButton->setText(QString());
+        saveButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+S", 0));
 #ifndef QT_NO_TOOLTIP
         sendButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Envoyer le courrier aux destinataires</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         sendButton->setText(QString());
+        sendButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+Shift+S", 0));
 #ifndef QT_NO_TOOLTIP
         replyButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur du courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         replyButton->setText(QString());
+        replyButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+R", 0));
 #ifndef QT_NO_TOOLTIP
         replyAllButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>R\303\251pondre \303\240 l'exp\303\251diteur ainsi qu'\303\240 tous les destinataires en copie du courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         replyAllButton->setText(QString());
+        replyAllButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+Shift+R", 0));
 #ifndef QT_NO_TOOLTIP
         transferButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Transmettre le courrier \303\240 quelqu'un d'autre que l'exp\303\251diteur</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         transferButton->setText(QString());
+        transferButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+T", 0));
 #ifndef QT_NO_TOOLTIP
         cancelButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Annuler les modifications et revenir \303\240 la boite</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         cancelButton->setText(QString());
+        cancelButton->setShortcut(QApplication::translate("WriteMail", "Esc", 0));
 #ifndef QT_NO_TOOLTIP
         deleteButton->setToolTip(QApplication::translate("WriteMail", "<html><head/><body><p>Supprimer le courrier</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         deleteButton->setText(QString());
+        deleteButton->setShortcut(QApplication::translate("WriteMail", "Ctrl+D", 0));
         to->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire", 0));
         cc->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire en copie", 0));
         bcc->setPlaceholderText(QApplication::translate("WriteMail", "Destinataire cach\303\251", 0));

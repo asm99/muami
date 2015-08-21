@@ -915,13 +915,10 @@ void MailBox::deleteFileAction()
         else x++ ;
     }
 
-    ui->deleteFile->setText("Supprimer\npièce\njointe");
-
     if (ui->attachedFileList->count() == 0)
     {
         ui->attachedFileList->setVisible(false);
         ui->deleteFile->setVisible(false);
-        //ui->attachedLabel->setVisible(false);
     }
 }
 
@@ -956,6 +953,7 @@ void MailBox::addToAddressField(QString address)
         ui->to->setText(addresses);
     }
 }
+
 
 /** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/
 

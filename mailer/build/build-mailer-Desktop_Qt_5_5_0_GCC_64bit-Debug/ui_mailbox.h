@@ -211,12 +211,12 @@ public:
         sizePolicy4.setVerticalStretch(0);
         sizePolicy4.setHeightForWidth(previousAccount->sizePolicy().hasHeightForWidth());
         previousAccount->setSizePolicy(sizePolicy4);
-        previousAccount->setMinimumSize(QSize(0, 32));
-        previousAccount->setMaximumSize(QSize(16777215, 50));
+        previousAccount->setMinimumSize(QSize(0, 25));
+        previousAccount->setMaximumSize(QSize(16777215, 25));
         QIcon icon;
         icon.addFile(QStringLiteral(":/icon/res/arrow-left.png"), QSize(), QIcon::Normal, QIcon::Off);
         previousAccount->setIcon(icon);
-        previousAccount->setIconSize(QSize(28, 28));
+        previousAccount->setIconSize(QSize(20, 20));
 
         horizontalLayout_5->addWidget(previousAccount);
 
@@ -224,12 +224,12 @@ public:
         addAccount->setObjectName(QStringLiteral("addAccount"));
         sizePolicy4.setHeightForWidth(addAccount->sizePolicy().hasHeightForWidth());
         addAccount->setSizePolicy(sizePolicy4);
-        addAccount->setMinimumSize(QSize(0, 32));
-        addAccount->setMaximumSize(QSize(16777215, 50));
+        addAccount->setMinimumSize(QSize(0, 25));
+        addAccount->setMaximumSize(QSize(16777215, 25));
         QIcon icon1;
         icon1.addFile(QStringLiteral(":/icon/res/user-4-add.png"), QSize(), QIcon::Normal, QIcon::Off);
         addAccount->setIcon(icon1);
-        addAccount->setIconSize(QSize(28, 28));
+        addAccount->setIconSize(QSize(20, 20));
 
         horizontalLayout_5->addWidget(addAccount);
 
@@ -237,12 +237,12 @@ public:
         delAccount->setObjectName(QStringLiteral("delAccount"));
         sizePolicy4.setHeightForWidth(delAccount->sizePolicy().hasHeightForWidth());
         delAccount->setSizePolicy(sizePolicy4);
-        delAccount->setMinimumSize(QSize(0, 32));
-        delAccount->setMaximumSize(QSize(16777215, 50));
+        delAccount->setMinimumSize(QSize(0, 25));
+        delAccount->setMaximumSize(QSize(16777215, 25));
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/icon/res/user-4-remove.png"), QSize(), QIcon::Normal, QIcon::Off);
         delAccount->setIcon(icon2);
-        delAccount->setIconSize(QSize(28, 28));
+        delAccount->setIconSize(QSize(20, 20));
 
         horizontalLayout_5->addWidget(delAccount);
 
@@ -250,12 +250,12 @@ public:
         nextAccount->setObjectName(QStringLiteral("nextAccount"));
         sizePolicy4.setHeightForWidth(nextAccount->sizePolicy().hasHeightForWidth());
         nextAccount->setSizePolicy(sizePolicy4);
-        nextAccount->setMinimumSize(QSize(0, 32));
-        nextAccount->setMaximumSize(QSize(16777215, 50));
+        nextAccount->setMinimumSize(QSize(0, 25));
+        nextAccount->setMaximumSize(QSize(16777215, 25));
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/icon/res/arrow-right.png"), QSize(), QIcon::Normal, QIcon::Off);
         nextAccount->setIcon(icon3);
-        nextAccount->setIconSize(QSize(28, 28));
+        nextAccount->setIconSize(QSize(20, 20));
 
         horizontalLayout_5->addWidget(nextAccount);
 
@@ -271,13 +271,10 @@ public:
         splitter_2->setHandleWidth(1);
         groupBox = new QWidget(splitter_2);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        QSizePolicy sizePolicy5(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
-        groupBox->setSizePolicy(sizePolicy5);
-        groupBox->setMinimumSize(QSize(98, 0));
-        groupBox->setMaximumSize(QSize(98, 16777215));
+        sizePolicy2.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy2);
+        groupBox->setMinimumSize(QSize(50, 0));
+        groupBox->setMaximumSize(QSize(50, 16777215));
         verticalLayout_2 = new QVBoxLayout(groupBox);
         verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
@@ -285,107 +282,113 @@ public:
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         inboxButton = new QPushButton(groupBox);
         inboxButton->setObjectName(QStringLiteral("inboxButton"));
-        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(1);
-        sizePolicy6.setHeightForWidth(inboxButton->sizePolicy().hasHeightForWidth());
-        inboxButton->setSizePolicy(sizePolicy6);
+        QSizePolicy sizePolicy5(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(1);
+        sizePolicy5.setHeightForWidth(inboxButton->sizePolicy().hasHeightForWidth());
+        inboxButton->setSizePolicy(sizePolicy5);
+        inboxButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon4;
         icon4.addFile(QStringLiteral(":/icon/res/inbox-2.png"), QSize(), QIcon::Normal, QIcon::Off);
         inboxButton->setIcon(icon4);
-        inboxButton->setIconSize(QSize(48, 48));
+        inboxButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(inboxButton);
 
         newButton = new QPushButton(groupBox);
         newButton->setObjectName(QStringLiteral("newButton"));
-        sizePolicy6.setHeightForWidth(newButton->sizePolicy().hasHeightForWidth());
-        newButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(newButton->sizePolicy().hasHeightForWidth());
+        newButton->setSizePolicy(sizePolicy5);
+        newButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/icon/res/compose-4.png"), QSize(), QIcon::Normal, QIcon::Off);
         newButton->setIcon(icon5);
-        newButton->setIconSize(QSize(48, 48));
+        newButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(newButton);
 
         repButton = new QPushButton(groupBox);
         repButton->setObjectName(QStringLiteral("repButton"));
-        sizePolicy6.setHeightForWidth(repButton->sizePolicy().hasHeightForWidth());
-        repButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(repButton->sizePolicy().hasHeightForWidth());
+        repButton->setSizePolicy(sizePolicy5);
+        repButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon6;
         icon6.addFile(QStringLiteral(":/icon/res/reply.png"), QSize(), QIcon::Normal, QIcon::Off);
         repButton->setIcon(icon6);
-        repButton->setIconSize(QSize(48, 48));
+        repButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(repButton);
 
         repAllButton = new QPushButton(groupBox);
         repAllButton->setObjectName(QStringLiteral("repAllButton"));
-        sizePolicy6.setHeightForWidth(repAllButton->sizePolicy().hasHeightForWidth());
-        repAllButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(repAllButton->sizePolicy().hasHeightForWidth());
+        repAllButton->setSizePolicy(sizePolicy5);
+        repAllButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon7;
         icon7.addFile(QStringLiteral(":/icon/res/reply-all.png"), QSize(), QIcon::Normal, QIcon::Off);
         repAllButton->setIcon(icon7);
-        repAllButton->setIconSize(QSize(48, 48));
+        repAllButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(repAllButton);
 
         transferButton = new QPushButton(groupBox);
         transferButton->setObjectName(QStringLiteral("transferButton"));
-        sizePolicy6.setHeightForWidth(transferButton->sizePolicy().hasHeightForWidth());
-        transferButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(transferButton->sizePolicy().hasHeightForWidth());
+        transferButton->setSizePolicy(sizePolicy5);
+        transferButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon8;
         icon8.addFile(QStringLiteral(":/icon/res/transfer.png"), QSize(), QIcon::Normal, QIcon::Off);
         transferButton->setIcon(icon8);
-        transferButton->setIconSize(QSize(48, 48));
+        transferButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(transferButton);
 
         isolateButton = new QPushButton(groupBox);
         isolateButton->setObjectName(QStringLiteral("isolateButton"));
-        sizePolicy6.setHeightForWidth(isolateButton->sizePolicy().hasHeightForWidth());
-        isolateButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(isolateButton->sizePolicy().hasHeightForWidth());
+        isolateButton->setSizePolicy(sizePolicy5);
+        isolateButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon9;
         icon9.addFile(QStringLiteral(":/icon/res/windows.png"), QSize(), QIcon::Normal, QIcon::Off);
         isolateButton->setIcon(icon9);
-        isolateButton->setIconSize(QSize(48, 48));
+        isolateButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(isolateButton);
 
         sendButton = new QPushButton(groupBox);
         sendButton->setObjectName(QStringLiteral("sendButton"));
-        sizePolicy6.setHeightForWidth(sendButton->sizePolicy().hasHeightForWidth());
-        sendButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(sendButton->sizePolicy().hasHeightForWidth());
+        sendButton->setSizePolicy(sizePolicy5);
+        sendButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon10;
         icon10.addFile(QStringLiteral(":/icon/res/send.png"), QSize(), QIcon::Normal, QIcon::Off);
         sendButton->setIcon(icon10);
-        sendButton->setIconSize(QSize(48, 48));
+        sendButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(sendButton);
 
         cancelButton = new QPushButton(groupBox);
         cancelButton->setObjectName(QStringLiteral("cancelButton"));
-        QSizePolicy sizePolicy7(QSizePolicy::Minimum, QSizePolicy::Expanding);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(1);
-        sizePolicy7.setHeightForWidth(cancelButton->sizePolicy().hasHeightForWidth());
-        cancelButton->setSizePolicy(sizePolicy7);
+        sizePolicy5.setHeightForWidth(cancelButton->sizePolicy().hasHeightForWidth());
+        cancelButton->setSizePolicy(sizePolicy5);
+        cancelButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon11;
         icon11.addFile(QStringLiteral(":/icon/res/delete.png"), QSize(), QIcon::Normal, QIcon::Off);
         cancelButton->setIcon(icon11);
-        cancelButton->setIconSize(QSize(48, 48));
+        cancelButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(cancelButton);
 
         deleteButton = new QPushButton(groupBox);
         deleteButton->setObjectName(QStringLiteral("deleteButton"));
-        sizePolicy6.setHeightForWidth(deleteButton->sizePolicy().hasHeightForWidth());
-        deleteButton->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(deleteButton->sizePolicy().hasHeightForWidth());
+        deleteButton->setSizePolicy(sizePolicy5);
+        deleteButton->setMaximumSize(QSize(50, 16777215));
         deleteButton->setToolTipDuration(-1);
         QIcon icon12;
         icon12.addFile(QStringLiteral(":/icon/res/bin-3.png"), QSize(), QIcon::Normal, QIcon::Off);
         deleteButton->setIcon(icon12);
-        deleteButton->setIconSize(QSize(48, 48));
+        deleteButton->setIconSize(QSize(40, 40));
 
         verticalLayout_2->addWidget(deleteButton);
 
@@ -401,18 +404,18 @@ public:
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         emptyLabel = new QLabel(centralwidget);
         emptyLabel->setObjectName(QStringLiteral("emptyLabel"));
-        QSizePolicy sizePolicy8(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy8.setHorizontalStretch(1);
-        sizePolicy8.setVerticalStretch(1);
-        sizePolicy8.setHeightForWidth(emptyLabel->sizePolicy().hasHeightForWidth());
-        emptyLabel->setSizePolicy(sizePolicy8);
+        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy6.setHorizontalStretch(1);
+        sizePolicy6.setVerticalStretch(1);
+        sizePolicy6.setHeightForWidth(emptyLabel->sizePolicy().hasHeightForWidth());
+        emptyLabel->setSizePolicy(sizePolicy6);
 
         horizontalLayout_2->addWidget(emptyLabel);
 
         emptyLabel_2 = new QLabel(centralwidget);
         emptyLabel_2->setObjectName(QStringLiteral("emptyLabel_2"));
-        sizePolicy8.setHeightForWidth(emptyLabel_2->sizePolicy().hasHeightForWidth());
-        emptyLabel_2->setSizePolicy(sizePolicy8);
+        sizePolicy6.setHeightForWidth(emptyLabel_2->sizePolicy().hasHeightForWidth());
+        emptyLabel_2->setSizePolicy(sizePolicy6);
 
         horizontalLayout_2->addWidget(emptyLabel_2);
 
@@ -431,11 +434,11 @@ public:
         mailField = new QLineEdit(centralwidget);
         mailField->setObjectName(QStringLiteral("mailField"));
         mailField->setEnabled(true);
-        QSizePolicy sizePolicy9(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy9.setHorizontalStretch(1);
-        sizePolicy9.setVerticalStretch(0);
-        sizePolicy9.setHeightForWidth(mailField->sizePolicy().hasHeightForWidth());
-        mailField->setSizePolicy(sizePolicy9);
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy7.setHorizontalStretch(1);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(mailField->sizePolicy().hasHeightForWidth());
+        mailField->setSizePolicy(sizePolicy7);
 
         horizontalLayout_4->addWidget(mailField);
 
@@ -474,11 +477,11 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         widget = new QWidget(centralwidget);
         widget->setObjectName(QStringLiteral("widget"));
-        QSizePolicy sizePolicy10(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy10.setHorizontalStretch(0);
-        sizePolicy10.setVerticalStretch(0);
-        sizePolicy10.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy10);
+        QSizePolicy sizePolicy8(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy8);
         widget->setMaximumSize(QSize(16777215, 100));
         verticalLayout_3 = new QVBoxLayout(widget);
         verticalLayout_3->setSpacing(0);
@@ -524,8 +527,11 @@ public:
 
         widget1 = new QWidget(centralwidget);
         widget1->setObjectName(QStringLiteral("widget1"));
-        sizePolicy5.setHeightForWidth(widget1->sizePolicy().hasHeightForWidth());
-        widget1->setSizePolicy(sizePolicy5);
+        QSizePolicy sizePolicy9(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy9.setHorizontalStretch(0);
+        sizePolicy9.setVerticalStretch(0);
+        sizePolicy9.setHeightForWidth(widget1->sizePolicy().hasHeightForWidth());
+        widget1->setSizePolicy(sizePolicy9);
         widget1->setMaximumSize(QSize(50, 100));
         verticalLayout_6 = new QVBoxLayout(widget1);
         verticalLayout_6->setSpacing(0);
@@ -566,11 +572,11 @@ public:
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
         attachedFileList = new QListWidget(centralwidget);
         attachedFileList->setObjectName(QStringLiteral("attachedFileList"));
-        QSizePolicy sizePolicy11(QSizePolicy::Expanding, QSizePolicy::Minimum);
-        sizePolicy11.setHorizontalStretch(1);
-        sizePolicy11.setVerticalStretch(0);
-        sizePolicy11.setHeightForWidth(attachedFileList->sizePolicy().hasHeightForWidth());
-        attachedFileList->setSizePolicy(sizePolicy11);
+        QSizePolicy sizePolicy10(QSizePolicy::Expanding, QSizePolicy::Minimum);
+        sizePolicy10.setHorizontalStretch(1);
+        sizePolicy10.setVerticalStretch(0);
+        sizePolicy10.setHeightForWidth(attachedFileList->sizePolicy().hasHeightForWidth());
+        attachedFileList->setSizePolicy(sizePolicy10);
         attachedFileList->setMinimumSize(QSize(80, 27));
         attachedFileList->setMaximumSize(QSize(16777215, 82));
 
@@ -578,11 +584,11 @@ public:
 
         deleteFile = new QPushButton(centralwidget);
         deleteFile->setObjectName(QStringLiteral("deleteFile"));
-        QSizePolicy sizePolicy12(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy12.setHorizontalStretch(0);
-        sizePolicy12.setVerticalStretch(1);
-        sizePolicy12.setHeightForWidth(deleteFile->sizePolicy().hasHeightForWidth());
-        deleteFile->setSizePolicy(sizePolicy12);
+        QSizePolicy sizePolicy11(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy11.setHorizontalStretch(0);
+        sizePolicy11.setVerticalStretch(1);
+        sizePolicy11.setHeightForWidth(deleteFile->sizePolicy().hasHeightForWidth());
+        deleteFile->setSizePolicy(sizePolicy11);
         deleteFile->setMaximumSize(QSize(50, 50));
         QIcon icon15;
         icon15.addFile(QStringLiteral(":/icon/res/document-remove.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -621,11 +627,11 @@ public:
         statusBar = new QStatusBar(MailBox);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         statusBar->setEnabled(true);
-        QSizePolicy sizePolicy13(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy13.setHorizontalStretch(0);
-        sizePolicy13.setVerticalStretch(0);
-        sizePolicy13.setHeightForWidth(statusBar->sizePolicy().hasHeightForWidth());
-        statusBar->setSizePolicy(sizePolicy13);
+        QSizePolicy sizePolicy12(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy12.setHorizontalStretch(0);
+        sizePolicy12.setVerticalStretch(0);
+        sizePolicy12.setHeightForWidth(statusBar->sizePolicy().hasHeightForWidth());
+        statusBar->setSizePolicy(sizePolicy12);
         MailBox->setStatusBar(statusBar);
         menubar = new QMenuBar(MailBox);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -705,54 +711,67 @@ public:
         previousAccount->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         previousAccount->setText(QString());
+        previousAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Left", 0));
 #ifndef QT_NO_TOOLTIP
         addAccount->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         addAccount->setText(QString());
+        addAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+A", 0));
 #ifndef QT_NO_TOOLTIP
         delAccount->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         delAccount->setText(QString());
+        delAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+S", 0));
 #ifndef QT_NO_TOOLTIP
         nextAccount->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         nextAccount->setText(QString());
+        nextAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Right", 0));
 #ifndef QT_NO_TOOLTIP
         inboxButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         inboxButton->setText(QString());
+        inboxButton->setShortcut(QApplication::translate("MailBox", "Ctrl+B", 0));
 #ifndef QT_NO_TOOLTIP
         newButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         newButton->setText(QString());
+        newButton->setShortcut(QApplication::translate("MailBox", "Ctrl+N", 0));
 #ifndef QT_NO_TOOLTIP
         repButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         repButton->setText(QString());
+        repButton->setShortcut(QApplication::translate("MailBox", "Ctrl+R", 0));
 #ifndef QT_NO_TOOLTIP
         repAllButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         repAllButton->setText(QString());
+        repAllButton->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+R", 0));
 #ifndef QT_NO_TOOLTIP
         transferButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         transferButton->setText(QString());
+        transferButton->setShortcut(QApplication::translate("MailBox", "Ctrl+T", 0));
 #ifndef QT_NO_TOOLTIP
         isolateButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         isolateButton->setText(QString());
+        isolateButton->setShortcut(QApplication::translate("MailBox", "Ctrl+I", 0));
 #ifndef QT_NO_TOOLTIP
         sendButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         sendButton->setText(QString());
+        sendButton->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+S", 0));
 #ifndef QT_NO_TOOLTIP
         cancelButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         cancelButton->setText(QString());
+        cancelButton->setShortcut(QApplication::translate("MailBox", "Esc", 0));
 #ifndef QT_NO_TOOLTIP
         deleteButton->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         deleteButton->setText(QString());
+        deleteButton->setShortcut(QApplication::translate("MailBox", "Ctrl+D", 0));
         emptyLabel->setText(QString());
         emptyLabel_2->setText(QString());
 #ifndef QT_NO_TOOLTIP
@@ -784,10 +803,12 @@ public:
         addressBook_2->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         addressBook_2->setText(QString());
+        addressBook_2->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+B", 0));
 #ifndef QT_NO_TOOLTIP
         addFileButton_2->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
         addFileButton_2->setText(QString());
+        addFileButton_2->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+F", 0));
 #ifndef QT_NO_TOOLTIP
         attachedFileList->setToolTip(QString());
 #endif // QT_NO_TOOLTIP

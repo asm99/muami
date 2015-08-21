@@ -1,3 +1,4 @@
+#include <QDesktopWidget>
 #include "src/gui/handleissues.h"
 #include "ui_handleissues.h"
 
@@ -6,6 +7,21 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     ui(new Ui::HandleIssues)
 {
     ui->setupUi(this);
+
+    this->setStyleSheet("QPushButton {"
+                               "background:#3eacd1;"
+                               "border:0px; "
+                               "border-top:1px solid qlineargradient"
+                                    "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                    "stop:0 rgba(38, 124, 153, 255), "
+                                    "stop:1 rgba(38, 124, 153, 255));"
+                               "border-right:1px solid qlineargradient"
+                                    "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                                    "stop:0 rgba(38, 124, 153, 255), "
+                                    "stop:1 rgba(38, 124, 153, 255));}");
+
+    ui->issueLabel->setStyleSheet("background:#252b2b; "
+                                  "color:#FFFFFF;");
 
     ui->issueLabel->setText(str);
 

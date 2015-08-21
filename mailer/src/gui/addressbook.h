@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QtCore>
 #include <QListWidgetItem>
+#include "src/gui/writemail.h"
 
 namespace Ui {
 class AddressBook;
@@ -17,6 +18,10 @@ class AddressBook : public QMainWindow
 public:
     explicit AddressBook(QWidget *parent = 0);
     ~AddressBook();
+
+    QStringList addresses ;
+
+    void loadAddressFile(QString);
     
 signals:
     void addToMail(QString);

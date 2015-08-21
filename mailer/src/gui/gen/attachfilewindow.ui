@@ -50,13 +50,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -69,8 +69,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>35</width>
-            <height>35</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
          </widget>
@@ -85,13 +85,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -104,8 +104,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>35</width>
-            <height>35</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
          </widget>
@@ -120,13 +120,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -139,8 +139,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>35</width>
-            <height>35</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
          </widget>
@@ -155,13 +155,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>98</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -174,8 +174,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>35</width>
-            <height>35</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
          </widget>
@@ -245,7 +245,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <property name="spacing">
             <number>0</number>
@@ -328,7 +328,6 @@
     </item>
    </layout>
    <zorder></zorder>
-   <zorder>infoLabel</zorder>
   </widget>
  </widget>
  <customwidgets>

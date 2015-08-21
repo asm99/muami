@@ -19,6 +19,8 @@ public:
     explicit WriteMail(QWidget *parent = 0, bool display = true);
     ~WriteMail();
 
+    QStringList addresses ;
+
     void addContent(QStringList content);
 
     void addFileToMail(QString);
@@ -76,8 +78,6 @@ private slots:
 
     void addFile(QString);
 
-    void changeButtonText(QListWidgetItem *);
-
     void deleteAttachedFile();
 
     void on_actionAttachFiletriggered();
@@ -85,6 +85,8 @@ private slots:
     void on_actionDeleteAddedFile_triggered();
 
     void addToAddressField(QString);
+
+    void loadAddressBook();
 
 private:
     Ui::WriteMail *ui;

@@ -9,13 +9,7 @@ int main(int argc, char *argv[])
     a.setStyleSheet(
         "QMainWindow    {background:#636b6b;}\
 \
-        QDialog     {background: qlineargradient"
-                                    "(spread:pad, x1:0 y1:0, x2:1 y2:1, "
-                                    "stop:0 rgba(84, 90, 95, 255), "
-                                    "stop:1 rgba(116, 147, 168, 255));\
-                     color:#DCE0E3;}\
-\
-        QPushButton {background:#3eacd1;\
+         QPushButton {background:#3eacd1;\
                         color:#FFFFFF;\
                         border:0px;\
                         border-bottom:1px solid qlineargradient"

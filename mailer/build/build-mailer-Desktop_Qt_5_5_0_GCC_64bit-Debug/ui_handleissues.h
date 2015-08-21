@@ -19,6 +19,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -31,6 +32,7 @@ public:
     QAction *actionSave;
     QVBoxLayout *verticalLayout;
     QLabel *issueLabel;
+    QWidget *widget;
     QHBoxLayout *horizontalLayout;
     QPushButton *okButton;
     QPushButton *ouiButton;
@@ -42,6 +44,11 @@ public:
         if (HandleIssues->objectName().isEmpty())
             HandleIssues->setObjectName(QStringLiteral("HandleIssues"));
         HandleIssues->resize(485, 178);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(HandleIssues->sizePolicy().hasHeightForWidth());
+        HandleIssues->setSizePolicy(sizePolicy);
         actionOui = new QAction(HandleIssues);
         actionOui->setObjectName(QStringLiteral("actionOui"));
         actionNon = new QAction(HandleIssues);
@@ -51,38 +58,76 @@ public:
         actionSave = new QAction(HandleIssues);
         actionSave->setObjectName(QStringLiteral("actionSave"));
         verticalLayout = new QVBoxLayout(HandleIssues);
+        verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
         issueLabel = new QLabel(HandleIssues);
         issueLabel->setObjectName(QStringLiteral("issueLabel"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(issueLabel->sizePolicy().hasHeightForWidth());
+        issueLabel->setSizePolicy(sizePolicy1);
         issueLabel->setAlignment(Qt::AlignCenter);
 
         verticalLayout->addWidget(issueLabel);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(9);
+        widget = new QWidget(HandleIssues);
+        widget->setObjectName(QStringLiteral("widget"));
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Maximum);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy2);
+        widget->setMaximumSize(QSize(16777215, 30));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        okButton = new QPushButton(HandleIssues);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        okButton = new QPushButton(widget);
         okButton->setObjectName(QStringLiteral("okButton"));
+        sizePolicy2.setHeightForWidth(okButton->sizePolicy().hasHeightForWidth());
+        okButton->setSizePolicy(sizePolicy2);
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icon/res/checkbox-marked-circle-outline.png"), QSize(), QIcon::Normal, QIcon::Off);
+        okButton->setIcon(icon);
+        okButton->setIconSize(QSize(20, 20));
 
         horizontalLayout->addWidget(okButton);
 
-        ouiButton = new QPushButton(HandleIssues);
+        ouiButton = new QPushButton(widget);
         ouiButton->setObjectName(QStringLiteral("ouiButton"));
+        sizePolicy2.setHeightForWidth(ouiButton->sizePolicy().hasHeightForWidth());
+        ouiButton->setSizePolicy(sizePolicy2);
+        ouiButton->setIcon(icon);
+        ouiButton->setIconSize(QSize(20, 20));
 
         horizontalLayout->addWidget(ouiButton);
 
-        nonButton = new QPushButton(HandleIssues);
+        nonButton = new QPushButton(widget);
         nonButton->setObjectName(QStringLiteral("nonButton"));
+        sizePolicy2.setHeightForWidth(nonButton->sizePolicy().hasHeightForWidth());
+        nonButton->setSizePolicy(sizePolicy2);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icon/res/close-circle-outline.png"), QSize(), QIcon::Normal, QIcon::Off);
+        nonButton->setIcon(icon1);
+        nonButton->setIconSize(QSize(20, 20));
 
         horizontalLayout->addWidget(nonButton);
 
-        saveButton = new QPushButton(HandleIssues);
+        saveButton = new QPushButton(widget);
         saveButton->setObjectName(QStringLiteral("saveButton"));
+        sizePolicy2.setHeightForWidth(saveButton->sizePolicy().hasHeightForWidth());
+        saveButton->setSizePolicy(sizePolicy2);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icon/res/stiffy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        saveButton->setIcon(icon2);
+        saveButton->setIconSize(QSize(20, 20));
 
         horizontalLayout->addWidget(saveButton);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout->addWidget(widget);
 
 
         retranslateUi(HandleIssues);
@@ -98,10 +143,10 @@ public:
         actionOk->setText(QApplication::translate("HandleIssues", "ok", 0));
         actionSave->setText(QApplication::translate("HandleIssues", "save", 0));
         issueLabel->setText(QString());
-        okButton->setText(QApplication::translate("HandleIssues", "OK", 0));
-        ouiButton->setText(QApplication::translate("HandleIssues", "Oui", 0));
-        nonButton->setText(QApplication::translate("HandleIssues", "Non", 0));
-        saveButton->setText(QApplication::translate("HandleIssues", "Sauvegarder", 0));
+        okButton->setText(QString());
+        ouiButton->setText(QString());
+        nonButton->setText(QString());
+        saveButton->setText(QString());
     } // retranslateUi
 
 };

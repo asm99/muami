@@ -50,7 +50,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -63,9 +63,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Q</string>
           </property>
          </widget>
         </item>
@@ -79,7 +82,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -159,9 +162,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+S</string>
           </property>
          </widget>
         </item>
@@ -175,7 +181,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -255,9 +261,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+S</string>
           </property>
          </widget>
         </item>
@@ -271,7 +280,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -287,9 +296,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+R</string>
           </property>
          </widget>
         </item>
@@ -303,7 +315,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -319,9 +331,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+R</string>
           </property>
          </widget>
         </item>
@@ -335,7 +350,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -351,9 +366,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+T</string>
           </property>
          </widget>
         </item>
@@ -367,7 +385,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -447,9 +465,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Esc</string>
           </property>
          </widget>
         </item>
@@ -463,7 +484,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>97</width>
+            <width>50</width>
             <height>16777215</height>
            </size>
           </property>
@@ -479,9 +500,12 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>48</width>
-            <height>48</height>
+            <width>40</width>
+            <height>40</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+D</string>
           </property>
          </widget>
         </item>
@@ -616,8 +640,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>40</width>
-                  <height>40</height>
+                  <width>35</width>
+                  <height>35</height>
                  </size>
                 </property>
                </widget>
@@ -648,8 +672,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>45</width>
-                  <height>45</height>
+                  <width>35</width>
+                  <height>35</height>
                  </size>
                 </property>
                </widget>
@@ -714,8 +738,8 @@
               </property>
               <property name="iconSize">
                <size>
-                <width>45</width>
-                <height>45</height>
+                <width>35</width>
+                <height>35</height>
                </size>
               </property>
              </widget>

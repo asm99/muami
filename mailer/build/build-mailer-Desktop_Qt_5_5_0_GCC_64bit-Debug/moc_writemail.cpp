@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_WriteMail_t {
-    QByteArrayData data[34];
-    char stringdata0[752];
+    QByteArrayData data[33];
+    char stringdata0[734];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -57,12 +57,11 @@ QT_MOC_LITERAL(24, 541, 22), // "on_closeButton_clicked"
 QT_MOC_LITERAL(25, 564, 20), // "openAttachFileWindow"
 QT_MOC_LITERAL(26, 585, 23), // "on_attachButton_clicked"
 QT_MOC_LITERAL(27, 609, 7), // "addFile"
-QT_MOC_LITERAL(28, 617, 16), // "changeButtonText"
-QT_MOC_LITERAL(29, 634, 16), // "QListWidgetItem*"
-QT_MOC_LITERAL(30, 651, 18), // "deleteAttachedFile"
-QT_MOC_LITERAL(31, 670, 28), // "on_actionAttachFiletriggered"
-QT_MOC_LITERAL(32, 699, 34), // "on_actionDeleteAddedFile_trig..."
-QT_MOC_LITERAL(33, 734, 17) // "addToAddressField"
+QT_MOC_LITERAL(28, 617, 18), // "deleteAttachedFile"
+QT_MOC_LITERAL(29, 636, 28), // "on_actionAttachFiletriggered"
+QT_MOC_LITERAL(30, 665, 34), // "on_actionDeleteAddedFile_trig..."
+QT_MOC_LITERAL(31, 700, 17), // "addToAddressField"
+QT_MOC_LITERAL(32, 718, 15) // "loadAddressBook"
 
     },
     "WriteMail\0on_cancelButton_clicked\0\0"
@@ -85,10 +84,9 @@ QT_MOC_LITERAL(33, 734, 17) // "addToAddressField"
     "on_deleteButton_clicked\0on_saveButton_clicked\0"
     "on_closeButton_clicked\0openAttachFileWindow\0"
     "on_attachButton_clicked\0addFile\0"
-    "changeButtonText\0QListWidgetItem*\0"
     "deleteAttachedFile\0on_actionAttachFiletriggered\0"
     "on_actionDeleteAddedFile_triggered\0"
-    "addToAddressField"
+    "addToAddressField\0loadAddressBook"
 };
 #undef QT_MOC_LITERAL
 
@@ -132,11 +130,11 @@ static const uint qt_meta_data_WriteMail[] = {
       25,    0,  192,    2, 0x08 /* Private */,
       26,    0,  193,    2, 0x08 /* Private */,
       27,    1,  194,    2, 0x08 /* Private */,
-      28,    1,  197,    2, 0x08 /* Private */,
-      30,    0,  200,    2, 0x08 /* Private */,
-      31,    0,  201,    2, 0x08 /* Private */,
-      32,    0,  202,    2, 0x08 /* Private */,
-      33,    1,  203,    2, 0x08 /* Private */,
+      28,    0,  197,    2, 0x08 /* Private */,
+      29,    0,  198,    2, 0x08 /* Private */,
+      30,    0,  199,    2, 0x08 /* Private */,
+      31,    1,  200,    2, 0x08 /* Private */,
+      32,    0,  203,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -165,11 +163,11 @@ static const uint qt_meta_data_WriteMail[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    2,
-    QMetaType::Void, 0x80000000 | 29,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -206,11 +204,11 @@ void WriteMail::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 23: _t->openAttachFileWindow(); break;
         case 24: _t->on_attachButton_clicked(); break;
         case 25: _t->addFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 26: _t->changeButtonText((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 27: _t->deleteAttachedFile(); break;
-        case 28: _t->on_actionAttachFiletriggered(); break;
-        case 29: _t->on_actionDeleteAddedFile_triggered(); break;
-        case 30: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 26: _t->deleteAttachedFile(); break;
+        case 27: _t->on_actionAttachFiletriggered(); break;
+        case 28: _t->on_actionDeleteAddedFile_triggered(); break;
+        case 29: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 30: _t->loadAddressBook(); break;
         default: ;
         }
     }

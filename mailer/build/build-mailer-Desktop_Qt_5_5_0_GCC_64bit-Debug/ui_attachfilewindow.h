@@ -44,7 +44,7 @@ public:
     QVBoxLayout *verticalLayout_2;
     QListWidget *folderList;
     QLineEdit *pathAccessor;
-    QWidget *widget;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_3;
     QListWidget *contentList;
     QHBoxLayout *horizontalLayout;
@@ -76,12 +76,12 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(leaveButton->sizePolicy().hasHeightForWidth());
         leaveButton->setSizePolicy(sizePolicy);
-        leaveButton->setMinimumSize(QSize(98, 0));
-        leaveButton->setMaximumSize(QSize(98, 16777215));
+        leaveButton->setMinimumSize(QSize(50, 0));
+        leaveButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon;
         icon.addFile(QStringLiteral(":/icon/res/browser-close-2.png"), QSize(), QIcon::Normal, QIcon::Off);
         leaveButton->setIcon(icon);
-        leaveButton->setIconSize(QSize(35, 35));
+        leaveButton->setIconSize(QSize(40, 40));
 
         verticalLayout->addWidget(leaveButton);
 
@@ -89,12 +89,12 @@ public:
         addButton->setObjectName(QStringLiteral("addButton"));
         sizePolicy.setHeightForWidth(addButton->sizePolicy().hasHeightForWidth());
         addButton->setSizePolicy(sizePolicy);
-        addButton->setMinimumSize(QSize(98, 0));
-        addButton->setMaximumSize(QSize(98, 16777215));
+        addButton->setMinimumSize(QSize(50, 0));
+        addButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon1;
         icon1.addFile(QStringLiteral(":/icon/res/document-add.png"), QSize(), QIcon::Normal, QIcon::Off);
         addButton->setIcon(icon1);
-        addButton->setIconSize(QSize(35, 35));
+        addButton->setIconSize(QSize(40, 40));
 
         verticalLayout->addWidget(addButton);
 
@@ -102,12 +102,12 @@ public:
         backButton->setObjectName(QStringLiteral("backButton"));
         sizePolicy.setHeightForWidth(backButton->sizePolicy().hasHeightForWidth());
         backButton->setSizePolicy(sizePolicy);
-        backButton->setMinimumSize(QSize(98, 0));
-        backButton->setMaximumSize(QSize(98, 16777215));
+        backButton->setMinimumSize(QSize(50, 0));
+        backButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/icon/res/out.png"), QSize(), QIcon::Normal, QIcon::Off);
         backButton->setIcon(icon2);
-        backButton->setIconSize(QSize(35, 35));
+        backButton->setIconSize(QSize(40, 40));
 
         verticalLayout->addWidget(backButton);
 
@@ -115,12 +115,12 @@ public:
         goButton->setObjectName(QStringLiteral("goButton"));
         sizePolicy.setHeightForWidth(goButton->sizePolicy().hasHeightForWidth());
         goButton->setSizePolicy(sizePolicy);
-        goButton->setMinimumSize(QSize(98, 0));
-        goButton->setMaximumSize(QSize(98, 16777215));
+        goButton->setMinimumSize(QSize(50, 0));
+        goButton->setMaximumSize(QSize(50, 16777215));
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/icon/res/in.png"), QSize(), QIcon::Normal, QIcon::Off);
         goButton->setIcon(icon3);
-        goButton->setIconSize(QSize(35, 35));
+        goButton->setIconSize(QSize(40, 40));
 
         verticalLayout->addWidget(goButton);
 
@@ -165,13 +165,13 @@ public:
         verticalLayout_2->addWidget(pathAccessor);
 
         splitter->addWidget(layoutWidget);
-        widget = new QWidget(splitter);
-        widget->setObjectName(QStringLiteral("widget"));
-        verticalLayout_3 = new QVBoxLayout(widget);
+        layoutWidget1 = new QWidget(splitter);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        verticalLayout_3 = new QVBoxLayout(layoutWidget1);
         verticalLayout_3->setSpacing(0);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        contentList = new QListWidget(widget);
+        contentList = new QListWidget(layoutWidget1);
         contentList->setObjectName(QStringLiteral("contentList"));
         QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(1);
@@ -185,12 +185,12 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        findFile = new QLineEdit(widget);
+        findFile = new QLineEdit(layoutWidget1);
         findFile->setObjectName(QStringLiteral("findFile"));
 
         horizontalLayout->addWidget(findFile);
 
-        infoLabel = new my_qlabel(widget);
+        infoLabel = new my_qlabel(layoutWidget1);
         infoLabel->setObjectName(QStringLiteral("infoLabel"));
         QSizePolicy sizePolicy4(QSizePolicy::Maximum, QSizePolicy::Maximum);
         sizePolicy4.setHorizontalStretch(0);
@@ -207,7 +207,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout);
 
-        splitter->addWidget(widget);
+        splitter->addWidget(layoutWidget1);
         splitter_2->addWidget(splitter);
         fileDetails = new QTextEdit(splitter_2);
         fileDetails->setObjectName(QStringLiteral("fileDetails"));
@@ -221,7 +221,6 @@ public:
         horizontalLayout_3->addLayout(horizontalLayout_2);
 
         AttachFileWindow->setCentralWidget(centralwidget);
-        infoLabel->raise();
 
         retranslateUi(AttachFileWindow);
 

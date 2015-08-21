@@ -108,6 +108,33 @@ void AddressBook::findAddress(QString address)
     }
 }
 
+void AddressBook::loadAddressFile(QString addressBook)
+{
+    QFile file(addressBook);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return;
+    }
+
+    QTextStream in(&file);
+    QString line = in.readLine(); // Retire le titre
+    line = in.readLine();
+    while(!line.isNull())
+    {
+        addresses.append(line);
+        line = in.readLine();
+    }
+
+    foreach(QString address, addresses)
+    {
+        QListWidgetItem *item = new QListWidgetItem(ui->addressList);
+        item->setText(address);
+        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Unchecked);
+        ui->addressList->addItem(item);
+    }
+}
+
 void AddressBook::clickToAdd()
 {
     for(int x = 0; x < ui->addressList->count(); x++)
