@@ -16,10 +16,12 @@ class AddressBook : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit AddressBook(QWidget *parent = 0);
+    explicit AddressBook(QWidget *parent = 0, QString addressBook = "");
     ~AddressBook();
 
     QStringList addresses ;
+
+    QString addressBookPath ;
 
     void loadAddressFile(QString);
     
@@ -27,7 +29,8 @@ signals:
     void addToMail(QString);
 
 private slots:
-    void addToBook();
+
+    void addAddressToBook();
 
     void findAddress(QString);
 

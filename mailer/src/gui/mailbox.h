@@ -144,6 +144,8 @@ private slots:
 
     void openAddressBook();
 
+    void loadAddressBook();
+
 private:
     Ui::MailBox *ui;
 

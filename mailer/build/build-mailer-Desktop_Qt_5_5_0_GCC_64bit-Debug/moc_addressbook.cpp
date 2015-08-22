@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_AddressBook_t {
     QByteArrayData data[10];
-    char stringdata0[117];
+    char stringdata0[124];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,16 +32,16 @@ static const qt_meta_stringdata_AddressBook_t qt_meta_stringdata_AddressBook = {
 QT_MOC_LITERAL(0, 0, 11), // "AddressBook"
 QT_MOC_LITERAL(1, 12, 9), // "addToMail"
 QT_MOC_LITERAL(2, 22, 0), // ""
-QT_MOC_LITERAL(3, 23, 9), // "addToBook"
-QT_MOC_LITERAL(4, 33, 11), // "findAddress"
-QT_MOC_LITERAL(5, 45, 10), // "clickToAdd"
-QT_MOC_LITERAL(6, 56, 15), // "forceAddAddress"
-QT_MOC_LITERAL(7, 72, 16), // "QListWidgetItem*"
-QT_MOC_LITERAL(8, 89, 13), // "deleteAddress"
-QT_MOC_LITERAL(9, 103, 13) // "confirmDelete"
+QT_MOC_LITERAL(3, 23, 16), // "addAddressToBook"
+QT_MOC_LITERAL(4, 40, 11), // "findAddress"
+QT_MOC_LITERAL(5, 52, 10), // "clickToAdd"
+QT_MOC_LITERAL(6, 63, 15), // "forceAddAddress"
+QT_MOC_LITERAL(7, 79, 16), // "QListWidgetItem*"
+QT_MOC_LITERAL(8, 96, 13), // "deleteAddress"
+QT_MOC_LITERAL(9, 110, 13) // "confirmDelete"
 
     },
-    "AddressBook\0addToMail\0\0addToBook\0"
+    "AddressBook\0addToMail\0\0addAddressToBook\0"
     "findAddress\0clickToAdd\0forceAddAddress\0"
     "QListWidgetItem*\0deleteAddress\0"
     "confirmDelete"
@@ -93,7 +93,7 @@ void AddressBook::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->addToMail((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 1: _t->addToBook(); break;
+        case 1: _t->addAddressToBook(); break;
         case 2: _t->findAddress((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 3: _t->clickToAdd(); break;
         case 4: _t->forceAddAddress((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;

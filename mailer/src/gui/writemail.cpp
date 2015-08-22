@@ -27,10 +27,6 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
     ui->attachedFiles->setVisible(false);
     ui->deleteFile->setVisible(false);
 
-    connect(ui->addressBookButton,
-            SIGNAL(clicked()),
-            SLOT(openAddressBook())) ;
-
     connect(ui->deleteFile,
             SIGNAL(clicked()),
             SLOT(deleteAttachedFile()));
@@ -160,7 +156,6 @@ void WriteMail::on_actionReply_triggered()
     // remplir les champs to, cc, etc..
 }
 
-
 void WriteMail::on_replyAllButton_clicked()
 {
     on_actionReplyAll_triggered();
@@ -176,7 +171,6 @@ void WriteMail::on_actionReplyAll_triggered()
     setStuff() ;
     // idem que reply
 }
-
 
 void WriteMail::on_transferButton_clicked()
 {
@@ -373,65 +367,68 @@ void WriteMail::addToAddressField(QString address)
 
 void WriteMail::loadAddressBook()
 {
-    QString addressBook = "" ;
-    QString dir = "";
-    QString appPath = qApp->applicationDirPath();
-
-    QDir *appliPath = new QDir(appPath);
-
-    QFileInfoList dirList = appliPath->entryInfoList();
-    foreach(QFileInfo fileInfo, dirList)
+    AddressBook *child = this->findChild<AddressBook *>();
+    if (!child)
     {
-        if (fileInfo.isDir())
+        QString addressBook = "" ;
+        QString dir = "";
+        QString appPath = qApp->applicationDirPath();
+
+        QDir *appliPath = new QDir(appPath);
+
+        QFileInfoList dirList = appliPath->entryInfoList();
+        foreach(QFileInfo fileInfo, dirList)
         {
-            QString dir = fileInfo.fileName() ;
-            if(dir == "usr")
+            if (fileInfo.isDir())
             {
-                dir = fileInfo.filePath();
-                QDir *usrPath = new QDir(dir);
-                QFileInfoList files = usrPath->entryInfoList();
-                foreach(QFileInfo fileInfo, files)
+                QString dir = fileInfo.fileName() ;
+                if(dir == "usr")
                 {
-                    if (fileInfo.isFile())
+                    dir = fileInfo.filePath();
+                    QDir *usrPath = new QDir(dir);
+                    QFileInfoList files = usrPath->entryInfoList();
+                    foreach(QFileInfo fileInfo, files)
                     {
-                        QString file = fileInfo.fileName() ;
-                        if(file == "address_book.txt")
+                        if (fileInfo.isFile())
                         {
-                            addressBook = dir.append("/");
-                            addressBook.append(file);
-                            AddressBook *child = this->findChild<AddressBook*>();
-                            if(child)
+                            QString file = fileInfo.fileName() ;
+                            if(file == "address_book.txt")
                             {
-                                child->loadAddressFile(addressBook);
+                                addressBook = dir.append("/");
+                                addressBook.append(file);
+                                break ;
                             }
-                            break ;
                         }
                     }
-                    else
-                    {
-                        continue;
-                    }
                 }
-            }
-            else
-            {
-                continue ;
+                else if (dir != "") break;
+                else continue ;
             }
         }
+
+        if(dir == "")
+        {
+            appliPath->mkdir("usr");
+            addressBook = appliPath->path();
+            addressBook.append("/usr/address_book.txt");
+            QFile file(addressBook);
+            if(file.open(QIODevice::ReadWrite))
+            {
+                QTextStream stream(&file);
+                stream << "Carnet d'adresses";
+                file.close();
+            }
+        }
+
+        AddressBook *book = new AddressBook(this, addressBook);
+        book->show();
+        delete child;
     }
 
-    if(dir == "")
+    else
     {
-        appliPath->mkdir("usr");
-        dir = appliPath->path();
-        dir.append("/usr/address_book.txt");
-        QFile file(dir);
-        if(file.open(QIODevice::ReadWrite))
-        {
-            QTextStream stream(&file);
-            stream << "Carnet d'adresses";
-            file.close();
-        }
+        child->close();
+        delete child ;
     }
 }
 /** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/

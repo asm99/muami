@@ -1,10 +1,11 @@
 #include <QDesktopWidget>
+#include <algorithm>
 #include "src/gui/addressbook.h"
 #include "src/gui/handleissues.h"
 #include "src/gui/writemail.h"
 #include "ui_addressbook.h"
 
-AddressBook::AddressBook(QWidget *parent) :
+AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     QMainWindow(parent),
     ui(new Ui::AddressBook)
 {
@@ -20,13 +21,17 @@ AddressBook::AddressBook(QWidget *parent) :
     this->setGeometry(800,0,400,600);
     ui->menuBar->hide();
 
+    addressBookPath = addressBook ;
+
+    loadAddressFile(addressBookPath);
+
     connect(ui->addToListButton,
             SIGNAL(clicked()),
-            SLOT(addToBook()));
+            SLOT(addAddressToBook()));
 
     connect(ui->addressField,
             SIGNAL(returnPressed()),
-            SLOT(addToBook()));
+            SLOT(addAddressToBook()));
 
     connect(ui->addressField,
             SIGNAL(textChanged(QString)),
@@ -64,7 +69,7 @@ AddressBook::~AddressBook()
     delete ui;
 }
 
-void AddressBook::addToBook()
+void AddressBook::addAddressToBook()
 {
     QRegExp mailRegex("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b") ;
     mailRegex.setCaseSensitivity(Qt::CaseInsensitive);
@@ -77,11 +82,37 @@ void AddressBook::addToBook()
     }
     else
     {
-        QListWidgetItem *item = new QListWidgetItem(ui->addressList);
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-        item->setCheckState(Qt::Unchecked);
-        item->setText(ui->addressField->text());
-        ui->addressList->addItem(item);
+        QFile file(addressBookPath);
+        if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            return;
+        }
+
+        QTextStream in(&file);
+        QString line = in.readLine(); // Retire le titre
+        addresses.clear();
+        line = in.readLine();
+        while(!line.isNull())
+        {
+            addresses.append(line);
+            line = in.readLine();
+        }
+        QString newAddress = ui->addressField->text();
+        in << newAddress << "\n";
+        addresses.append(newAddress);
+        file.close();
+
+        std::sort(addresses.begin(), addresses.end()) ;
+        ui->addressList->clear();
+
+        foreach(QString address, addresses)
+        {
+            QListWidgetItem *item = new QListWidgetItem(ui->addressList);
+            item->setText(address);
+            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+            item->setCheckState(Qt::Unchecked);
+            ui->addressList->addItem(item);
+        }
         ui->addressField->clear();
         ui->addressField->setPlaceholderText("L'adresse a été ajoutée");
     }
@@ -124,6 +155,8 @@ void AddressBook::loadAddressFile(QString addressBook)
         addresses.append(line);
         line = in.readLine();
     }
+    file.close();
+    std::sort(addresses.begin(), addresses.end()) ;
 
     foreach(QString address, addresses)
     {

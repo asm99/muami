@@ -96,7 +96,7 @@ MailBox::MailBox(QWidget *parent) :
 
     connect(ui->addressBook_2,
             SIGNAL(clicked()),
-            SLOT(openAddressBook()));
+            SLOT(loadAddressBook()));
 
     connect(ui->infoLabel,
             SIGNAL(mouseHover()),
@@ -938,6 +938,73 @@ void MailBox::openAddressBook()
     }
 }
 
+void MailBox::loadAddressBook()
+{
+    AddressBook *child = this->findChild<AddressBook *>();
+    if (!child)
+    {
+        QString addressBook = "" ;
+        QString dir = "";
+        QString appPath = qApp->applicationDirPath();
+
+        QDir *appliPath = new QDir(appPath);
+
+        QFileInfoList dirList = appliPath->entryInfoList();
+        foreach(QFileInfo fileInfo, dirList)
+        {
+            if (fileInfo.isDir())
+            {
+                QString dir = fileInfo.fileName() ;
+                if(dir == "usr")
+                {
+                    dir = fileInfo.filePath();
+                    QDir *usrPath = new QDir(dir);
+                    QFileInfoList files = usrPath->entryInfoList();
+                    foreach(QFileInfo fileInfo, files)
+                    {
+                        if (fileInfo.isFile())
+                        {
+                            QString file = fileInfo.fileName() ;
+                            if(file == "address_book.txt")
+                            {
+                                addressBook = dir.append("/");
+                                addressBook.append(file);
+                                break ;
+                            }
+                        }
+                    }
+                }
+                else if (dir != "") break;
+                else continue ;
+            }
+        }
+
+        if(dir == "")
+        {
+            appliPath->mkdir("usr");
+            addressBook = appliPath->path();
+            addressBook.append("/usr/address_book.txt");
+            QFile file(addressBook);
+            if(file.open(QIODevice::ReadWrite))
+            {
+                QTextStream stream(&file);
+                stream << "Carnet d'adresses";
+                file.close();
+            }
+        }
+
+        AddressBook *book = new AddressBook(this, addressBook);
+        book->show();
+        delete child;
+    }
+
+    else
+    {
+        child->close();
+        delete child ;
+    }
+}
+
 void MailBox::addToAddressField(QString address)
 {
     QString addresses = ui->to->text();
@@ -953,7 +1020,6 @@ void MailBox::addToAddressField(QString address)
         ui->to->setText(addresses);
     }
 }
-
 
 /** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/
 

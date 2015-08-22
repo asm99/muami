@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
                                      "stop:1 rgba(38, 124, 153, 255));}\
 \
         QListWidget {background-color: #FFFFFF;"
-                     "color:#252b2b;\
+                    "color:#252b2b;\
                      font-weight:600;\
                          border:0px;\
                          border-bottom:1px solid qlineargradient"

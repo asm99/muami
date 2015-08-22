@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MailBox_t {
-    QByteArrayData data[65];
-    char stringdata0[1288];
+    QByteArrayData data[66];
+    char stringdata0[1304];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -93,7 +93,8 @@ QT_MOC_LITERAL(60, 1135, 46), // "on_actionAttacher_des_pi_ces_..."
 QT_MOC_LITERAL(61, 1182, 44), // "on_actionSupprimer_la_pi_ce_j..."
 QT_MOC_LITERAL(62, 1227, 26), // "on_actionEnvoyer_triggered"
 QT_MOC_LITERAL(63, 1254, 17), // "addToAddressField"
-QT_MOC_LITERAL(64, 1272, 15) // "openAddressBook"
+QT_MOC_LITERAL(64, 1272, 15), // "openAddressBook"
+QT_MOC_LITERAL(65, 1288, 15) // "loadAddressBook"
 
     },
     "MailBox\0showInfo\0\0inboxBarInfo1\0"
@@ -134,7 +135,7 @@ QT_MOC_LITERAL(64, 1272, 15) // "openAddressBook"
     "on_actionAttacher_des_pi_ces_jointes_triggered\0"
     "on_actionSupprimer_la_pi_ce_jointe_triggered\0"
     "on_actionEnvoyer_triggered\0addToAddressField\0"
-    "openAddressBook"
+    "openAddressBook\0loadAddressBook"
 };
 #undef QT_MOC_LITERAL
 
@@ -144,7 +145,7 @@ static const uint qt_meta_data_MailBox[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      60,   14, // methods
+      61,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -152,66 +153,67 @@ static const uint qt_meta_data_MailBox[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  314,    2, 0x08 /* Private */,
-       3,    0,  315,    2, 0x08 /* Private */,
-       4,    0,  316,    2, 0x08 /* Private */,
-       5,    0,  317,    2, 0x08 /* Private */,
-       6,    0,  318,    2, 0x08 /* Private */,
-       7,    0,  319,    2, 0x08 /* Private */,
-       8,    2,  320,    2, 0x08 /* Private */,
-      10,    1,  325,    2, 0x08 /* Private */,
-      12,    1,  328,    2, 0x08 /* Private */,
-      13,    1,  331,    2, 0x08 /* Private */,
-      15,    1,  334,    2, 0x08 /* Private */,
-      16,    1,  337,    2, 0x08 /* Private */,
-      17,    0,  340,    2, 0x08 /* Private */,
-      18,    0,  341,    2, 0x08 /* Private */,
-      19,    0,  342,    2, 0x08 /* Private */,
-      20,    0,  343,    2, 0x08 /* Private */,
-      21,    0,  344,    2, 0x08 /* Private */,
-      22,    0,  345,    2, 0x08 /* Private */,
-      23,    0,  346,    2, 0x08 /* Private */,
-      24,    1,  347,    2, 0x08 /* Private */,
-      25,    0,  350,    2, 0x08 /* Private */,
-      26,    0,  351,    2, 0x08 /* Private */,
-      27,    0,  352,    2, 0x08 /* Private */,
-      28,    2,  353,    2, 0x08 /* Private */,
-      29,    2,  358,    2, 0x08 /* Private */,
-      30,    0,  363,    2, 0x08 /* Private */,
-      31,    0,  364,    2, 0x08 /* Private */,
-      32,    0,  365,    2, 0x08 /* Private */,
-      33,    0,  366,    2, 0x08 /* Private */,
-      34,    0,  367,    2, 0x08 /* Private */,
-      35,    0,  368,    2, 0x08 /* Private */,
-      36,    0,  369,    2, 0x08 /* Private */,
-      37,    0,  370,    2, 0x08 /* Private */,
-      38,    0,  371,    2, 0x08 /* Private */,
-      39,    0,  372,    2, 0x08 /* Private */,
-      40,    0,  373,    2, 0x08 /* Private */,
-      41,    0,  374,    2, 0x08 /* Private */,
-      42,    0,  375,    2, 0x08 /* Private */,
-      43,    0,  376,    2, 0x08 /* Private */,
-      44,    1,  377,    2, 0x08 /* Private */,
-      45,    1,  380,    2, 0x08 /* Private */,
-      46,    1,  383,    2, 0x08 /* Private */,
-      47,    1,  386,    2, 0x08 /* Private */,
-      48,    0,  389,    2, 0x08 /* Private */,
-      49,    0,  390,    2, 0x08 /* Private */,
-      50,    0,  391,    2, 0x08 /* Private */,
-      51,    0,  392,    2, 0x08 /* Private */,
-      52,    0,  393,    2, 0x08 /* Private */,
-      53,    0,  394,    2, 0x08 /* Private */,
-      54,    0,  395,    2, 0x08 /* Private */,
-      55,    0,  396,    2, 0x08 /* Private */,
-      56,    0,  397,    2, 0x08 /* Private */,
-      57,    1,  398,    2, 0x08 /* Private */,
-      58,    0,  401,    2, 0x08 /* Private */,
-      59,    0,  402,    2, 0x08 /* Private */,
-      60,    0,  403,    2, 0x08 /* Private */,
-      61,    0,  404,    2, 0x08 /* Private */,
-      62,    0,  405,    2, 0x08 /* Private */,
-      63,    1,  406,    2, 0x08 /* Private */,
-      64,    0,  409,    2, 0x08 /* Private */,
+       1,    0,  319,    2, 0x08 /* Private */,
+       3,    0,  320,    2, 0x08 /* Private */,
+       4,    0,  321,    2, 0x08 /* Private */,
+       5,    0,  322,    2, 0x08 /* Private */,
+       6,    0,  323,    2, 0x08 /* Private */,
+       7,    0,  324,    2, 0x08 /* Private */,
+       8,    2,  325,    2, 0x08 /* Private */,
+      10,    1,  330,    2, 0x08 /* Private */,
+      12,    1,  333,    2, 0x08 /* Private */,
+      13,    1,  336,    2, 0x08 /* Private */,
+      15,    1,  339,    2, 0x08 /* Private */,
+      16,    1,  342,    2, 0x08 /* Private */,
+      17,    0,  345,    2, 0x08 /* Private */,
+      18,    0,  346,    2, 0x08 /* Private */,
+      19,    0,  347,    2, 0x08 /* Private */,
+      20,    0,  348,    2, 0x08 /* Private */,
+      21,    0,  349,    2, 0x08 /* Private */,
+      22,    0,  350,    2, 0x08 /* Private */,
+      23,    0,  351,    2, 0x08 /* Private */,
+      24,    1,  352,    2, 0x08 /* Private */,
+      25,    0,  355,    2, 0x08 /* Private */,
+      26,    0,  356,    2, 0x08 /* Private */,
+      27,    0,  357,    2, 0x08 /* Private */,
+      28,    2,  358,    2, 0x08 /* Private */,
+      29,    2,  363,    2, 0x08 /* Private */,
+      30,    0,  368,    2, 0x08 /* Private */,
+      31,    0,  369,    2, 0x08 /* Private */,
+      32,    0,  370,    2, 0x08 /* Private */,
+      33,    0,  371,    2, 0x08 /* Private */,
+      34,    0,  372,    2, 0x08 /* Private */,
+      35,    0,  373,    2, 0x08 /* Private */,
+      36,    0,  374,    2, 0x08 /* Private */,
+      37,    0,  375,    2, 0x08 /* Private */,
+      38,    0,  376,    2, 0x08 /* Private */,
+      39,    0,  377,    2, 0x08 /* Private */,
+      40,    0,  378,    2, 0x08 /* Private */,
+      41,    0,  379,    2, 0x08 /* Private */,
+      42,    0,  380,    2, 0x08 /* Private */,
+      43,    0,  381,    2, 0x08 /* Private */,
+      44,    1,  382,    2, 0x08 /* Private */,
+      45,    1,  385,    2, 0x08 /* Private */,
+      46,    1,  388,    2, 0x08 /* Private */,
+      47,    1,  391,    2, 0x08 /* Private */,
+      48,    0,  394,    2, 0x08 /* Private */,
+      49,    0,  395,    2, 0x08 /* Private */,
+      50,    0,  396,    2, 0x08 /* Private */,
+      51,    0,  397,    2, 0x08 /* Private */,
+      52,    0,  398,    2, 0x08 /* Private */,
+      53,    0,  399,    2, 0x08 /* Private */,
+      54,    0,  400,    2, 0x08 /* Private */,
+      55,    0,  401,    2, 0x08 /* Private */,
+      56,    0,  402,    2, 0x08 /* Private */,
+      57,    1,  403,    2, 0x08 /* Private */,
+      58,    0,  406,    2, 0x08 /* Private */,
+      59,    0,  407,    2, 0x08 /* Private */,
+      60,    0,  408,    2, 0x08 /* Private */,
+      61,    0,  409,    2, 0x08 /* Private */,
+      62,    0,  410,    2, 0x08 /* Private */,
+      63,    1,  411,    2, 0x08 /* Private */,
+      64,    0,  414,    2, 0x08 /* Private */,
+      65,    0,  415,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -273,6 +275,7 @@ static const uint qt_meta_data_MailBox[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -344,6 +347,7 @@ void MailBox::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 57: _t->on_actionEnvoyer_triggered(); break;
         case 58: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 59: _t->openAddressBook(); break;
+        case 60: _t->loadAddressBook(); break;
         default: ;
         }
     }
@@ -374,13 +378,13 @@ int MailBox::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 60)
+        if (_id < 61)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 60;
+        _id -= 61;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 60)
+        if (_id < 61)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 60;
+        _id -= 61;
     }
     return _id;
 }
