@@ -2,10 +2,10 @@
 #include <QDesktopWidget>
 #include <QWidget>
 #include <QMouseEvent>
+#include <QCompleter>
 #include "ui_mailbox.h"
 #include "src/gui/mailbox.h"
 #include "src/gui/writemail.h"
-#include "src/gui/addaccount.h"
 #include "src/gui/handleissues.h"
 #include "src/gui/attachfilewindow.h"
 #include "src/gui/addressbook.h"
@@ -31,6 +31,8 @@ MailBox::MailBox(QWidget *parent) :
     ui->deleteFile->setVisible(false);
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->attachedFileList->setVisible(false);
+    ui->accountLabel1->setVisible(false);
+    ui->accountLabel2->setVisible(false);
 
     ui->displayer->setReadOnly(true);
     ui->displayer->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
@@ -48,6 +50,8 @@ MailBox::MailBox(QWidget *parent) :
     groupBoxButtonStyle();
     listStyle();
 
+    loadAddressFile();
+    ui->infoLabel->setEnabled(false); //INFO LABEL DISABLED
     ui->inbox->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->inbox,
             SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -96,7 +100,7 @@ MailBox::MailBox(QWidget *parent) :
 
     connect(ui->addressBook_2,
             SIGNAL(clicked()),
-            SLOT(loadAddressBook()));
+            SLOT(showAddressBook()));
 
     connect(ui->infoLabel,
             SIGNAL(mouseHover()),
@@ -109,6 +113,10 @@ MailBox::MailBox(QWidget *parent) :
     connect(ui->infoLabel,
             SIGNAL(mouseClick()),
             SLOT(inboxBarInfo1()));
+
+    connect(ui->accountLabel2,
+            SIGNAL(returnPressed()),
+            SLOT(addNewAccount()));
 }
 
 
@@ -261,6 +269,7 @@ void MailBox::on_actionNouveau_courrier_triggered()
 {
     WriteMail *new_mail = new WriteMail(this) ;
     new_mail->show();
+    new_mail->getAddressesListFromMailBox(addressesBook);
     toggleFields(false) ;
 }
 /** ~~ Créer un courrier ~~ **/
@@ -716,28 +725,65 @@ void MailBox::showAccount(QString tabName, QString accountName)
 /** ++ Ajout de comptes ++ **/
 void MailBox::on_addAccount_clicked()
 {
-    on_actionAdd_triggered() ;
+    on_actionAdd_triggered();
 }
 
 void MailBox::on_actionAdd_triggered()
 {
-    AddAccount *box = new AddAccount(this) ;
-    box->show();
+    if (!ui->accountLabel1->isVisible())
+    {
+        ui->accountLabel1->setVisible(true);
+        ui->accountLabel2->setVisible(true);
+
+        if (!accountList.length() == 0)
+        {
+            ui->accountLabel1->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+            ui->accountLabel2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+            ui->accountLabel1->setMaximumWidth(200);
+            ui->accountLabel2->setMaximumWidth(200);
+            toggleAccountPanel(true);
+        }
+
+        else if(accountList.length() == 0)
+        {
+            ui->accountLabel1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+            ui->accountLabel2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+            ui->accountLabel1->setMaximumWidth(9999999);
+            ui->accountLabel2->setMaximumWidth(9999999);
+        }
+    }
+    else
+    {
+        ui->accountLabel1->setVisible(false);
+        ui->accountLabel2->setVisible(false);
+    }
 }
 
-void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE POPUP POUR AJOUTER LES CHAMPS NECESSAIRES
+void MailBox::addNewAccount() // MODIFIER LE POPUP POUR AJOUTER LES CHAMPS NECESSAIRES
 {                                                                 // A LA PRISE EN CHARGE D'UN NOUVEAU COMPTE
+    QString tabName = ui->accountLabel1->text();
+    QString accountName = ui->accountLabel2->text();
+    QString issues ;
+    if (accountName.length() == 0) issues.append("- Il manque le nom du compte\n");
+    if (tabName.length() == 0) issues.append("- Il manque le path du compte");
+    if (issues.length() != 0)
+    {
+        HandleIssues *box = new HandleIssues(this, issues, "account");
+        box->show();
+        return;
+    }
+
     toggleNakedApp(false);
 
     QStringList account ;
-    account.append(tabName);
-    account.append(accountName);
+    account.append(ui->accountLabel1->text());
+    account.append(ui->accountLabel2->text());
 
     accountList.append(account);
 
     ui->inbox->clear();
-    ui->inbox->setWhatsThis(tabName);
-    QDir *path = new QDir(accountName);
+    ui->inbox->setWhatsThis(ui->accountLabel1->text());
+    QDir *path = new QDir(ui->accountLabel2->text());
 
     QFileInfoList filesList = path->entryInfoList();
 
@@ -751,6 +797,10 @@ void MailBox::addNewAccount(QString tabName, QString accountName) // MODIFIER LE
             item->setSizeHint(QSize(item->sizeHint().width(), 30));
         }
     }
+    ui->accountLabel1->setVisible(false);
+    ui->accountLabel2->setVisible(false);
+    ui->accountLabel1->clear();
+    ui->accountLabel2->clear();
 }
 /** ~~ Ajout de comptes ~~ **/
 
@@ -922,23 +972,63 @@ void MailBox::deleteFileAction()
     }
 }
 
-void MailBox::openAddressBook()
+void MailBox::loadAddressFile()
 {
-    AddressBook *child = this->findChild<AddressBook *>();
-    if (!child)
+    QString path = qApp->applicationDirPath();
+    path.append("/usr/address_book.txt");
+
+    QFile file(path);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        AddressBook *book = new AddressBook(this);
-        book->show();
-        delete child ;
+        return;
     }
-    else
+
+    QTextStream in(&file);
+    QString line = in.readLine(); // Retire le titre
+    line = in.readLine();
+    addressesBook.clear();
+    while(!line.isNull())
     {
-        child->close();
-        delete child ;
+        addressesBook.append(line);
+        line = in.readLine();
+    }
+    file.close();
+
+    QCompleter *completer = new QCompleter(addressesBook, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->to->setCompleter(completer);
+    ui->cc->setCompleter(completer);
+    ui->bcc->setCompleter(completer);
+}
+
+void MailBox::getAddressesListFromBook(QStringList addressesList)
+{
+    addressesBook = addressesList ;
+
+    QCompleter *completer = new QCompleter(addressesBook, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->to->setCompleter(completer);
+    ui->cc->setCompleter(completer);
+    ui->bcc->setCompleter(completer);
+    WriteMail *child = this->findChild<WriteMail *>();
+    if(child)
+    {
+        child->getAddressesListFromMailBox(addressesBook);
     }
 }
 
-void MailBox::loadAddressBook()
+void MailBox::getAddressesListFromNewMail(QStringList addressesList)
+{
+    addressesBook = addressesList ;
+
+    QCompleter *completer = new QCompleter(addressesBook, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->to->setCompleter(completer);
+    ui->cc->setCompleter(completer);
+    ui->bcc->setCompleter(completer);
+}
+
+void MailBox::showAddressBook()
 {
     AddressBook *child = this->findChild<AddressBook *>();
     if (!child)
@@ -1140,6 +1230,7 @@ void MailBox::toggleAccountPanel(bool n)
     ui->nextAccount->setVisible(n);
     ui->addAccount->setVisible(n);
     ui->delAccount->setVisible(n);
+    ui->groupInbox->setVisible(n);
 }
 
 void MailBox::inboxButtonsStyle()

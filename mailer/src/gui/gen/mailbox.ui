@@ -94,6 +94,20 @@
          </widget>
         </item>
         <item>
+         <widget class="QLineEdit" name="accountLabel1">
+          <property name="placeholderText">
+           <string>Info 1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="accountLabel2">
+          <property name="placeholderText">
+           <string>Info 2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QWidget" name="groupInbox" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">

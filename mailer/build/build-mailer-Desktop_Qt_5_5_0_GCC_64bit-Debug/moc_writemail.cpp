@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_WriteMail_t {
-    QByteArrayData data[33];
-    char stringdata0[734];
+    QByteArrayData data[36];
+    char stringdata0[814];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,42 +30,48 @@ struct qt_meta_stringdata_WriteMail_t {
 static const qt_meta_stringdata_WriteMail_t qt_meta_stringdata_WriteMail = {
     {
 QT_MOC_LITERAL(0, 0, 9), // "WriteMail"
-QT_MOC_LITERAL(1, 10, 23), // "on_cancelButton_clicked"
-QT_MOC_LITERAL(2, 34, 0), // ""
-QT_MOC_LITERAL(3, 35, 15), // "openAddressBook"
-QT_MOC_LITERAL(4, 51, 23), // "on_actionSend_triggered"
-QT_MOC_LITERAL(5, 75, 24), // "on_actionReply_triggered"
-QT_MOC_LITERAL(6, 100, 27), // "on_actionReplyAll_triggered"
-QT_MOC_LITERAL(7, 128, 27), // "on_actionTransfer_triggered"
-QT_MOC_LITERAL(8, 156, 25), // "on_actionDelete_triggered"
-QT_MOC_LITERAL(9, 182, 25), // "on_actionCancel_triggered"
-QT_MOC_LITERAL(10, 208, 23), // "on_actionSave_triggered"
-QT_MOC_LITERAL(11, 232, 24), // "on_actionClose_triggered"
-QT_MOC_LITERAL(12, 257, 8), // "setStuff"
-QT_MOC_LITERAL(13, 266, 13), // "sendConfirmed"
-QT_MOC_LITERAL(14, 280, 21), // "on_sendButton_clicked"
-QT_MOC_LITERAL(15, 302, 26), // "on_actionEnvoyer_triggered"
-QT_MOC_LITERAL(16, 329, 22), // "on_replyButton_clicked"
-QT_MOC_LITERAL(17, 352, 27), // "on_actionR_pondre_triggered"
-QT_MOC_LITERAL(18, 380, 32), // "on_actionR_pondre_tous_triggered"
-QT_MOC_LITERAL(19, 413, 25), // "on_replyAllButton_clicked"
-QT_MOC_LITERAL(20, 439, 29), // "on_actionTransf_rer_triggered"
-QT_MOC_LITERAL(21, 469, 25), // "on_transferButton_clicked"
-QT_MOC_LITERAL(22, 495, 23), // "on_deleteButton_clicked"
-QT_MOC_LITERAL(23, 519, 21), // "on_saveButton_clicked"
-QT_MOC_LITERAL(24, 541, 22), // "on_closeButton_clicked"
-QT_MOC_LITERAL(25, 564, 20), // "openAttachFileWindow"
-QT_MOC_LITERAL(26, 585, 23), // "on_attachButton_clicked"
-QT_MOC_LITERAL(27, 609, 7), // "addFile"
-QT_MOC_LITERAL(28, 617, 18), // "deleteAttachedFile"
-QT_MOC_LITERAL(29, 636, 28), // "on_actionAttachFiletriggered"
-QT_MOC_LITERAL(30, 665, 34), // "on_actionDeleteAddedFile_trig..."
-QT_MOC_LITERAL(31, 700, 17), // "addToAddressField"
-QT_MOC_LITERAL(32, 718, 15) // "loadAddressBook"
+QT_MOC_LITERAL(1, 10, 26), // "sendAddressesListToMailBox"
+QT_MOC_LITERAL(2, 37, 0), // ""
+QT_MOC_LITERAL(3, 38, 24), // "getAddressesListFromBook"
+QT_MOC_LITERAL(4, 63, 27), // "getAddressesListFromMailBox"
+QT_MOC_LITERAL(5, 91, 23), // "on_cancelButton_clicked"
+QT_MOC_LITERAL(6, 115, 15), // "openAddressBook"
+QT_MOC_LITERAL(7, 131, 23), // "on_actionSend_triggered"
+QT_MOC_LITERAL(8, 155, 24), // "on_actionReply_triggered"
+QT_MOC_LITERAL(9, 180, 27), // "on_actionReplyAll_triggered"
+QT_MOC_LITERAL(10, 208, 27), // "on_actionTransfer_triggered"
+QT_MOC_LITERAL(11, 236, 25), // "on_actionDelete_triggered"
+QT_MOC_LITERAL(12, 262, 25), // "on_actionCancel_triggered"
+QT_MOC_LITERAL(13, 288, 23), // "on_actionSave_triggered"
+QT_MOC_LITERAL(14, 312, 24), // "on_actionClose_triggered"
+QT_MOC_LITERAL(15, 337, 8), // "setStuff"
+QT_MOC_LITERAL(16, 346, 13), // "sendConfirmed"
+QT_MOC_LITERAL(17, 360, 21), // "on_sendButton_clicked"
+QT_MOC_LITERAL(18, 382, 26), // "on_actionEnvoyer_triggered"
+QT_MOC_LITERAL(19, 409, 22), // "on_replyButton_clicked"
+QT_MOC_LITERAL(20, 432, 27), // "on_actionR_pondre_triggered"
+QT_MOC_LITERAL(21, 460, 32), // "on_actionR_pondre_tous_triggered"
+QT_MOC_LITERAL(22, 493, 25), // "on_replyAllButton_clicked"
+QT_MOC_LITERAL(23, 519, 29), // "on_actionTransf_rer_triggered"
+QT_MOC_LITERAL(24, 549, 25), // "on_transferButton_clicked"
+QT_MOC_LITERAL(25, 575, 23), // "on_deleteButton_clicked"
+QT_MOC_LITERAL(26, 599, 21), // "on_saveButton_clicked"
+QT_MOC_LITERAL(27, 621, 22), // "on_closeButton_clicked"
+QT_MOC_LITERAL(28, 644, 20), // "openAttachFileWindow"
+QT_MOC_LITERAL(29, 665, 23), // "on_attachButton_clicked"
+QT_MOC_LITERAL(30, 689, 7), // "addFile"
+QT_MOC_LITERAL(31, 697, 18), // "deleteAttachedFile"
+QT_MOC_LITERAL(32, 716, 28), // "on_actionAttachFiletriggered"
+QT_MOC_LITERAL(33, 745, 34), // "on_actionDeleteAddedFile_trig..."
+QT_MOC_LITERAL(34, 780, 17), // "addToAddressField"
+QT_MOC_LITERAL(35, 798, 15) // "showAddressBook"
 
     },
-    "WriteMail\0on_cancelButton_clicked\0\0"
-    "openAddressBook\0on_actionSend_triggered\0"
+    "WriteMail\0sendAddressesListToMailBox\0"
+    "\0getAddressesListFromBook\0"
+    "getAddressesListFromMailBox\0"
+    "on_cancelButton_clicked\0openAddressBook\0"
+    "on_actionSend_triggered\0"
     "on_actionReply_triggered\0"
     "on_actionReplyAll_triggered\0"
     "on_actionTransfer_triggered\0"
@@ -86,7 +92,7 @@ QT_MOC_LITERAL(32, 718, 15) // "loadAddressBook"
     "on_attachButton_clicked\0addFile\0"
     "deleteAttachedFile\0on_actionAttachFiletriggered\0"
     "on_actionDeleteAddedFile_triggered\0"
-    "addToAddressField\0loadAddressBook"
+    "addToAddressField\0showAddressBook"
 };
 #undef QT_MOC_LITERAL
 
@@ -96,47 +102,57 @@ static const uint qt_meta_data_WriteMail[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      31,   14, // methods
+      34,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags
+       1,    1,  184,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  169,    2, 0x08 /* Private */,
-       3,    0,  170,    2, 0x08 /* Private */,
-       4,    0,  171,    2, 0x08 /* Private */,
-       5,    0,  172,    2, 0x08 /* Private */,
-       6,    0,  173,    2, 0x08 /* Private */,
-       7,    0,  174,    2, 0x08 /* Private */,
-       8,    0,  175,    2, 0x08 /* Private */,
-       9,    0,  176,    2, 0x08 /* Private */,
-      10,    0,  177,    2, 0x08 /* Private */,
-      11,    0,  178,    2, 0x08 /* Private */,
-      12,    0,  179,    2, 0x08 /* Private */,
-      13,    0,  180,    2, 0x08 /* Private */,
-      14,    0,  181,    2, 0x08 /* Private */,
-      15,    0,  182,    2, 0x08 /* Private */,
-      16,    0,  183,    2, 0x08 /* Private */,
-      17,    0,  184,    2, 0x08 /* Private */,
-      18,    0,  185,    2, 0x08 /* Private */,
-      19,    0,  186,    2, 0x08 /* Private */,
-      20,    0,  187,    2, 0x08 /* Private */,
-      21,    0,  188,    2, 0x08 /* Private */,
-      22,    0,  189,    2, 0x08 /* Private */,
-      23,    0,  190,    2, 0x08 /* Private */,
-      24,    0,  191,    2, 0x08 /* Private */,
-      25,    0,  192,    2, 0x08 /* Private */,
-      26,    0,  193,    2, 0x08 /* Private */,
-      27,    1,  194,    2, 0x08 /* Private */,
-      28,    0,  197,    2, 0x08 /* Private */,
-      29,    0,  198,    2, 0x08 /* Private */,
-      30,    0,  199,    2, 0x08 /* Private */,
-      31,    1,  200,    2, 0x08 /* Private */,
-      32,    0,  203,    2, 0x08 /* Private */,
+       3,    1,  187,    2, 0x0a /* Public */,
+       4,    1,  190,    2, 0x0a /* Public */,
+       5,    0,  193,    2, 0x08 /* Private */,
+       6,    0,  194,    2, 0x08 /* Private */,
+       7,    0,  195,    2, 0x08 /* Private */,
+       8,    0,  196,    2, 0x08 /* Private */,
+       9,    0,  197,    2, 0x08 /* Private */,
+      10,    0,  198,    2, 0x08 /* Private */,
+      11,    0,  199,    2, 0x08 /* Private */,
+      12,    0,  200,    2, 0x08 /* Private */,
+      13,    0,  201,    2, 0x08 /* Private */,
+      14,    0,  202,    2, 0x08 /* Private */,
+      15,    0,  203,    2, 0x08 /* Private */,
+      16,    0,  204,    2, 0x08 /* Private */,
+      17,    0,  205,    2, 0x08 /* Private */,
+      18,    0,  206,    2, 0x08 /* Private */,
+      19,    0,  207,    2, 0x08 /* Private */,
+      20,    0,  208,    2, 0x08 /* Private */,
+      21,    0,  209,    2, 0x08 /* Private */,
+      22,    0,  210,    2, 0x08 /* Private */,
+      23,    0,  211,    2, 0x08 /* Private */,
+      24,    0,  212,    2, 0x08 /* Private */,
+      25,    0,  213,    2, 0x08 /* Private */,
+      26,    0,  214,    2, 0x08 /* Private */,
+      27,    0,  215,    2, 0x08 /* Private */,
+      28,    0,  216,    2, 0x08 /* Private */,
+      29,    0,  217,    2, 0x08 /* Private */,
+      30,    1,  218,    2, 0x08 /* Private */,
+      31,    0,  221,    2, 0x08 /* Private */,
+      32,    0,  222,    2, 0x08 /* Private */,
+      33,    0,  223,    2, 0x08 /* Private */,
+      34,    1,  224,    2, 0x08 /* Private */,
+      35,    0,  227,    2, 0x08 /* Private */,
+
+ // signals: parameters
+    QMetaType::Void, QMetaType::QStringList,    2,
 
  // slots: parameters
+    QMetaType::Void, QMetaType::QStringList,    2,
+    QMetaType::Void, QMetaType::QStringList,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -178,38 +194,50 @@ void WriteMail::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         WriteMail *_t = static_cast<WriteMail *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_cancelButton_clicked(); break;
-        case 1: _t->openAddressBook(); break;
-        case 2: _t->on_actionSend_triggered(); break;
-        case 3: _t->on_actionReply_triggered(); break;
-        case 4: _t->on_actionReplyAll_triggered(); break;
-        case 5: _t->on_actionTransfer_triggered(); break;
-        case 6: _t->on_actionDelete_triggered(); break;
-        case 7: _t->on_actionCancel_triggered(); break;
-        case 8: _t->on_actionSave_triggered(); break;
-        case 9: _t->on_actionClose_triggered(); break;
-        case 10: _t->setStuff(); break;
-        case 11: _t->sendConfirmed(); break;
-        case 12: _t->on_sendButton_clicked(); break;
-        case 13: _t->on_actionEnvoyer_triggered(); break;
-        case 14: _t->on_replyButton_clicked(); break;
-        case 15: _t->on_actionR_pondre_triggered(); break;
-        case 16: _t->on_actionR_pondre_tous_triggered(); break;
-        case 17: _t->on_replyAllButton_clicked(); break;
-        case 18: _t->on_actionTransf_rer_triggered(); break;
-        case 19: _t->on_transferButton_clicked(); break;
-        case 20: _t->on_deleteButton_clicked(); break;
-        case 21: _t->on_saveButton_clicked(); break;
-        case 22: _t->on_closeButton_clicked(); break;
-        case 23: _t->openAttachFileWindow(); break;
-        case 24: _t->on_attachButton_clicked(); break;
-        case 25: _t->addFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 26: _t->deleteAttachedFile(); break;
-        case 27: _t->on_actionAttachFiletriggered(); break;
-        case 28: _t->on_actionDeleteAddedFile_triggered(); break;
-        case 29: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 30: _t->loadAddressBook(); break;
+        case 0: _t->sendAddressesListToMailBox((*reinterpret_cast< QStringList(*)>(_a[1]))); break;
+        case 1: _t->getAddressesListFromBook((*reinterpret_cast< QStringList(*)>(_a[1]))); break;
+        case 2: _t->getAddressesListFromMailBox((*reinterpret_cast< QStringList(*)>(_a[1]))); break;
+        case 3: _t->on_cancelButton_clicked(); break;
+        case 4: _t->openAddressBook(); break;
+        case 5: _t->on_actionSend_triggered(); break;
+        case 6: _t->on_actionReply_triggered(); break;
+        case 7: _t->on_actionReplyAll_triggered(); break;
+        case 8: _t->on_actionTransfer_triggered(); break;
+        case 9: _t->on_actionDelete_triggered(); break;
+        case 10: _t->on_actionCancel_triggered(); break;
+        case 11: _t->on_actionSave_triggered(); break;
+        case 12: _t->on_actionClose_triggered(); break;
+        case 13: _t->setStuff(); break;
+        case 14: _t->sendConfirmed(); break;
+        case 15: _t->on_sendButton_clicked(); break;
+        case 16: _t->on_actionEnvoyer_triggered(); break;
+        case 17: _t->on_replyButton_clicked(); break;
+        case 18: _t->on_actionR_pondre_triggered(); break;
+        case 19: _t->on_actionR_pondre_tous_triggered(); break;
+        case 20: _t->on_replyAllButton_clicked(); break;
+        case 21: _t->on_actionTransf_rer_triggered(); break;
+        case 22: _t->on_transferButton_clicked(); break;
+        case 23: _t->on_deleteButton_clicked(); break;
+        case 24: _t->on_saveButton_clicked(); break;
+        case 25: _t->on_closeButton_clicked(); break;
+        case 26: _t->openAttachFileWindow(); break;
+        case 27: _t->on_attachButton_clicked(); break;
+        case 28: _t->addFile((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 29: _t->deleteAttachedFile(); break;
+        case 30: _t->on_actionAttachFiletriggered(); break;
+        case 31: _t->on_actionDeleteAddedFile_triggered(); break;
+        case 32: _t->addToAddressField((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 33: _t->showAddressBook(); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        void **func = reinterpret_cast<void **>(_a[1]);
+        {
+            typedef void (WriteMail::*_t)(QStringList );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&WriteMail::sendAddressesListToMailBox)) {
+                *result = 0;
+            }
         }
     }
 }
@@ -239,14 +267,21 @@ int WriteMail::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 31)
+        if (_id < 34)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 31;
+        _id -= 34;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 31)
+        if (_id < 34)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 31;
+        _id -= 34;
     }
     return _id;
+}
+
+// SIGNAL 0
+void WriteMail::sendAddressesListToMailBox(QStringList _t1)
+{
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

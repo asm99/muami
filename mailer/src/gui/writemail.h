@@ -25,6 +25,14 @@ public:
 
     void addFileToMail(QString);
 
+signals:
+    void sendAddressesListToMailBox(QStringList);
+
+public slots:
+    void getAddressesListFromBook(QStringList);
+
+    void getAddressesListFromMailBox(QStringList);
+
 private slots:
     void on_cancelButton_clicked();
 
@@ -86,7 +94,7 @@ private slots:
 
     void addToAddressField(QString);
 
-    void loadAddressBook();
+    void showAddressBook();
 
 private:
     Ui::WriteMail *ui;

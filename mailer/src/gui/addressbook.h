@@ -28,6 +28,8 @@ public:
 signals:
     void addToMail(QString);
 
+    void sendAddressesList(QStringList);
+
 private slots:
 
     void addAddressToBook();

@@ -55,6 +55,8 @@ public:
     QVBoxLayout *verticalLayout;
     QLabel *emptyLabel_3;
     QListWidget *inbox;
+    QLineEdit *accountLabel1;
+    QLineEdit *accountLabel2;
     QWidget *groupInbox;
     QHBoxLayout *horizontalLayout_5;
     QPushButton *previousAccount;
@@ -191,6 +193,16 @@ public:
         inbox->setMaximumSize(QSize(200, 16777215));
 
         verticalLayout->addWidget(inbox);
+
+        accountLabel1 = new QLineEdit(centralwidget);
+        accountLabel1->setObjectName(QStringLiteral("accountLabel1"));
+
+        verticalLayout->addWidget(accountLabel1);
+
+        accountLabel2 = new QLineEdit(centralwidget);
+        accountLabel2->setObjectName(QStringLiteral("accountLabel2"));
+
+        verticalLayout->addWidget(accountLabel2);
 
         groupInbox = new QWidget(centralwidget);
         groupInbox->setObjectName(QStringLiteral("groupInbox"));
@@ -707,6 +719,8 @@ public:
 #ifndef QT_NO_TOOLTIP
         inbox->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
+        accountLabel1->setPlaceholderText(QApplication::translate("MailBox", "Info 1", 0));
+        accountLabel2->setPlaceholderText(QApplication::translate("MailBox", "Info 2", 0));
 #ifndef QT_NO_TOOLTIP
         previousAccount->setToolTip(QString());
 #endif // QT_NO_TOOLTIP

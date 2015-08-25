@@ -1,11 +1,9 @@
 #include <QDesktopWidget>
-#include <QCompleter>
 #include "ui_writemail.h"
 #include "src/gui/writemail.h"
 #include "src/gui/addressbook.h"
 #include "src/gui/handleissues.h"
 #include "src/gui/attachfilewindow.h"
-#include "src/gui/mailbox.h"
 
 
 WriteMail::WriteMail(QWidget *parent, bool display) :
@@ -35,12 +33,7 @@ WriteMail::WriteMail(QWidget *parent, bool display) :
 
     connect(ui->addressBookButton,
             SIGNAL(clicked()),
-            SLOT(showAddressBook()));
-
-    connect(this,
-            SIGNAL(sendAddressesListToMailBox(QStringList)),
-            this->parentWidget(),
-            SLOT(getAddressesListFromNewMail(QStringList)));
+            SLOT(loadAddressBook()));
 
     if (!display)
     {
@@ -372,7 +365,7 @@ void WriteMail::addToAddressField(QString address)
     }
 }
 
-void WriteMail::showAddressBook()
+void WriteMail::loadAddressBook()
 {
     AddressBook *child = this->findChild<AddressBook *>();
     if (!child)
@@ -422,7 +415,7 @@ void WriteMail::showAddressBook()
             if(file.open(QIODevice::ReadWrite))
             {
                 QTextStream stream(&file);
-                stream << "Carnet d'adresses\n";
+                stream << "Carnet d'adresses";
                 file.close();
             }
         }
@@ -438,29 +431,4 @@ void WriteMail::showAddressBook()
         delete child ;
     }
 }
-
-void WriteMail::getAddressesListFromBook(QStringList addressesList)
-{
-    addresses = addressesList ;
-
-    QCompleter *completer = new QCompleter(addresses, this);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->to->setCompleter(completer);
-    ui->cc->setCompleter(completer);
-    ui->bcc->setCompleter(completer);
-
-    emit sendAddressesListToMailBox(addresses);
-}
-
-void WriteMail::getAddressesListFromMailBox(QStringList addressesList)
-{
-    addresses = addressesList ;
-
-    QCompleter *completer = new QCompleter(addresses, this);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->to->setCompleter(completer);
-    ui->cc->setCompleter(completer);
-    ui->bcc->setCompleter(completer);
-}
-
 /** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/

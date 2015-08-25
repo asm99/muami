@@ -22,6 +22,13 @@ public:
 
     QList<QStringList> accountList;
 
+    QStringList addressesBook;
+
+public slots:
+    void getAddressesListFromBook(QStringList);
+
+    void getAddressesListFromNewMail(QStringList);
+
 private slots:
 
     void showInfo();
@@ -72,7 +79,7 @@ private slots:
 
     void showAccount(QString, QString);
 
-    void addNewAccount(QString, QString) ;
+    void addNewAccount() ;
 
     void delAccount();
 
@@ -142,9 +149,9 @@ private slots:
 
     void addToAddressField(QString);
 
-    void openAddressBook();
+    void showAddressBook();
 
-    void loadAddressBook();
+    void loadAddressFile();
 
 private:
     Ui::MailBox *ui;

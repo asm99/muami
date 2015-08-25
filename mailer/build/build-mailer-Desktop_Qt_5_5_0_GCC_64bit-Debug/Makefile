@@ -49,40 +49,32 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../../src/gui/main.cpp \
-		../../src/gui/mainwindow.cpp \
 		../../src/gui/mailbox.cpp \
 		../../src/gui/writemail.cpp \
 		../../src/gui/addressbook.cpp \
-		../../src/gui/addaccount.cpp \
 		../../src/gui/handleissues.cpp \
 		../../src/gui/attachfilewindow.cpp \
 		../../src/gui/login.cpp \
 		../../my_qlabel.cpp qrc_icons.cpp \
-		moc_mainwindow.cpp \
 		moc_mailbox.cpp \
 		moc_writemail.cpp \
 		moc_addressbook.cpp \
-		moc_addaccount.cpp \
 		moc_handleissues.cpp \
 		moc_attachfilewindow.cpp \
 		moc_login.cpp \
 		moc_my_qlabel.cpp
 OBJECTS       = main.o \
-		mainwindow.o \
 		mailbox.o \
 		writemail.o \
 		addressbook.o \
-		addaccount.o \
 		handleissues.o \
 		attachfilewindow.o \
 		login.o \
 		my_qlabel.o \
 		qrc_icons.o \
-		moc_mainwindow.o \
 		moc_mailbox.o \
 		moc_writemail.o \
 		moc_addressbook.o \
-		moc_addaccount.o \
 		moc_handleissues.o \
 		moc_attachfilewindow.o \
 		moc_login.o \
@@ -217,20 +209,16 @@ DIST          = /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/exceptions.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/lex.prf \
-		../../../../mailer.pro ../../src/gui/mainwindow.h \
-		../../src/gui/mailbox.h \
+		../../../../mailer.pro ../../src/gui/mailbox.h \
 		../../src/gui/writemail.h \
 		../../src/gui/addressbook.h \
-		../../src/gui/addaccount.h \
 		../../src/gui/handleissues.h \
 		../../src/gui/attachfilewindow.h \
 		../../src/gui/login.h \
 		../../my_qlabel.h ../../src/gui/main.cpp \
-		../../src/gui/mainwindow.cpp \
 		../../src/gui/mailbox.cpp \
 		../../src/gui/writemail.cpp \
 		../../src/gui/addressbook.cpp \
-		../../src/gui/addaccount.cpp \
 		../../src/gui/handleissues.cpp \
 		../../src/gui/attachfilewindow.cpp \
 		../../src/gui/login.cpp \
@@ -262,7 +250,7 @@ first: all
 
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_mailbox.h ui_writemail.h ui_addressbook.h ui_addaccount.h ui_handleissues.h ui_attachfilewindow.h ui_login.h $(OBJECTS)  
+$(TARGET): ui_mailbox.h ui_writemail.h ui_addressbook.h ui_handleissues.h ui_attachfilewindow.h ui_login.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../../mailer.pro /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/qmake.conf /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf \
@@ -551,9 +539,9 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../src/gui/icons.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/gui/mainwindow.h ../../src/gui/mailbox.h ../../src/gui/writemail.h ../../src/gui/addressbook.h ../../src/gui/addaccount.h ../../src/gui/handleissues.h ../../src/gui/attachfilewindow.h ../../src/gui/login.h ../../my_qlabel.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/gui/main.cpp ../../src/gui/mainwindow.cpp ../../src/gui/mailbox.cpp ../../src/gui/writemail.cpp ../../src/gui/addressbook.cpp ../../src/gui/addaccount.cpp ../../src/gui/handleissues.cpp ../../src/gui/attachfilewindow.cpp ../../src/gui/login.cpp ../../my_qlabel.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/gui/gen/mainwindow.ui ../../src/gui/gen/mailbox.ui ../../src/gui/gen/writemail.ui ../../src/gui/gen/addressbook.ui ../../src/gui/gen/addaccount.ui ../../src/gui/gen/handleissues.ui ../../src/gui/gen/attachfilewindow.ui ../../src/gui/gen/login.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/gui/mailbox.h ../../src/gui/writemail.h ../../src/gui/addressbook.h ../../src/gui/handleissues.h ../../src/gui/attachfilewindow.h ../../src/gui/login.h ../../my_qlabel.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/gui/main.cpp ../../src/gui/mailbox.cpp ../../src/gui/writemail.cpp ../../src/gui/addressbook.cpp ../../src/gui/handleissues.cpp ../../src/gui/attachfilewindow.cpp ../../src/gui/login.cpp ../../my_qlabel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/gui/gen/mailbox.ui ../../src/gui/gen/writemail.ui ../../src/gui/gen/addressbook.ui ../../src/gui/gen/handleissues.ui ../../src/gui/gen/attachfilewindow.ui ../../src/gui/gen/login.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -639,321 +627,9 @@ qrc_icons.cpp: ../../src/gui/icons.qrc \
 		../../src/gui/res/document-remove.png
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/rcc -name icons ../../src/gui/icons.qrc -o qrc_icons.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_mailbox.cpp moc_writemail.cpp moc_addressbook.cpp moc_addaccount.cpp moc_handleissues.cpp moc_attachfilewindow.cpp moc_login.cpp moc_my_qlabel.cpp
+compiler_moc_header_make_all: moc_mailbox.cpp moc_writemail.cpp moc_addressbook.cpp moc_handleissues.cpp moc_attachfilewindow.cpp moc_login.cpp moc_my_qlabel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_mailbox.cpp moc_writemail.cpp moc_addressbook.cpp moc_addaccount.cpp moc_handleissues.cpp moc_attachfilewindow.cpp moc_login.cpp moc_my_qlabel.cpp
-moc_mainwindow.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qset.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qicon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGui \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGuiDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCore \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCoreDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qparallelanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpauseanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpropertyanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariantanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeasingcurve.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsequentialanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextcodec.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qendian.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibraryinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatetime.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdiriterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileselector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QStringList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfilesystemwatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlockfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qloggingcategory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocess.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresource.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsavefile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsettings.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstandardpaths.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstorageinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporarydir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QScopedPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporaryfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qidentityproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsortfilterproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlistmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventloop.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetaobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectcleanuphandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedmemory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignalmapper.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsocketnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtranslator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwineventnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimetype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfactoryinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibrary.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpluginloader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/quuid.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracttransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventtransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfinalstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhistorystate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignaltransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstatemachine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qexception.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrunnable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresultstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturesynchronizer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturewatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qreadwritelock.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthread.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadpool.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadstorage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwaitcondition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydataops.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbitarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraymatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcollator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineparser.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcryptographichash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qelapsedtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlinkedlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qqueue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregularexpression.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedvaluerollback.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstack.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextboundaryfinder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimeline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimezone.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qxmlstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtcoreversion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessible.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessiblebridge.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbitmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengineplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimageiohandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagereader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagewriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmovie.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpicture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpictureformatplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmapcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstandarditemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qclipboard.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdrag.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericpluginfactory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qguiapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qoffscreensurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurfaceformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglcontext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QSurfaceFormat \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qt_windows.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengles2ext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglversionfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDeviceWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevicewindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QEvent \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QMargins \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QRect \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDevice \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QOpenGLContext \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QImage \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrasterwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qscreen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSize \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSizeF \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QTransform \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsessionmanager.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstylehints.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix4x4.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector3d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector4d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qquaternion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengldebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglframebufferobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSharedDataPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglshaderprogram.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltexture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltimerquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbackingstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagedpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagelayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagesize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpdfwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qabstracttextdocumentlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qglyphrun.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrawfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontdatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstatictext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsyntaxhighlighter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentfragment.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		../../src/gui/mainwindow.h
-	/home/furya/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/furya/Bureau/L2/Qt/mailer -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../../src/gui/mainwindow.h -o moc_mainwindow.cpp
-
+	-$(DEL_FILE) moc_mailbox.cpp moc_writemail.cpp moc_addressbook.cpp moc_handleissues.cpp moc_attachfilewindow.cpp moc_login.cpp moc_my_qlabel.cpp
 moc_mailbox.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
@@ -1934,114 +1610,11 @@ moc_addressbook.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
+		../../src/gui/writemail.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
 		../../src/gui/addressbook.h
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/furya/Bureau/L2/Qt/mailer -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../../src/gui/addressbook.h -o moc_addressbook.cpp
-
-moc_addaccount.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qset.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		../../src/gui/addaccount.h
-	/home/furya/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/furya/Bureau/L2/Qt/mailer -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../../src/gui/addaccount.h -o moc_addaccount.cpp
 
 moc_handleissues.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
@@ -2697,12 +2270,9 @@ moc_my_qlabel.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_mailbox.h ui_writemail.h ui_addressbook.h ui_addaccount.h ui_handleissues.h ui_attachfilewindow.h ui_login.h
+compiler_uic_make_all: ui_mailbox.h ui_writemail.h ui_addressbook.h ui_handleissues.h ui_attachfilewindow.h ui_login.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_mailbox.h ui_writemail.h ui_addressbook.h ui_addaccount.h ui_handleissues.h ui_attachfilewindow.h ui_login.h
-ui_mainwindow.h: ../../src/gui/gen/mainwindow.ui
-	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/mainwindow.ui -o ui_mainwindow.h
-
+	-$(DEL_FILE) ui_mailbox.h ui_writemail.h ui_addressbook.h ui_handleissues.h ui_attachfilewindow.h ui_login.h
 ui_mailbox.h: ../../src/gui/gen/mailbox.ui \
 		../../my_qlabel.h
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/mailbox.ui -o ui_mailbox.h
@@ -2713,13 +2283,11 @@ ui_writemail.h: ../../src/gui/gen/writemail.ui
 ui_addressbook.h: ../../src/gui/gen/addressbook.ui
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/addressbook.ui -o ui_addressbook.h
 
-ui_addaccount.h: ../../src/gui/gen/addaccount.ui
-	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/addaccount.ui -o ui_addaccount.h
-
 ui_handleissues.h: ../../src/gui/gen/handleissues.ui
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/handleissues.ui -o ui_handleissues.h
 
-ui_attachfilewindow.h: ../../src/gui/gen/attachfilewindow.ui
+ui_attachfilewindow.h: ../../src/gui/gen/attachfilewindow.ui \
+		../../my_qlabel.h
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/uic ../../src/gui/gen/attachfilewindow.ui -o ui_attachfilewindow.h
 
 ui_login.h: ../../src/gui/gen/login.ui
@@ -2843,11 +2411,33 @@ main.o: ../../src/gui/main.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qguiapplication.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
-		../../src/gui/mainwindow.h \
+		../../src/gui/mailbox.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qicon.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregularexpression.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qslider.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGui \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGuiDepends \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCore \
@@ -2883,10 +2473,8 @@ main.o: ../../src/gui/main.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporarydir.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QScopedPointer \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporaryfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractproxymodel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qidentityproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsortfilterproxymodel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlistmodel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonarray.h \
@@ -2949,7 +2537,6 @@ main.o: ../../src/gui/main.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlinkedlist.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmessageauthenticationcode.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qqueue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregularexpression.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedvaluerollback.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstack.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextboundaryfinder.h \
@@ -3046,390 +2633,11 @@ main.o: ../../src/gui/main.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlist.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		../../src/gui/mailbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyleoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
 		../../src/gui/login.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../src/gui/main.cpp
-
-mainwindow.o: ../../src/gui/mainwindow.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDesktopWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qset.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		../../src/gui/mainwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qicon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGui \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGuiDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCore \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCoreDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qparallelanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpauseanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpropertyanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariantanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeasingcurve.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsequentialanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextcodec.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qendian.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibraryinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatetime.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdiriterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileselector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QStringList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfilesystemwatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlockfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qloggingcategory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocess.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresource.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsavefile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsettings.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstandardpaths.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstorageinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporarydir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QScopedPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporaryfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qidentityproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsortfilterproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlistmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventloop.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetaobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectcleanuphandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedmemory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignalmapper.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsocketnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtranslator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwineventnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimetype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfactoryinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibrary.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpluginloader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/quuid.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracttransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventtransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfinalstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhistorystate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignaltransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstatemachine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qexception.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrunnable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresultstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturesynchronizer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturewatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qreadwritelock.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthread.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadpool.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadstorage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwaitcondition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydataops.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbitarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraymatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcollator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineparser.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcryptographichash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qelapsedtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlinkedlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qqueue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregularexpression.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedvaluerollback.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstack.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextboundaryfinder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimeline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimezone.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qxmlstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtcoreversion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessible.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessiblebridge.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbitmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengineplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimageiohandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagereader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagewriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmovie.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpicture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpictureformatplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmapcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstandarditemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qclipboard.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdrag.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericpluginfactory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qguiapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qoffscreensurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurfaceformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglcontext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QSurfaceFormat \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qt_windows.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengles2ext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglversionfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDeviceWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevicewindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QEvent \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QMargins \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QRect \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDevice \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QOpenGLContext \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QImage \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrasterwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qscreen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSize \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSizeF \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QTransform \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsessionmanager.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstylehints.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix4x4.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector3d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector4d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qquaternion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengldebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglframebufferobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSharedDataPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglshaderprogram.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltexture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltimerquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbackingstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagedpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagelayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagesize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpdfwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qabstracttextdocumentlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qglyphrun.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrawfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontdatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstatictext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsyntaxhighlighter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentfragment.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		ui_mainwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QVariant \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QAction \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qaction.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qactiongroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QApplication \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QButtonGroup \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qbuttongroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHBoxLayout \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qboxlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHeaderView \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qheaderview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyleoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMenu \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmenu.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMenuBar \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmenubar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QPushButton \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qpushbutton.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \
-		../../src/gui/mailbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
-		../../src/gui/writemail.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../src/gui/mainwindow.cpp
 
 mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QDir \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdir.h \
@@ -3537,8 +2745,6 @@ mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurlquery.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QToolTip \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtooltip.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QMouseEvent \
 		ui_mailbox.h \
@@ -3805,10 +3011,9 @@ mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
 		../../src/gui/writemail.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
-		../../src/gui/addaccount.h \
+		../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
-		../../src/gui/handleissues.h \
 		../../src/gui/attachfilewindow.h \
 		../../src/gui/addressbook.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidgetItem
@@ -3931,14 +3136,11 @@ writemail.o: ../../src/gui/writemail.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QButtonGroup \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qbuttongroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFormLayout \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qformlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QLayout \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qboxlayout.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayout.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qboxlayout.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHBoxLayout \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHeaderView \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qheaderview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
@@ -3957,8 +3159,6 @@ writemail.o: ../../src/gui/writemail.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QLabel \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlabel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QLineEdit \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlineedit.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextcursor.h \
@@ -4513,12 +3713,12 @@ addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/incl
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
-		../../src/gui/handleissues.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		../../src/gui/writemail.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
+		../../src/gui/handleissues.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		ui_addressbook.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QVariant \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QAction \
@@ -4547,367 +3747,8 @@ addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/incl
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addressbook.o ../../src/gui/addressbook.cpp
 
-addaccount.o: ../../src/gui/addaccount.cpp ../../src/gui/addaccount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qconfig.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfeatures.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypetraits.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsysinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlogging.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qflags.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_mips.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_x86.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_unix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmutex.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnumeric.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnamespace.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs_win.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstring.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qchar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrefcount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qalgorithms.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregexp.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetatype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmargins.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrect.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpoint.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpalette.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcolor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrgb.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbrush.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpair.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpolygon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qregion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatastream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiodevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtransform.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainterpath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixelformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qshareddata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qkeysequence.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qevent.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariant.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlocale.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qset.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qurlquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfiledevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
-		ui_addaccount.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QVariant \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QAction \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qaction.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qicon.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qactiongroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QApplication \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventloop.h \
+handleissues.o: ../../src/gui/handleissues.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDesktopWidget \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qguiapplication.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QButtonGroup \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qbuttongroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHBoxLayout \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qboxlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlayoutitem.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QHeaderView \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qheaderview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractitemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qitemselectionmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyleoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregularexpression.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractslider.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QLineEdit \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlineedit.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextcursor.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QPushButton \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qpushbutton.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \
-		../../src/gui/mailbox.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qmainwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGui \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QtGuiDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCore \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QtCoreDepends \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qparallelanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpauseanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpropertyanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariantanimation.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeasingcurve.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsequentialanimationgroup.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextcodec.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qendian.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibraryinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdatetime.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdiriterator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfileselector.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QStringList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfilesystemwatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlockfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qloggingcategory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocess.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresource.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsavefile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsettings.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstandardpaths.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstorageinfo.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporarydir.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QScopedPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtemporaryfile.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qidentityproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsortfilterproxymodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlistmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmath.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetaobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedata.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectcleanuphandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsharedmemory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignalmapper.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsocketnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtranslator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwineventnotifier.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimedatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmimetype.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfactoryinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlibrary.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpluginloader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/quuid.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstractstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qabstracttransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventtransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfinalstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhistorystate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsignaltransition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstate.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstatemachine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qexception.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfutureinterface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrunnable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qresultstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturesynchronizer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfuturewatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qreadwritelock.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsemaphore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthread.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadpool.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qthreadstorage.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qwaitcondition.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydataops.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbitarray.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraymatcher.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcollator.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineoption.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcommandlineparser.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcryptographichash.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qelapsedtimer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlinkedlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qqueue.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedvaluerollback.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstack.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextboundaryfinder.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimeline.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtimezone.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qxmlstream.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtcoreversion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessible.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessiblebridge.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qaccessibleplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbitmap.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qiconengineplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimageiohandler.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagereader.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qimagewriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmovie.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpicture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpictureformatplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpixmapcache.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstandarditemmodel.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qclipboard.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdrag.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericplugin.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericpluginfactory.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qoffscreensurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurface.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsurfaceformat.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglcontext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QSurfaceFormat \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengl.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qt_windows.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengles2ext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglversionfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDeviceWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevicewindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QWindow \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QEvent \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QMargins \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QRect \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDevice \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QOpenGLContext \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QImage \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrasterwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qscreen.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QList \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSize \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSizeF \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QTransform \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsessionmanager.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstylehints.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qgenericmatrix.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qmatrix4x4.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector3d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector4d.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qquaternion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglbuffer.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengldebug.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglframebufferobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglfunctions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QSharedDataPointer \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglshaderprogram.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltexture.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopengltimerquery.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qopenglvertexarrayobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qbackingstore.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagedpaintdevice.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagelayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpagesize.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintengine.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpainter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpdfwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qabstracttextdocumentlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlayout.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qglyphrun.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qrawfont.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qfontdatabase.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocument.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qstatictext.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qsyntaxhighlighter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextobject.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentfragment.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocumentwriter.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlist.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		../../src/gui/handleissues.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addaccount.o ../../src/gui/addaccount.cpp
-
-handleissues.o: ../../src/gui/handleissues.cpp ../../src/gui/handleissues.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qwidget.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindowdefs.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
@@ -5009,6 +3850,9 @@ handleissues.o: ../../src/gui/handleissues.cpp ../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfiledevice.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvector2d.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtouchdevice.h \
+		../../src/gui/handleissues.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		ui_handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QVariant \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QAction \
@@ -5019,7 +3863,6 @@ handleissues.o: ../../src/gui/handleissues.cpp ../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qapplication.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreapplication.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qeventloop.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qguiapplication.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qinputmethod.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QButtonGroup \
@@ -5052,7 +3895,8 @@ handleissues.o: ../../src/gui/handleissues.cpp ../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QPushButton \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qpushbutton.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QVBoxLayout
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o handleissues.o ../../src/gui/handleissues.cpp
 
 attachfilewindow.o: ../../src/gui/attachfilewindow.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QDir \
@@ -5218,6 +4062,11 @@ attachfilewindow.o: ../../src/gui/attachfilewindow.cpp /home/furya/Qt5.5.0/5.5/g
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextdocument.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \
+		../../my_qlabel.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QLabel \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlabel.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QEvent \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QMouseEvent \
 		../../src/gui/attachfilewindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
@@ -5361,7 +4210,6 @@ attachfilewindow.o: ../../src/gui/attachfilewindow.cpp /home/furya/Qt5.5.0/5.5/g
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qpaintdevicewindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QWindow \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qwindow.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QEvent \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QMargins \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QRect \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/QPaintDevice \
@@ -5696,9 +4544,6 @@ my_qlabel.o: ../../my_qlabel.cpp ../../my_qlabel.h \
 qrc_icons.o: qrc_icons.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_icons.o qrc_icons.cpp
 
-moc_mainwindow.o: moc_mainwindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
-
 moc_mailbox.o: moc_mailbox.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mailbox.o moc_mailbox.cpp
 
@@ -5707,9 +4552,6 @@ moc_writemail.o: moc_writemail.cpp
 
 moc_addressbook.o: moc_addressbook.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addressbook.o moc_addressbook.cpp
-
-moc_addaccount.o: moc_addaccount.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_addaccount.o moc_addaccount.cpp
 
 moc_handleissues.o: moc_handleissues.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_handleissues.o moc_handleissues.cpp

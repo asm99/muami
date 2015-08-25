@@ -57,16 +57,11 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     connect(ui->closeButton,
             SIGNAL(clicked()),
             this->parentWidget(),
-            SLOT(showAddressBook()));
+            SLOT(openAddressBook()));
 
     connect(ui->addressList,
             SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             SLOT(forceAddAddress(QListWidgetItem*)));
-
-    connect(this,
-            SIGNAL(sendAddressesList(QStringList)),
-            this->parentWidget(),
-            SLOT(getAddressesListFromBook(QStringList)));
 }
 
 AddressBook::~AddressBook()
@@ -120,8 +115,6 @@ void AddressBook::addAddressToBook()
         }
         ui->addressField->clear();
         ui->addressField->setPlaceholderText("L'adresse a été ajoutée");
-
-        emit sendAddressesList(addresses);
     }
 }
 
@@ -157,7 +150,6 @@ void AddressBook::loadAddressFile(QString addressBook)
     QTextStream in(&file);
     QString line = in.readLine(); // Retire le titre
     line = in.readLine();
-    addresses.clear();
     while(!line.isNull())
     {
         addresses.append(line);
@@ -218,58 +210,18 @@ void AddressBook::deleteAddress()
 }
 
 void AddressBook::confirmDelete()
-{    
-    QFile file(addressBookPath);
-    if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
-    {
-        return;
-    }
-    addresses.clear();
-    QTextStream in(&file);
-    QString line = in.readLine(); // Retire le titre
-    line = in.readLine();
-    while(!line.isNull())
-    {
-        addresses.append(line);
-        line = in.readLine();
-    }
-
+{
     int x = 0 ;
     while(x < ui->addressList->count())
     {
         QListWidgetItem *address = ui->addressList->item(x) ;
         if (address->checkState() == Qt::Checked)
         {
-            address->setCheckState(Qt::Unchecked);
-            QString toDelete = address->text() ;
-            int addressesLength = addresses.length();
-            for(int y = 0; y < addressesLength; y++)
-            {
-                if(toDelete == addresses.at(y))
-                {
-                    addresses.removeAt(y);
-                    break;
-                }
-            }
+            delete address ;
             x = 0;
         }
         else x++ ;
     }
-    file.resize(0);
-    in << "Carnet d'adresses\n" ;
-    x = 0 ;
-    while(x < addresses.count())
-    {
-        in << addresses.at(x) << "\n";
-        x++;
-    }
-    file.close();
-    ui->addressList->clear();
-    loadAddressFile(addressBookPath);
-
     ui->addressField->clear();
     ui->addressField->setPlaceholderText("");
-
-    emit sendAddressesList(addresses);
 }
-
