@@ -18,7 +18,11 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
                     qApp->desktop()->availableGeometry()
                     )
                 ) ;
-    this->setGeometry(800,0,400,600);
+    this->setGeometry(800,0,800,400);
+    ui->addressesTree->setColumnWidth(0, 50);
+    ui->addressesTree->setColumnWidth(1, 275);
+    ui->addressesTree->setColumnWidth(2, 225);
+    ui->addressesTree->setColumnWidth(3, 225);
     ui->menuBar->hide();
 
     addressBookPath = addressBook ;
@@ -59,14 +63,18 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
             this->parentWidget(),
             SLOT(showAddressBook()));
 
-    connect(ui->addressList,
-            SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-            SLOT(forceAddAddress(QListWidgetItem*)));
+    connect(ui->addressesTree,
+            SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
+            SLOT(forceAddAddress(QTreeWidgetItem*, int)));
 
     connect(this,
             SIGNAL(sendAddressesList(QStringList)),
             this->parentWidget(),
             SLOT(getAddressesListFromBook(QStringList)));
+
+    connect(ui->saveButton,
+            SIGNAL(clicked()),
+            SLOT(saveModification()));
 }
 
 AddressBook::~AddressBook()
@@ -108,15 +116,15 @@ void AddressBook::addAddressToBook()
         file.close();
 
         std::sort(addresses.begin(), addresses.end()) ;
-        ui->addressList->clear();
+        ui->addressesTree->clear();
 
         foreach(QString address, addresses)
         {
-            QListWidgetItem *item = new QListWidgetItem(ui->addressList);
-            item->setText(address);
-            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-            item->setCheckState(Qt::Unchecked);
-            ui->addressList->addItem(item);
+            QTreeWidgetItem *itm = new QTreeWidgetItem(ui->addressesTree);
+            itm->setText(1, address);
+            itm->setFlags(itm->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
+            itm->setCheckState(0, Qt::Unchecked);
+            ui->addressesTree->addTopLevelItem(itm);
         }
         ui->addressField->clear();
         ui->addressField->setPlaceholderText("L'adresse a été ajoutée");
@@ -131,10 +139,10 @@ void AddressBook::findAddress(QString address)
     finder.setCaseSensitivity(Qt::CaseInsensitive);
     finder.setPatternSyntax(QRegExp::RegExp);
 
-    for(int x = 0; x < ui->addressList->count(); x++)
+    for(int x = 0; x < ui->addressesTree->topLevelItemCount(); x++)
     {
-        QListWidgetItem *item = ui->addressList->item(x);
-        QString match = item->text();
+        QTreeWidgetItem *item = ui->addressesTree->topLevelItem(x);
+        QString match = item->text(1);
         if (!finder.exactMatch(match))
         {
             item->setHidden(true);
@@ -168,39 +176,42 @@ void AddressBook::loadAddressFile(QString addressBook)
 
     foreach(QString address, addresses)
     {
-        QListWidgetItem *item = new QListWidgetItem(ui->addressList);
-        item->setText(address);
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-        item->setCheckState(Qt::Unchecked);
-        ui->addressList->addItem(item);
+        QTreeWidgetItem *itm = new QTreeWidgetItem(ui->addressesTree);
+        QStringList addressInfo = address.split(" ; ");
+        itm->setText(1, addressInfo.at(0));
+        itm->setText(2, addressInfo.at(1));
+        itm->setText(3, addressInfo.at(2));
+        itm->setFlags(itm->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
+        itm->setCheckState(0, Qt::Unchecked);
+        ui->addressesTree->addTopLevelItem(itm);
     }
 }
 
 void AddressBook::clickToAdd()
 {
-    for(int x = 0; x < ui->addressList->count(); x++)
+    for(int x = 0; x < ui->addressesTree->topLevelItemCount(); x++)
     {
-        QListWidgetItem *item = ui->addressList->item(x);
-        if(item->checkState() == Qt::Checked)
+        QTreeWidgetItem *item = ui->addressesTree->topLevelItem(x);
+        if(item->checkState(0) == Qt::Checked)
         {
-            emit addToMail(item->text());
-            item->setCheckState(Qt::Unchecked);
+            emit addToMail(item->text(1));
+            item->setCheckState(0, Qt::Unchecked);
         }
     }
 }
 
-void AddressBook::forceAddAddress(QListWidgetItem *item)
+void AddressBook::forceAddAddress(QTreeWidgetItem *item, int n)
 {
-    emit addToMail(item->text());
+    //emit addToMail(item->text(1));
 }
 
 void AddressBook::deleteAddress()
 {
     int checked = 0 ;
-    for(int x = 0; x < ui->addressList->count(); x++)
+    for(int x = 0; x < ui->addressesTree->topLevelItemCount(); x++)
     {
-        QListWidgetItem *address = ui->addressList->item(x) ;
-        if (address->checkState() == Qt::Checked) checked++ ;
+        QTreeWidgetItem *address = ui->addressesTree->topLevelItem(x) ;
+        if (address->checkState(0) == Qt::Checked) checked++ ;
     }
     if (checked > 1)
     {
@@ -235,13 +246,13 @@ void AddressBook::confirmDelete()
     }
 
     int x = 0 ;
-    while(x < ui->addressList->count())
+    while(x < ui->addressesTree->topLevelItemCount())
     {
-        QListWidgetItem *address = ui->addressList->item(x) ;
-        if (address->checkState() == Qt::Checked)
+        QTreeWidgetItem *address = ui->addressesTree->topLevelItem(x) ;
+        if (address->checkState(0) == Qt::Checked)
         {
-            address->setCheckState(Qt::Unchecked);
-            QString toDelete = address->text() ;
+            address->setCheckState(0, Qt::Unchecked);
+            QString toDelete = address->text(1) ;
             int addressesLength = addresses.length();
             for(int y = 0; y < addressesLength; y++)
             {
@@ -264,7 +275,7 @@ void AddressBook::confirmDelete()
         x++;
     }
     file.close();
-    ui->addressList->clear();
+    ui->addressesTree->clear();
     loadAddressFile(addressBookPath);
 
     ui->addressField->clear();
@@ -273,3 +284,26 @@ void AddressBook::confirmDelete()
     emit sendAddressesList(addresses);
 }
 
+void AddressBook::saveModification()
+{
+    QFile file(addressBookPath);
+    if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        return;
+    }
+    QTextStream in(&file);
+    file.resize(0);
+    in << "Carnet d'adresses\n" ;
+
+    for(int x = 0; x < ui->addressesTree->topLevelItemCount(); x++)
+    {
+        QTreeWidgetItem *address = ui->addressesTree->topLevelItem(x) ;
+        in  << address->text(1)
+            << " ; "
+            << address->text(2)
+            << " ; "
+            << address->text(3)
+            << "\n";
+    }
+    file.close();
+}

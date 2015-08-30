@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtGui>
 #include <QtCore>
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include "src/gui/writemail.h"
 
 namespace Ui {
@@ -38,11 +38,13 @@ private slots:
 
     void clickToAdd();
 
-    void forceAddAddress(QListWidgetItem *);
+    void forceAddAddress(QTreeWidgetItem *, int);
 
     void deleteAddress();
 
     void confirmDelete();
+
+    void saveModification();
 
 private:
     Ui::AddressBook *ui;

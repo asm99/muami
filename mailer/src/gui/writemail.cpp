@@ -379,7 +379,8 @@ void WriteMail::showAddressBook()
     {
         QString addressBook = "" ;
         QString dir = "";
-        QString appPath = qApp->applicationDirPath();
+        QString appPath = QDir::homePath();
+        appPath.append("/.config");
 
         QDir *appliPath = new QDir(appPath);
 
@@ -389,7 +390,7 @@ void WriteMail::showAddressBook()
             if (fileInfo.isDir())
             {
                 QString dir = fileInfo.fileName() ;
-                if(dir == "usr")
+                if(dir == "muami")
                 {
                     dir = fileInfo.filePath();
                     QDir *usrPath = new QDir(dir);
@@ -415,9 +416,9 @@ void WriteMail::showAddressBook()
 
         if(dir == "")
         {
-            appliPath->mkdir("usr");
+            appliPath->mkdir("muami");
             addressBook = appliPath->path();
-            addressBook.append("/usr/address_book.txt");
+            addressBook.append("/muami/address_book.txt");
             QFile file(addressBook);
             if(file.open(QIODevice::ReadWrite))
             {

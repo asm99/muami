@@ -261,6 +261,9 @@
              <property name="verticalScrollBarPolicy">
               <enum>Qt::ScrollBarAlwaysOff</enum>
              </property>
+             <property name="viewMode">
+              <enum>QListView::IconMode</enum>
+             </property>
             </widget>
            </item>
            <item>

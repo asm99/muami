@@ -16,7 +16,6 @@ SOURCES += src/gui/main.cpp\
     src/gui/addressbook.cpp \
     src/gui/handleissues.cpp \
     src/gui/attachfilewindow.cpp \
-    src/gui/login.cpp \
     my_qlabel.cpp
 
 HEADERS  += \
@@ -25,7 +24,6 @@ HEADERS  += \
     src/gui/addressbook.h \
     src/gui/handleissues.h \
     src/gui/attachfilewindow.h \
-    src/gui/login.h \
     my_qlabel.h
 	
 FORMS    += \
@@ -33,8 +31,7 @@ FORMS    += \
     src/gui/gen/writemail.ui \
     src/gui/gen/addressbook.ui \
     src/gui/gen/handleissues.ui \
-    src/gui/gen/attachfilewindow.ui \
-    src/gui/gen/login.ui
+    src/gui/gen/attachfilewindow.ui
 
 RESOURCES += \
     src/gui/icons.qrc

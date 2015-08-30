@@ -179,6 +179,7 @@ public:
         sizePolicy3.setHeightForWidth(contentList->sizePolicy().hasHeightForWidth());
         contentList->setSizePolicy(sizePolicy3);
         contentList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        contentList->setViewMode(QListView::IconMode);
 
         verticalLayout_3->addWidget(contentList);
 

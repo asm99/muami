@@ -1,6 +1,5 @@
 #include <QApplication>
 #include "src/gui/mailbox.h"
-#include "src/gui/login.h"
 
 int main(int argc, char *argv[])
 {
