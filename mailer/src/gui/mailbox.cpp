@@ -629,9 +629,81 @@ void MailBox::get_actionQuitter_triggered()
 /** ++ Présence de comptes ++ **/
 void MailBox::accountRegistered()
 {
-    ui->actionNouveau_courrier->setVisible(false);
-    ui->actionSupprimer_le_compte->setVisible(false);
-    toggleNakedApp(true) ;
+    bool x = false ;
+
+    QString path = QDir::homePath();
+    path.append("/.config/muami/accounts/");
+
+    QDir *accountsPath = new QDir(path);
+    QFileInfoList fileList = accountsPath->entryInfoList();
+
+    foreach(QFileInfo fileInfo, fileList)
+    {
+        QFile file(fileInfo.absoluteFilePath());
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            continue;
+        }
+        QTextStream in(&file);
+        QStringList accountInfo ;
+        QString line = in.readLine();
+        while(!line.isNull())
+        {
+            accountInfo.append(line);
+            line = in.readLine();
+        }
+        accountList.append(accountInfo);
+
+        ui->inbox->clear();
+        ui->inbox->setWhatsThis(accountInfo.at(0));
+        QDir *path = new QDir(accountInfo.at(1));
+        QFileInfoList filesList = path->entryInfoList();
+
+        foreach(QFileInfo fileInfo, filesList)
+        {
+            if (fileInfo.isDir())
+            {
+                QListWidgetItem *item = new QListWidgetItem(ui->inbox);
+                item->setText(fileInfo.fileName());
+                item->setWhatsThis(fileInfo.filePath());
+                item->setSizeHint(QSize(item->sizeHint().width(), 30));
+            }
+        }
+        ui->accountLabel1->setVisible(false);
+        ui->accountLabel2->setVisible(false);
+        ui->accountLabel1->clear();
+        ui->accountLabel2->clear();
+        x = true ;
+    }
+
+    if(x)
+    {
+        toggleNakedApp(false) ;
+    }
+    else
+    {
+        ui->actionNouveau_courrier->setVisible(false);
+        ui->actionSupprimer_le_compte->setVisible(false);
+        toggleNakedApp(true) ;
+
+        path = QDir::homePath();
+        path.append("/.config/muami");
+        accountsPath = new QDir(path);
+        fileList = accountsPath->entryInfoList();
+        bool y = false ;
+        foreach(QFileInfo fileInfo, fileList)
+        {
+            if(fileInfo.isDir() && fileInfo.fileName() == "accounts")
+            {
+                y = true;
+                break;
+            }
+        }
+        if(!y)
+        {
+            accountsPath->mkdir("accounts");
+        }
+    }
 }
 
 void MailBox::previousAccount()
@@ -764,6 +836,30 @@ void MailBox::addNewAccount() // MODIFIER LE POPUP POUR AJOUTER LES CHAMPS NECES
     account.append(ui->accountLabel2->text());
 
     accountList.append(account);
+
+    QString accountFilesPath = QDir::homePath();
+    accountFilesPath.append("/.config/muami/accounts");
+    QDir *accountFilesList = new QDir(accountFilesPath);
+    QFileInfoList accountFiles = accountFilesList->entryInfoList();
+    int x = 0;
+    foreach(QFileInfo fileInfo, accountFiles)
+    {
+        if(fileInfo.fileName() == account.at(1))
+        {
+            return;
+        }
+        x++ ;
+    }
+    accountFilesPath.append("/account_"+QString::number(x)); // A MODIFIER POUR EMPECHER LES DOUBLONS
+    QFile newAccountFile(accountFilesPath);
+    if(newAccountFile.open(QIODevice::ReadWrite))
+    {
+        QTextStream stream(&newAccountFile);
+        stream << account.at(0)
+               << "\n"
+               << account.at(1);
+        newAccountFile.close();
+    }
 
     ui->inbox->clear();
     ui->inbox->setWhatsThis(ui->accountLabel1->text());
