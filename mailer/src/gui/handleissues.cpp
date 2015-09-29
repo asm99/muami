@@ -147,6 +147,27 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
                 parentWidget(),
                 SLOT(confirmDelete()));
     }
+
+    if(type == "confirmModifAddBook")
+    {
+        ui->okButton->setVisible(false);
+        ui->saveButton->setVisible(false);
+
+        connect(ui->ouiButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(saveModification()));
+
+        connect(ui->ouiButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(close()));
+
+        connect(ui->nonButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(close()));
+    }
 }
 
 HandleIssues::~HandleIssues()

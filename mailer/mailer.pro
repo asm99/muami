@@ -25,6 +25,7 @@ HEADERS  += \
     src/gui/handleissues.h \
     src/gui/attachfilewindow.h \
     my_qlabel.h
+
 	
 FORMS    += \
     src/gui/gen/mailbox.ui \

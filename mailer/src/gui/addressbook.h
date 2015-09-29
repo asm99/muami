@@ -23,6 +23,8 @@ public:
 
     QString addressBookPath ;
 
+    bool modified ;
+
     void loadAddressFile(QString);
     
 signals:
@@ -45,6 +47,10 @@ private slots:
     void confirmDelete();
 
     void saveModification();
+
+    void modificationAdded(QTreeWidgetItem*,int);
+
+    void checkBeforeClose();
 
 private:
     Ui::AddressBook *ui;

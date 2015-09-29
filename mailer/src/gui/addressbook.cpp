@@ -18,14 +18,16 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
                     qApp->desktop()->availableGeometry()
                     )
                 ) ;
-    this->setGeometry(800,0,800,400);
-    ui->addressesTree->setColumnWidth(0, 50);
+    this->setGeometry(800,0,830,400);
+    ui->addressesTree->setColumnWidth(0, 60);
     ui->addressesTree->setColumnWidth(1, 275);
     ui->addressesTree->setColumnWidth(2, 225);
     ui->addressesTree->setColumnWidth(3, 225);
-    ui->menuBar->hide();
+    ui->addressesTree->setHeaderHidden(false);
+    //ui->menuBar->hide();
 
     addressBookPath = addressBook ;
+    modified = false ;              // Repère les modifs apportées
 
     loadAddressFile(addressBookPath);
 
@@ -40,6 +42,10 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     connect(ui->addressField,
             SIGNAL(textChanged(QString)),
             SLOT(findAddress(QString)));
+
+    connect(ui->addressesTree,
+            SIGNAL(itemChanged(QTreeWidgetItem*,int)),
+            SLOT(modificationAdded(QTreeWidgetItem*, int)));
 
     connect(ui->addToMailButton,
             SIGNAL(clicked()),
@@ -56,12 +62,7 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
 
     connect(ui->closeButton,
             SIGNAL(clicked()),
-            SLOT(close()));
-
-    connect(ui->closeButton,
-            SIGNAL(clicked()),
-            this->parentWidget(),
-            SLOT(showAddressBook()));
+            SLOT(checkBeforeClose()));
 
     connect(ui->addressesTree,
             SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
@@ -80,6 +81,56 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
 AddressBook::~AddressBook()
 {
     delete ui;
+}
+
+void AddressBook::checkBeforeClose()
+{
+    if(modified)
+    {
+        QFile file(addressBookPath);
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            return;
+        }
+
+        QTextStream in(&file);
+        QString line = in.readLine(); // Retire le titre
+        line = in.readLine();
+        addresses.clear();
+        while(!line.isNull())
+        {
+            addresses.append(line);
+            line = in.readLine();
+        }
+        file.close();
+
+        QStringList currentTree;
+        for(int x = 0; x < ui->addressesTree->topLevelItemCount(); x++)
+        {
+            QString row ;
+            row = ui->addressesTree->topLevelItem(x)->text(1);
+            row += " ; ";
+            row += ui->addressesTree->topLevelItem(x)->text(2);
+            row += " ; ";
+            row += ui->addressesTree->topLevelItem(x)->text(3);
+            currentTree.append(row);
+        }
+        bool close = true ;
+        for(int x = 0; x < currentTree.count(); x++)
+        {
+            if(addresses.at(x) != currentTree.at(x))
+            {
+                close = false ;
+                QString str = "Des modifications ont été apportées.\n "
+                              "Souhaitez-vous les conserver ?";
+                HandleIssues *confirm = new HandleIssues(this, str, "confirmModifAddBook");
+                confirm->show();
+                break;
+            }
+        }
+        if(close) this->close();
+    }
+    else this->close();
 }
 
 void AddressBook::addAddressToBook()
@@ -111,21 +162,15 @@ void AddressBook::addAddressToBook()
             line = in.readLine();
         }
         QString newAddress = ui->addressField->text();
-        in << newAddress << "\n";
+        in << newAddress << " ;  ;  \n";
         addresses.append(newAddress);
         file.close();
 
         std::sort(addresses.begin(), addresses.end()) ;
         ui->addressesTree->clear();
 
-        foreach(QString address, addresses)
-        {
-            QTreeWidgetItem *itm = new QTreeWidgetItem(ui->addressesTree);
-            itm->setText(1, address);
-            itm->setFlags(itm->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
-            itm->setCheckState(0, Qt::Unchecked);
-            ui->addressesTree->addTopLevelItem(itm);
-        }
+        loadAddressFile(addressBookPath);
+
         ui->addressField->clear();
         ui->addressField->setPlaceholderText("L'adresse a été ajoutée");
 
@@ -236,12 +281,14 @@ void AddressBook::confirmDelete()
         return;
     }
     addresses.clear();
+    QStringList addressesTempList ;
     QTextStream in(&file);
     QString line = in.readLine(); // Retire le titre
     line = in.readLine();
     while(!line.isNull())
     {
         addresses.append(line);
+        addressesTempList.append((line.split(" ; ")).at(0));
         line = in.readLine();
     }
 
@@ -253,10 +300,11 @@ void AddressBook::confirmDelete()
         {
             address->setCheckState(0, Qt::Unchecked);
             QString toDelete = address->text(1) ;
+
             int addressesLength = addresses.length();
             for(int y = 0; y < addressesLength; y++)
             {
-                if(toDelete == addresses.at(y))
+                if(toDelete == addressesTempList.at(y))
                 {
                     addresses.removeAt(y);
                     break;
@@ -306,4 +354,9 @@ void AddressBook::saveModification()
             << "\n";
     }
     file.close();
+}
+
+void AddressBook::modificationAdded(QTreeWidgetItem* item,int n)
+{
+    modified = true ;
 }

@@ -11,7 +11,9 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->fileDetails->setReadOnly(true);
-    ui->fileDetails->setVisible(false);
+    ui->fileDetails->setVisible(true);
+
+    ui->infoLabel->setVisible(false); //INFO LABEL
 
     displayHelper();
 
@@ -132,7 +134,7 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
             QListWidgetItem *item = new QListWidgetItem(ui->contentList) ;
             item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
             item->setCheckState(Qt::Unchecked);
-            item->setText(fileInfo.fileName());
+            item->setText(file);
 
             QString details = "Chemin du fichier :\n";
             details.append(fileInfo.filePath());

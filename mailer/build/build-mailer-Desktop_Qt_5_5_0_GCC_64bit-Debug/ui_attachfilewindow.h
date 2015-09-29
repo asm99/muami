@@ -31,21 +31,22 @@ class Ui_AttachFileWindow
 {
 public:
     QWidget *centralwidget;
+    QVBoxLayout *verticalLayout_4;
     QHBoxLayout *horizontalLayout_3;
-    QHBoxLayout *horizontalLayout_2;
     QVBoxLayout *verticalLayout;
     QPushButton *leaveButton;
     QPushButton *addButton;
     QPushButton *backButton;
     QPushButton *goButton;
     QSplitter *splitter_2;
-    QSplitter *splitter;
     QWidget *layoutWidget;
     QVBoxLayout *verticalLayout_2;
     QListWidget *folderList;
     QLineEdit *pathAccessor;
-    QWidget *layoutWidget1;
+    QSplitter *splitter;
+    QWidget *widget;
     QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_2;
     QListWidget *contentList;
     QHBoxLayout *horizontalLayout;
     QLineEdit *findFile;
@@ -59,13 +60,13 @@ public:
         AttachFileWindow->resize(975, 549);
         centralwidget = new QWidget(AttachFileWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
-        horizontalLayout_3 = new QHBoxLayout(centralwidget);
+        verticalLayout_4 = new QVBoxLayout(centralwidget);
+        verticalLayout_4->setSpacing(0);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(0);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setSpacing(0);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -125,17 +126,13 @@ public:
         verticalLayout->addWidget(goButton);
 
 
-        horizontalLayout_2->addLayout(verticalLayout);
+        horizontalLayout_3->addLayout(verticalLayout);
 
         splitter_2 = new QSplitter(centralwidget);
         splitter_2->setObjectName(QStringLiteral("splitter_2"));
         splitter_2->setOrientation(Qt::Horizontal);
         splitter_2->setHandleWidth(2);
-        splitter = new QSplitter(splitter_2);
-        splitter->setObjectName(QStringLiteral("splitter"));
-        splitter->setOrientation(Qt::Horizontal);
-        splitter->setHandleWidth(2);
-        layoutWidget = new QWidget(splitter);
+        layoutWidget = new QWidget(splitter_2);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
         verticalLayout_2 = new QVBoxLayout(layoutWidget);
         verticalLayout_2->setSpacing(0);
@@ -164,14 +161,21 @@ public:
 
         verticalLayout_2->addWidget(pathAccessor);
 
-        splitter->addWidget(layoutWidget);
-        layoutWidget1 = new QWidget(splitter);
-        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        verticalLayout_3 = new QVBoxLayout(layoutWidget1);
+        splitter_2->addWidget(layoutWidget);
+        splitter = new QSplitter(splitter_2);
+        splitter->setObjectName(QStringLiteral("splitter"));
+        splitter->setOrientation(Qt::Horizontal);
+        splitter->setHandleWidth(2);
+        widget = new QWidget(splitter);
+        widget->setObjectName(QStringLiteral("widget"));
+        verticalLayout_3 = new QVBoxLayout(widget);
         verticalLayout_3->setSpacing(0);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        contentList = new QListWidget(layoutWidget1);
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(0);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        contentList = new QListWidget(widget);
         contentList->setObjectName(QStringLiteral("contentList"));
         QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(1);
@@ -179,19 +183,24 @@ public:
         sizePolicy3.setHeightForWidth(contentList->sizePolicy().hasHeightForWidth());
         contentList->setSizePolicy(sizePolicy3);
         contentList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        contentList->setViewMode(QListView::IconMode);
+        contentList->setFlow(QListView::TopToBottom);
+        contentList->setViewMode(QListView::ListMode);
+        contentList->setModelColumn(0);
 
-        verticalLayout_3->addWidget(contentList);
+        horizontalLayout_2->addWidget(contentList);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        findFile = new QLineEdit(layoutWidget1);
+        findFile = new QLineEdit(widget);
         findFile->setObjectName(QStringLiteral("findFile"));
 
         horizontalLayout->addWidget(findFile);
 
-        infoLabel = new my_qlabel(layoutWidget1);
+        infoLabel = new my_qlabel(widget);
         infoLabel->setObjectName(QStringLiteral("infoLabel"));
         QSizePolicy sizePolicy4(QSizePolicy::Maximum, QSizePolicy::Maximum);
         sizePolicy4.setHorizontalStretch(0);
@@ -208,18 +217,18 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout);
 
-        splitter->addWidget(layoutWidget1);
-        splitter_2->addWidget(splitter);
-        fileDetails = new QTextEdit(splitter_2);
+        splitter->addWidget(widget);
+        fileDetails = new QTextEdit(splitter);
         fileDetails->setObjectName(QStringLiteral("fileDetails"));
         fileDetails->setMaximumSize(QSize(220, 16777215));
         fileDetails->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        splitter_2->addWidget(fileDetails);
+        splitter->addWidget(fileDetails);
+        splitter_2->addWidget(splitter);
 
-        horizontalLayout_2->addWidget(splitter_2);
+        horizontalLayout_3->addWidget(splitter_2);
 
 
-        horizontalLayout_3->addLayout(horizontalLayout_2);
+        verticalLayout_4->addLayout(horizontalLayout_3);
 
         AttachFileWindow->setCentralWidget(centralwidget);
 

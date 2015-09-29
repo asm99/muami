@@ -46,12 +46,17 @@ MailBox::MailBox(QWidget *parent) :
 
     accountRegistered();
 
+//    Config_manager* cm {};
+//    std::vector<Account*> accounts = cm->get_accounts();
+//    Account* acc = accounts[0];
+
     inboxButtonsStyle();
     groupBoxButtonStyle();
     listStyle();
-
+    checkbox = false ;
     loadAddressFile();
-    ui->infoLabel->setEnabled(false); //INFO LABEL DISABLED
+    ui->infoLabel->setVisible(false); //INFO LABEL DISABLED
+
     ui->inbox->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->inbox,
             SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -81,10 +86,6 @@ MailBox::MailBox(QWidget *parent) :
     connect(ui->mailList,
             SIGNAL(itemClicked(QListWidgetItem*)),
             SLOT(showMailContent(QListWidgetItem*)));
-
-    connect(ui->mailList,
-           SIGNAL(itemChanged(QListWidgetItem*)),
-           SLOT(changeBackgroundColor(QListWidgetItem*)));
 
     connect(ui->addFileButton_2,
             SIGNAL(clicked()),
@@ -124,20 +125,6 @@ MailBox::MailBox(QWidget *parent) :
 MailBox::~MailBox()
 {
     delete ui;
-}
-
-void MailBox::on_inboxButton_clicked()
-{
-    if (ui->inbox->isVisible())
-    {
-        toggleAccountPanel(false);
-        ui->groupInbox->setVisible(false);
-    }
-    else
-    {
-        ui->groupInbox->setVisible(true);
-        toggleAccountPanel(true);
-    }
 }
 
 /** ++ Gestion des dossiers + leur contenu ++ **/
@@ -187,7 +174,7 @@ void MailBox::showFolderContent(QListWidgetItem* item)
     QDir *path = new QDir(str) ;
     QFileInfoList filesList = path->entryInfoList();
     filesList.removeFirst();    // Vire le .
-    filesList.removeFirst();    // et .. des listes
+    filesList.removeFirst();    // et .. des listes A RETIRER PLUS TARD !!!!!!!
     foreach(QFileInfo fileInfo, filesList)
     {
         if (!fileInfo.isDir())
@@ -196,8 +183,6 @@ void MailBox::showFolderContent(QListWidgetItem* item)
             date.append("\nSubject\n") ;
             date.append(fileInfo.created().toString()) ;
             QListWidgetItem *item = new QListWidgetItem(ui->mailList);
-            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-            item->setCheckState(Qt::Unchecked);
             item->setWhatsThis(fileInfo.filePath());
             item->setText(date);
             ui->mailList->addItem(item);
@@ -205,16 +190,8 @@ void MailBox::showFolderContent(QListWidgetItem* item)
     }
 }
 
-void MailBox::changeBackgroundColor(QListWidgetItem* item)
-{
-    if(item->checkState() == Qt::Checked)
-    {
-
-    }
-}
-
 void MailBox::showMailMenu(const QPoint &pos)
-{/*
+{
     QPoint globalPos = ui->mailList->mapToGlobal(pos);
     QMenu myMenu;
     myMenu.addAction("Répondre", this, SLOT(on_actionR_pondre_triggered()));
@@ -226,7 +203,7 @@ void MailBox::showMailMenu(const QPoint &pos)
     myMenu.addAction("Supprimer", this, SLOT(on_actionSupprimer_triggered()));
 
     if (ui->mailList->currentItem())
-        QAction *selectedItem = myMenu.exec(globalPos);*/
+        QAction *selectedItem = myMenu.exec(globalPos);
 }
 
 void MailBox::showMailContent(QListWidgetItem* mail)
@@ -283,24 +260,50 @@ void MailBox::on_deleteButton_clicked()
 
 void MailBox::on_actionSupprimer_triggered()
 {
-    int checked = 0 ;
-    for(int x = 0; x < ui->mailList->count(); x++)
+    if (!checkbox)
     {
-        QListWidgetItem *mail = ui->mailList->item(x) ;
-        if (mail->checkState() == Qt::Checked) checked++ ;
+        for(int x = 0; x < ui->mailList->count(); x++)
+        {
+            QListWidgetItem *mail = ui->mailList->item(x);
+            mail->setFlags(mail->flags() | Qt::ItemIsUserCheckable);
+            mail->setCheckState(Qt::Unchecked);
+        }
+        checkbox = true;
     }
-    if (checked > 1)
+    else
     {
-        QString str = "Voulez-vous supprimer ces courriers ?" ;
-        HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
-        box->show();
-    }
+        int checked_mail = 0 ;
+        for(int x = 0; x < ui->mailList->count(); x++)
+        {
+            QListWidgetItem *mail = ui->mailList->item(x);
+            if (mail->checkState() == Qt::Checked)
+            {
+                checked_mail ++ ;
+            }
+        }
+        if (checked_mail > 1)
+        {
+            QString str = "Voulez-vous supprimer ces courriers ?" ;
+            HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
+            box->show();
+        }
 
-    else if (checked == 1)
-    {
-        QString str = "Voulez-vous supprimer ce courrier ?" ;
-        HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
-        box->show();
+        else if (checked_mail == 1)
+        {
+            QString str = "Voulez-vous supprimer ce courrier ?" ;
+            HandleIssues *box = new HandleIssues(this, str, "deleteFromBox") ;
+            box->show();
+        }
+
+        else if (!checked_mail)
+        {
+            for(int x = 0; x < ui->mailList->count(); x++)
+            {
+                QListWidgetItem *mail = ui->mailList->item(x);
+                mail->setData(Qt::CheckStateRole, QVariant());
+                checkbox = false;
+            }
+        }
     }
 }
 
@@ -317,7 +320,13 @@ void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
         }
         else x++ ;
     }
+    for(int y = 0; y < ui->mailList->count(); y++)
+    {
+        QListWidgetItem *mail = ui->mailList->item(y);
+        mail->setData(Qt::CheckStateRole, QVariant());
+    }
     ui->mailField->clear();
+    checkbox = false;
 }
 /** ~~ Supprimer le courrier ~~ **/
 
@@ -378,7 +387,7 @@ void MailBox::on_actionR_pondre_tous_triggered()     // REMPLIR LES CHAMPS TO, C
 {
     if(ui->mailList->currentItem())
     {
-    ui->displayer->setReadOnly(false);
+        ui->displayer->setReadOnly(false);
         QTextCursor cursor = ui->displayer->textCursor() ;
         cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor,1);
         ui->displayer->setTextCursor(cursor);
@@ -608,7 +617,7 @@ void MailBox::hideInfo()
     ui->deleteFile->setIcon(QIcon(":/icon/res/document-remove.png"));
     ui->cancelButton->setIcon(QIcon(":/icon/res/delete.png"));
 }
-/** ~~ Recherche ~~ **/
+/** ~~ Recherche & info ~~ **/
 
 
 /** ++ Quitter l'appli ++ **/
@@ -687,10 +696,27 @@ void MailBox::accountRegistered()
         toggleNakedApp(true) ;
 
         path = QDir::homePath();
-        path.append("/.config/muami");
+        path.append("/.config");
+        QDir *muamiPath = new QDir(path);
+        bool y = false ;
+        fileList = muamiPath->entryInfoList();
+        foreach(QFileInfo fileInfo, fileList)
+        {
+            if(fileInfo.isDir() && fileInfo.fileName() == "muami")
+            {
+                y = true;
+                break;
+            }
+        }
+        if(!y)
+        {
+            muamiPath->mkdir("muami");
+        }
+
+        path.append("/muami");
         accountsPath = new QDir(path);
         fileList = accountsPath->entryInfoList();
-        bool y = false ;
+        y = false ;
         foreach(QFileInfo fileInfo, fileList)
         {
             if(fileInfo.isDir() && fileInfo.fileName() == "accounts")
@@ -989,7 +1015,7 @@ void MailBox::on_actionAlert_triggered()
 /** ~~ Envoi ~~ **/
 
 
-/** ++ Gestion des pièces jointes et carnet d'adresses ++ **/
+/** ++ Gestion des pièces jointes ++ **/
 void MailBox::on_actionAttacher_des_pi_ces_jointes_triggered()
 {
     openAttachFileWindow();
@@ -1051,7 +1077,10 @@ void MailBox::deleteFileAction()
         ui->deleteFile->setVisible(false);
     }
 }
+/** ~~ Gestion des pièces jointes ~~ **/
 
+
+/** ++ Gestion du carnet d'adresses ++ **/
 void MailBox::loadAddressFile()
 {
     QString path = QDir::homePath();
@@ -1191,8 +1220,7 @@ void MailBox::addToAddressField(QString address)
         ui->to->setText(addresses);
     }
 }
-
-/** ~~ Gestion des pièces jointes et carnet d'adresses ~~ **/
+/** ~~ Gestion du carnet d'adresses ~~ **/
 
 
 /** ++ Gestion de l'affichage ++ **/
@@ -1406,4 +1434,19 @@ void MailBox::listStyle()
     ui->title->setStyleSheet(style);
     ui->to->setStyleSheet(style);
 }
+
+void MailBox::on_inboxButton_clicked()
+{
+    if (ui->inbox->isVisible())
+    {
+        toggleAccountPanel(false);
+        ui->groupInbox->setVisible(false);
+    }
+    else
+    {
+        ui->groupInbox->setVisible(true);
+        toggleAccountPanel(true);
+    }
+}
 /** ~~ Gestion de l'affichage ~~ **/
+

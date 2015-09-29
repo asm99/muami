@@ -7,6 +7,10 @@
 #include "src/gui/attachfilewindow.h"
 #include "src/gui/mailbox.h"
 
+/**
+ * Delete action : Envoyer l'id du mail en lecture à cette fenetre en parametre
+ * pour permettre de retourner une action qui detruise le mail de la liste
+ */
 
 WriteMail::WriteMail(QWidget *parent, bool display) :
     QMainWindow(parent),

@@ -1590,9 +1590,9 @@ moc_addressbook.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidgetItem \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidgetItem \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
@@ -1604,9 +1604,12 @@ moc_addressbook.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
 		../../src/gui/writemail.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
 		../../src/gui/addressbook.h
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/furya/Bureau/L2/Qt/mailer -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../../src/gui/addressbook.h -o moc_addressbook.cpp
 
@@ -2900,7 +2903,7 @@ mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		../../src/gui/attachfilewindow.h \
 		../../src/gui/addressbook.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidgetItem
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidgetItem
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mailbox.o ../../src/gui/mailbox.cpp
 
 writemail.o: ../../src/gui/writemail.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDesktopWidget \
@@ -3262,15 +3265,15 @@ writemail.o: ../../src/gui/writemail.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
 		../../src/gui/addressbook.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidgetItem \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidgetItem \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
 		../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		../../src/gui/attachfilewindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
 		../../src/gui/mailbox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o writemail.o ../../src/gui/writemail.cpp
 
@@ -3586,9 +3589,9 @@ addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/incl
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qvalidator.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidgetItem \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidgetItem \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractitemview.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qframe.h \
@@ -3600,9 +3603,12 @@ addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/incl
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qstyle.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
 		../../src/gui/writemail.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QListWidget \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistwidget.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qlistview.h \
 		../../src/gui/handleissues.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
@@ -3630,6 +3636,7 @@ addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/incl
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QPushButton \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qpushbutton.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o addressbook.o ../../src/gui/addressbook.cpp

@@ -300,6 +300,9 @@ public:
         sizePolicy5.setHeightForWidth(inboxButton->sizePolicy().hasHeightForWidth());
         inboxButton->setSizePolicy(sizePolicy5);
         inboxButton->setMaximumSize(QSize(50, 16777215));
+        QFont font1;
+        font1.setPointSize(9);
+        inboxButton->setFont(font1);
         QIcon icon4;
         icon4.addFile(QStringLiteral(":/icon/res/inbox-2.png"), QSize(), QIcon::Normal, QIcon::Off);
         inboxButton->setIcon(icon4);
@@ -451,6 +454,7 @@ public:
         sizePolicy7.setVerticalStretch(0);
         sizePolicy7.setHeightForWidth(mailField->sizePolicy().hasHeightForWidth());
         mailField->setSizePolicy(sizePolicy7);
+        mailField->setMaximumSize(QSize(500, 16777215));
 
         horizontalLayout_4->addWidget(mailField);
 
@@ -458,11 +462,13 @@ public:
         infoLabel->setObjectName(QStringLiteral("infoLabel"));
         sizePolicy.setHeightForWidth(infoLabel->sizePolicy().hasHeightForWidth());
         infoLabel->setSizePolicy(sizePolicy);
-        infoLabel->setMaximumSize(QSize(27, 27));
+        infoLabel->setMaximumSize(QSize(24, 24));
         infoLabel->setMouseTracking(true);
         infoLabel->setFrameShadow(QFrame::Raised);
+        infoLabel->setLineWidth(0);
         infoLabel->setPixmap(QPixmap(QString::fromUtf8(":/icon/res/info-outline.png")));
         infoLabel->setScaledContents(true);
+        infoLabel->setIndent(-1);
 
         horizontalLayout_4->addWidget(infoLabel);
 
@@ -472,6 +478,7 @@ public:
         mailList = new QListWidget(centralwidget);
         mailList->setObjectName(QStringLiteral("mailList"));
         mailList->setMinimumSize(QSize(250, 0));
+        mailList->setMaximumSize(QSize(500, 16777215));
         mailList->setBaseSize(QSize(0, 0));
         mailList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         mailList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -528,9 +535,9 @@ public:
         sizePolicy4.setHeightForWidth(title->sizePolicy().hasHeightForWidth());
         title->setSizePolicy(sizePolicy4);
         title->setMaximumSize(QSize(16777215, 27));
-        QFont font1;
-        font1.setKerning(true);
-        title->setFont(font1);
+        QFont font2;
+        font2.setKerning(true);
+        title->setFont(font2);
 
         verticalLayout_3->addWidget(title);
 
@@ -722,67 +729,119 @@ public:
         accountLabel1->setPlaceholderText(QApplication::translate("MailBox", "Info 1", 0));
         accountLabel2->setPlaceholderText(QApplication::translate("MailBox", "Info 2", 0));
 #ifndef QT_NO_TOOLTIP
-        previousAccount->setToolTip(QString());
+        previousAccount->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Compte pr\303\251c\303\251dant</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         previousAccount->setText(QString());
         previousAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Left", 0));
 #ifndef QT_NO_TOOLTIP
-        addAccount->setToolTip(QString());
+        addAccount->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Ajouter un compte</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         addAccount->setText(QString());
         addAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+A", 0));
 #ifndef QT_NO_TOOLTIP
-        delAccount->setToolTip(QString());
+        delAccount->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Retirer ce compte</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         delAccount->setText(QString());
         delAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+S", 0));
 #ifndef QT_NO_TOOLTIP
-        nextAccount->setToolTip(QString());
+        nextAccount->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Compte suivant</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         nextAccount->setText(QString());
         nextAccount->setShortcut(QApplication::translate("MailBox", "Ctrl+Right", 0));
 #ifndef QT_NO_TOOLTIP
-        inboxButton->setToolTip(QString());
+        inboxButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Boite de r\303\251ception</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         inboxButton->setText(QString());
         inboxButton->setShortcut(QApplication::translate("MailBox", "Ctrl+B", 0));
 #ifndef QT_NO_TOOLTIP
-        newButton->setToolTip(QString());
+        newButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Nouveau message</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         newButton->setText(QString());
         newButton->setShortcut(QApplication::translate("MailBox", "Ctrl+N", 0));
 #ifndef QT_NO_TOOLTIP
-        repButton->setToolTip(QString());
+        repButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">R\303\251pondre</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         repButton->setText(QString());
         repButton->setShortcut(QApplication::translate("MailBox", "Ctrl+R", 0));
 #ifndef QT_NO_TOOLTIP
-        repAllButton->setToolTip(QString());
+        repAllButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">R\303\251pondre \303\240 tous</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         repAllButton->setText(QString());
         repAllButton->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+R", 0));
 #ifndef QT_NO_TOOLTIP
-        transferButton->setToolTip(QString());
+        transferButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Transf\303\251rer</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         transferButton->setText(QString());
         transferButton->setShortcut(QApplication::translate("MailBox", "Ctrl+T", 0));
 #ifndef QT_NO_TOOLTIP
-        isolateButton->setToolTip(QString());
+        isolateButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Isoler</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         isolateButton->setText(QString());
         isolateButton->setShortcut(QApplication::translate("MailBox", "Ctrl+I", 0));
 #ifndef QT_NO_TOOLTIP
-        sendButton->setToolTip(QString());
+        sendButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Envoyer</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         sendButton->setText(QString());
         sendButton->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+S", 0));
 #ifndef QT_NO_TOOLTIP
-        cancelButton->setToolTip(QString());
+        cancelButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Annuler l'action</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         cancelButton->setText(QString());
         cancelButton->setShortcut(QApplication::translate("MailBox", "Esc", 0));
 #ifndef QT_NO_TOOLTIP
-        deleteButton->setToolTip(QString());
+        deleteButton->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Supprimer (Pour \303\252tre effectif, il faut cocher les courriers \303\240 supprimer)</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         deleteButton->setText(QString());
         deleteButton->setShortcut(QApplication::translate("MailBox", "Ctrl+D", 0));
@@ -814,12 +873,20 @@ public:
 #endif // QT_NO_TOOLTIP
         title->setPlaceholderText(QApplication::translate("MailBox", "Objet", 0));
 #ifndef QT_NO_TOOLTIP
-        addressBook_2->setToolTip(QString());
+        addressBook_2->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Carnet d'adresses</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         addressBook_2->setText(QString());
         addressBook_2->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+B", 0));
 #ifndef QT_NO_TOOLTIP
-        addFileButton_2->setToolTip(QString());
+        addFileButton_2->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Attacher des fichiers</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         addFileButton_2->setText(QString());
         addFileButton_2->setShortcut(QApplication::translate("MailBox", "Ctrl+Shift+F", 0));
@@ -827,7 +894,11 @@ public:
         attachedFileList->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        deleteFile->setToolTip(QString());
+        deleteFile->setToolTip(QApplication::translate("MailBox", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\"font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" border:0px;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; background-color:#ffffff;\"><span style=\" color:#252b2b; background-color:#ffffff;\">Supprimer le/les fichier(s) attach\303\251(s)</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         deleteFile->setText(QString());
 #ifndef QT_NO_TOOLTIP
