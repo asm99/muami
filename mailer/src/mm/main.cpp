@@ -1,22 +1,23 @@
-#include "Config_manager.hpp"
-#include "Protocol_manager.hpp"
-#include "IMAP_manager.hpp"
+#include "config/Config_manager.hpp"
+#include "protocol/Protocol_manager.hpp"
+#include "protocol/imap/IMAP_manager.hpp"
+
+using namespace std;
 
 int main()
 {
     try {
-		Config_manager* cm {};
-        std::vector<Account*> accounts = cm->get_accounts();
-        Account* acc = accounts[0];
+		Config_manager* cm = new Config_manager();
+        Account* acc = cm->get_account_at_index(0); // first account
 
         Protocol_manager* p_mgr =
-            new IMAP_manager(acc->imap + ":" + acc->iport);
-        p_mgr->login(acc->user, acc->pass);
+            new IMAP_manager(acc->imap() + ":" + acc->iport());
+        p_mgr->login(acc->user(), acc->pass());
         p_mgr->select_mbox("INBOX");
 
-        std::vector<Email*> emails = p_mgr->fetch_emails_list(1, 3);
+        vector<Email*> emails = p_mgr->fetch_emails_list(10, 15);
 
-        std::cout << "nb of emails: " << emails.size() << std::endl;
+        cout << "nb of emails: " << emails.size() << endl;
 
 		for (auto em : emails) {
 			em->dump();
@@ -26,8 +27,8 @@ int main()
 
 
     }
-    catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+    catch (const exception& e) {
+        cerr << e.what() << endl;
     }
 
     return 0;
