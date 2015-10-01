@@ -41,6 +41,7 @@ operator>>(istream& is, Nstring& ns)
                 for (unsigned int i = 0; i < s.length(); i++) {
                     is.unget();
                 }
+                return is;
                 break;
             }
         }

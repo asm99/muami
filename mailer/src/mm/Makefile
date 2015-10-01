@@ -1,28 +1,27 @@
 CPP = g++
 CFLAGS = -g -Wall -Wextra -std=c++11
-LIBS = -lcrypto -lssl 
-DBGFLAG = -DDEBUG
+LIBS = -lcrypto -lssl
 EXE = muami
-SRCS = protocol/imap/IMAP_manager.cpp \
-	   protocol/imap/IMAP_parser.cpp \
-	   main.cpp \
-	   utils/error.cpp \
-	   utils/Date_formatter.cpp \
-	   crypto/md5.cpp \
+SRCS = main.cpp \
 	   coding/base64.cpp \
 	   config/Config_manager.cpp \
 	   config/Account.cpp \
+	   crypto/md5.cpp \
+	   email/Address.cpp \
+	   email/Addresses.cpp \
 	   email/Email.cpp \
 	   email/Envelope.cpp \
-	   email/RFC822_header.cpp \
-	   ssl/SSL_manager.cpp \
-	   utils/util.cpp \
 	   email/Nstring.cpp \
-	   email/Address.cpp \
-	   email/Addresses.cpp
+	   email/RFC822_header.cpp \
+	   protocol/imap/IMAP_manager.cpp \
+	   protocol/imap/IMAP_parser.cpp \
+	   ssl/SSL_manager.cpp \
+	   utils/error.cpp \
+	   utils/Date_formatter.cpp \
+	   utils/util.cpp
 
 all: $(SRCS)
-	$(CPP) $(CFLAGS) $^ -o $(EXE) $(LIBS) 
+	$(CPP) $(CFLAGS) $^ -o $(EXE) $(LIBS) -DDEBUG
 
 config_manager: config/Config_manager.cpp config/Account.cpp utils/error.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG
@@ -31,7 +30,7 @@ md5: crypto/md5.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DMD5_DEBUG -lcrypto
 
 base64: coding/base64.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DBASE64_DEBUG
+	$(CPP) $(CFLAGS) $^ -o $@ -DBASE64_DEBUG -lssl -lcrypto
 
 date_formatter: utils/Date_formatter.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DDATE_FORMATTER_DEBUG
