@@ -44,6 +44,7 @@
 #include "Addresses.hpp"
 #include "Nstring.hpp"
 #include "../utils/util.hpp"
+#include "../coding/coding.hpp"
 
 using namespace std;
 

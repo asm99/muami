@@ -72,6 +72,7 @@ main()
             "Y2V0IGFsZ29yaXRobWUgZm9uY3Rpb25uZS10LWlsID8=" },
         { "=_test_!*@/-ésotériqueè?zZ^",
             "PV90ZXN0XyEqQC8tw6lzb3TDqXJpcXVlw6g/elpe" },
+        { "", "5L2g5aW977yM5JWF6Z2i56qd" },
     };
 
     for (map<string, string>::const_iterator it = m.begin();

@@ -7,7 +7,7 @@ Nstring::set_str(const string& s)
 }
 
 string
-Nstring::str()
+Nstring::str() const
 {
     return nstr;
 }

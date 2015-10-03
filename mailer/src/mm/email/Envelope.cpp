@@ -68,7 +68,7 @@ Envelope::set_sender(Address* const sender)
 void
 Envelope::set_subject(const Nstring& subject)
 {
-    env_subject = subject;
+    env_subject.set_str(mmdecode(subject.str(), true));
 }
 
 void

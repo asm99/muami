@@ -4,6 +4,8 @@ LIBS = -lcrypto -lssl
 EXE = muami
 SRCS = main.cpp \
 	   coding/base64.cpp \
+	   coding/coding.cpp \
+	   coding/qp.cpp \
 	   config/Config_manager.cpp \
 	   config/Account.cpp \
 	   crypto/md5.cpp \
@@ -23,20 +25,30 @@ SRCS = main.cpp \
 all: $(SRCS)
 	$(CPP) $(CFLAGS) $^ -o $(EXE) $(LIBS) -DDEBUG
 
-config_manager: config/Config_manager.cpp config/Account.cpp utils/error.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG
+address: email/Address.cpp utils/util.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DADDRESS_DEBUG
 
-md5: crypto/md5.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DMD5_DEBUG -lcrypto
+addresses: email/Addresses.cpp email/Address.cpp utils/util.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DADDRESSES_DEBUG
 
 base64: coding/base64.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DBASE64_DEBUG -lssl -lcrypto
+
+config_manager: config/Config_manager.cpp config/Account.cpp utils/error.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG
 
 date_formatter: utils/Date_formatter.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DDATE_FORMATTER_DEBUG
 
 debug: SDebugger.cpp utils/error.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DTTY_DEBUG
+
+encdec: coding/qp.cpp coding/coding.cpp coding/base64.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DCODING_DEBUG -lssl -lcrypto
+
+envelope: email/Envelope.cpp email/Address.cpp email/Addresses.cpp \
+	email/Nstring.cpp utils/util.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DENVELOPE_DEBUG
 
 imap_manager: protocol/imap/IMAP_manager.cpp protocol/imap/IMAP_parser.cpp \
 	ssl/SSL_manager.cpp config/Config_manager.cpp config/Account.cpp \
@@ -50,21 +62,17 @@ imap_parser: protocol/imap/IMAP_parser.cpp email/RFC822_header.cpp \
 	email/Nstring.cpp email/Address.cpp email/Addresses.cpp utils/util.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DIMAP_PARSER_DEBUG
 
-util: utils/util.cpp 
-	$(CPP) $(CFLAGS) $^ -o $@ -DUTIL_DEBUG
-
-envelope: email/Envelope.cpp email/Address.cpp email/Addresses.cpp \
-	email/Nstring.cpp utils/util.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DENVELOPE_DEBUG
-
-address: email/Address.cpp utils/util.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DADDRESS_DEBUG
-
-addresses: email/Addresses.cpp email/Address.cpp utils/util.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DADDRESSES_DEBUG
+md5: crypto/md5.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DMD5_DEBUG -lcrypto
 
 nstring: email/nstring.cpp utils/util.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DNSTRING_DEBUG
+
+qp: coding/qp.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DQP_DEBUG
+
+util: utils/util.cpp 
+	$(CPP) $(CFLAGS) $^ -o $@ -DUTIL_DEBUG
 
 .PHONY: 
 	clean cleanall
@@ -74,16 +82,18 @@ clean:
 
 cleanall:
 	rm -rf $(EXE) *.o *.dSYM tags \
+		address \
+		addresses \
+		base64 \
 		config_manager \
 		date_formatter \
 		debug \
-		md5 \
-		base64 \
+		encdec \
+		envelope \
 		imap_manager \
 		imap_parser \
-		util \
-		envelope \
-		address \
-		addresses \
-		nstring
+		md5 \
+		nstring \
+		qp \
+		util
 

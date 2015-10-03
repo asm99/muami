@@ -45,7 +45,7 @@ class Nstring
         ~Nstring() {};
 
         void set_str(const string& s);
-        string str();
+        string str() const;
         void dump();
 };
 
