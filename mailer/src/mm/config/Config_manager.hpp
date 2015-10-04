@@ -19,7 +19,6 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <stdexcept>
-#include <errno.h>
 #include "Account.hpp"
 #include "../utils/error.hpp"
 
@@ -41,11 +40,11 @@ class Config_manager
         Config_manager();
         ~Config_manager() {};
 
-        unsigned int get_accounts_count();
+        unsigned int get_accounts_count() const;
         Account* get_account_at_index(unsigned int idx);
 
         // DEBUG
-        void dump_accounts();
+        void dump_accounts() const;
 };
 
 #endif /* end of include guard: CONFIG_MANAGER_H */

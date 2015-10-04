@@ -13,6 +13,7 @@ SRCS = main.cpp \
 	   email/Addresses.cpp \
 	   email/Email.cpp \
 	   email/Envelope.cpp \
+	   email/Mailbox.cpp \
 	   email/Nstring.cpp \
 	   email/RFC822_header.cpp \
 	   protocol/imap/IMAP_manager.cpp \
@@ -59,8 +60,15 @@ imap_manager: protocol/imap/IMAP_manager.cpp protocol/imap/IMAP_parser.cpp \
 
 imap_parser: protocol/imap/IMAP_parser.cpp email/RFC822_header.cpp \
 	utils/Date_formatter.cpp email/Email.cpp email/Envelope.cpp \
-	email/Nstring.cpp email/Address.cpp email/Addresses.cpp utils/util.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DIMAP_PARSER_DEBUG
+	coding/coding.cpp coding/qp.cpp coding/base64.cpp \
+	email/Nstring.cpp email/Address.cpp email/Addresses.cpp utils/util.cpp \
+	email/Mailbox.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DIMAP_PARSER_DEBUG -lssl -lcrypto
+
+mailbox: email/Mailbox.cpp email/Email.cpp email/Nstring.cpp \
+	email/Envelope.cpp email/Address.cpp email/Addresses.cpp \
+	utils/util.cpp coding/coding.cpp coding/base64.cpp coding/qp.cpp
+	$(CPP) $(CFLAGS) $^ -o $@ -DMAILBOX_DEBUG -lssl -lcrypto
 
 md5: crypto/md5.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DMD5_DEBUG -lcrypto
@@ -92,6 +100,7 @@ cleanall:
 		envelope \
 		imap_manager \
 		imap_parser \
+		mailbox \
 		md5 \
 		nstring \
 		qp \

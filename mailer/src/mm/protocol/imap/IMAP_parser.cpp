@@ -1,10 +1,154 @@
-/*
- * MELKONIAN Marc - 13410425
- * IMAP_parser.cpp - parsing functions for IMAP server responses
- * Date: 04 May 2015
- */
-
 #include "IMAP_parser.hpp"
+
+/* Mailbox parsing functions */
+
+unsigned int
+IMAP_parser::parse_mbox_flags(const string& s)
+{
+    return parse_flags(s);
+}
+
+unsigned int
+IMAP_parser::parse_mbox_perm_flags(const string& s)
+{
+    return parse_flags(s);
+}
+
+unsigned int
+IMAP_parser::parse_mbox_star_line(const string& s, const string& token)
+{
+    istringstream iss(s);
+    int k;
+    string star, word;
+
+    iss >> star >> k >> word;
+    if (star == "*" && iss.good() && word == token) {
+        return k;
+    }
+
+    return 0;
+}
+
+/*
+ * Get the number of emails in the mailbox
+ * Returns 0 on failure
+ */
+unsigned int
+IMAP_parser::parse_mbox_exists(const string& s)
+{
+    return parse_mbox_star_line(s, "EXISTS");
+}
+
+/*
+ * Get the number of recent emails in the mailbox
+ * Returns 0 on failure
+ */
+unsigned int
+IMAP_parser::parse_mbox_recent(const string& s)
+{
+    return parse_mbox_star_line(s, "RECENT");
+}
+
+/*
+ * Helper to extract a numeric value from an "OK" line in a
+ * select mailbox response
+ * Returns 0 on failure
+ * FIXME: istringstream good() not working?!?!
+ */
+unsigned int
+IMAP_parser::parse_mbox_ok_line(const string& s, const string& token)
+{
+    size_t tok_pos, cl_bracket_pos;
+    tok_pos = s.find(token);
+    cl_bracket_pos = s.find("]");
+
+    if (tok_pos == string::npos
+        || cl_bracket_pos == string::npos) {
+        return 0;
+    }
+
+    string num_s = s.substr(tok_pos + token.length(),
+            cl_bracket_pos - (tok_pos + token.length()));
+
+    istringstream num_iss(num_s);
+    unsigned int k;
+    num_iss >> k;
+
+//     if (num_iss.good()) {
+        return k;
+//     }
+
+    return 0;
+}
+
+unsigned int
+IMAP_parser::parse_mbox_unseen(const string& s)
+{
+    return parse_mbox_ok_line(s, "UNSEEN");
+}
+
+unsigned int
+IMAP_parser::parse_mbox_uidvalidity(const string& s)
+{
+    return parse_mbox_ok_line(s, "UIDVALIDITY");
+}
+
+unsigned int
+IMAP_parser::parse_mbox_uidnext(const string& s)
+{
+    return parse_mbox_ok_line(s, "UIDNEXT");
+}
+
+int
+IMAP_parser::parse_mbox_permissions(const string& s)
+{
+    size_t pos = s.find("READ-WRITE");
+
+    if (pos != string::npos) {
+        return PERMISSION_READ_WRITE;
+    }
+
+    return PERMISSION_READ_ONLY;
+}
+
+/*
+ * FIXME: no default values when keywords are not found!!!!
+ */
+void
+IMAP_parser::parse_mailbox_infos(Mailbox& mb, const string& s)
+{
+    istringstream iss(s);
+    string line;
+    size_t pos;
+
+    while (getline(iss, line)) {
+        if ((pos = line.find("* FLAGS")) != string::npos) {
+            mb.set_flags(parse_mbox_flags(line));
+        }
+        else if ((pos = line.find("* OK [PERMANENTFLAGS")) != string::npos) {
+            mb.set_perm_flags(parse_mbox_perm_flags(line));
+        }
+        else if ((pos = line.find("EXISTS")) != string::npos) {
+            mb.set_exists(parse_mbox_exists(line));
+        }
+        else if ((pos = line.find("RECENT")) != string::npos) {
+            mb.set_recent(parse_mbox_recent(line));
+        }
+        else if ((pos = line.find("* OK [UNSEEN")) != string::npos) {
+            mb.set_unseen(parse_mbox_unseen(line));
+        }
+        else if ((pos = line.find("* OK [UIDVALIDITY")) != string::npos) {
+            mb.set_uidvalidity(parse_mbox_uidvalidity(line));
+        }
+        else if ((pos = line.find("* OK [UIDNEXT")) != string::npos) {
+            mb.set_uidnext(parse_mbox_uidnext(line));
+        }
+        else if ((pos = line.find("* OK [[READ-")) != string::npos) {
+            mb.set_permissions(parse_mbox_permissions(line));
+        }
+    }
+
+}
 
 /*
  * Check if server supports IMAP4rev1 in its CAPABILITY on its greeting
@@ -26,11 +170,10 @@ IMAP_parser::check_server_imap_capability(string s)
 
 /* Get bits flag according to a string of flags */
 unsigned char
-IMAP_parser::parse_flags(string s)
+IMAP_parser::parse_flags(const string& s)
 {
     string token;
-    stringstream ss;
-    ss << s;
+    stringstream ss(s);
     unsigned char flags = 0;
 
     while (getline(ss, token, ' ')) {
@@ -236,21 +379,8 @@ IMAP_parser::parse_flags(string s)
 // 	return hdr;
 // }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-// !!!!! TO DELETE !!!!!!!!!!!!!!!!! //
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
-vector<Email*>
-IMAP_parser::parse_emails(string s)
-{
-    cout << s;
-    vector<Email*> emails;
-    return emails;
-}
-
 // List of emails with infos (UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE)
-void
+    void
 IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 {
     const string delim = "))\r\n"; // email block delimiter
@@ -300,13 +430,13 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 
 #ifdef IMAP_PARSER_DEBUG
         cout << "uid tok: " << uid_tok << endl
-             << "flags tok: " << flags_tok << endl
-             << "idate tok: " << idate_tok << endl
-             << "formatted idate: "
-             << df->format_date(util::strip_chars(idate_tok, "\""))
-             << endl
-             << "size tok: " << size_tok << endl
-             << "env tok: " << env_tok << endl;
+            << "flags tok: " << flags_tok << endl
+            << "idate tok: " << idate_tok << endl
+            << "formatted idate: "
+            << df->format_date(util::strip_chars(idate_tok, "\""))
+            << endl
+            << "size tok: " << size_tok << endl
+            << "env tok: " << env_tok << endl;
 #endif
 
         Email* em = new Email();
@@ -322,7 +452,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         iss >> env;
         em->set_envelope(env);
 
-//         em->set_rfc822_header(RFC822_header* const hdr);
+        //         em->set_rfc822_header(RFC822_header* const hdr);
 
         emails.push_back(em);
 
@@ -395,34 +525,41 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 // }
 
 #ifdef IMAP_PARSER_DEBUG
+
 // DEBUG
 void
 print_before_after_section(bool is_child, string old)
 {
-	string new_s = util::get_new_section(old, is_child);
-	cout << "section old, new => " << old << ", " << new_s << ", ";
-	if (is_child) cout << "CHILD";
-	else          cout << "SIBLING";
-	cout << endl;
+    string new_s = util::get_new_section(old, is_child);
+    cout << "section old, new => " << old << ", " << new_s << ", ";
+    if (is_child) cout << "CHILD";
+    else          cout << "SIBLING";
+    cout << endl;
 }
 
 // Test various cases of sections labelling and nesting
 int
 main()
 {
-	IMAP_parser* imap_prsr = new IMAP_parser();
+    string sel_resp =
+        " * FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent)\r\n * OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent \\*)] Flags permitted.\r\n * 156 EXISTS\r\n * 3 RECENT\r\n * OK [UNSEEN 140] First unseen.\r\n * OK [UIDVALIDITY 1428093624] UIDs valid\r\n * OK [UIDNEXT 410] Predicted next UID\r\n a OK [READ-WRITE] Select completed (0.000 secs).\r\n DONE";
+//  * FLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent)
+//  * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent \*)] Flags permitted.
+//  * 156 EXISTS
+//  * 3 RECENT
+//  * OK [UNSEEN 140] First unseen.
+//  * OK [UIDVALIDITY 1428093624] UIDs valid
+//  * OK [UIDNEXT 410] Predicted next UID
+//  a OK [READ-WRITE] Select completed (0.000 secs).
+//  DONE";
 
-// A FETCH 1:2 (UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE)
-    string list_resp =
-"* 1 FETCH (UID 15 FLAGS (\\Seen) INTERNALDATE \"22-Apr-2015 15:05:42 +0200\" RFC822.SIZE 4856 ENVELOPE (\"Wed, 22 Apr 2015 15:05:41 +0200 (CEST)\" {34}\r\nConfirmation de commande BFN721693 ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"em2.fitnessboutique.fr\")) ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"em2.fitnessboutique.fr\")) ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"fitnessboutique.fr\")) ((NIL NIL \"mm\" \"asm35.info\")) NIL NIL NIL \"<2.2.0.1101042761.1528908.5718831763812@em2.fitnessboutique.fr>\"))\r\n* 2 FETCH (UID 16 FLAGS (\\Seen) INTERNALDATE \"22-Apr-2015 16:00:27 +0200\" RFC822.SIZE 5274 ENVELOPE (\"Wed, 22 Apr 2015 16:00:26 +0200 (CEST)\" \"=?UTF-8?Q?Votre_compte_FitnessBoutique.fr__-_Mail_=C3=A0_conserver?=\" ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"em2.fitnessboutique.fr\")) ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"em2.fitnessboutique.fr\")) ((\"=?UTF-8?Q?Service_client=C3=A8le_Fitnessboutique?=\" NIL \"mail-auto\" \"fitnessboutique.fr\")) ((NIL NIL \"mm\" \"asm35.info\")) NIL NIL NIL \"<2.2.0.1101042761.1528908.1429711226483@em2.fitnessboutique.fr>\"))\r\na OK Fetch completed.";
+    IMAP_parser* imap_prsr = new IMAP_parser();
 
-
-    vector<Email*> emails = imap_prsr->parse_emails_infos(list_resp);
-
-    for (auto em : emails) {
-        em->dump();
-    }
+    Mailbox mb {};
+    imap_prsr->parse_mailbox_infos(mb, sel_resp);
+    mb.dump();
 
     return 0;
 }
+
 #endif

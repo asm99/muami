@@ -4,21 +4,9 @@
 #include "RFC822_header.hpp"
 #include "Bodypart.hpp"
 #include "Envelope.hpp"
+#include "flags.hpp"
 
 using namespace std;
-
-/*
- * Messages flags
- * https://tools.ietf.org/html/rfc3501#section-2.3.2
- */
-enum Flags {
-    FL_ANSWERED  = 0x01,
-    FL_FLAGGED   = 0x02,
-    FL_DELETED   = 0x04,
-    FL_SEEN      = 0x08,
-    FL_DRAFT     = 0x10,
-    FL_FORWARDED = 0x20,
-};
 
 class Email
 {

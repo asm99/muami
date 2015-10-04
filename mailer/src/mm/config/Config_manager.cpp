@@ -111,7 +111,7 @@ Config_manager::load_accounts(vector<Account*>& accs)
 
 /* Return the number of accounts */
 unsigned int
-Config_manager::get_accounts_count()
+Config_manager::get_accounts_count() const
 {
     return accounts.size();
 }
@@ -129,7 +129,7 @@ Config_manager::get_account_at_index(unsigned int idx)
 }
 
 void
-Config_manager::dump_accounts()
+Config_manager::dump_accounts() const
 {
     for (unsigned int i = 0; i < accounts.size(); ++i) {
         accounts[i]->dump();
