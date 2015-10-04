@@ -182,14 +182,14 @@ Protocol_manager::server_fetch_emails_list(int start, int end)
 }
 
 /* Fetch emails list */
-vector<Email*>
-Protocol_manager::fetch_emails_list(int start, int end)
+void
+Protocol_manager::fetch_emails_list(
+        vector<Email*>& emails, int number, int offset)
 {
-    string resp = server_fetch_emails_list(start, end);
+    string resp = server_fetch_emails_list(offset, offset + number);
     IMAP_parser* prsr = new IMAP_parser();
-    vector<Email*> emails = prsr->parse_emails_infos(resp);
+    prsr->parse_emails_infos(emails, resp);
     delete prsr;
-    return emails;
 }
 
 string
@@ -251,7 +251,8 @@ main()
     string selmb_resp = p_mgr->select_mbox("INBOX");
     p_mgr->check_response_status(selmb_resp);
 
-    vector<Email*> emails = p_mgr->fetch_emails_list(10, 15);
+    vector<Email*> emails {};
+    p_mgr->fetch_emails_list(emails, 10, 15);
     cout << "nb of emails: " << emails.size() << endl;
     for (auto em : emails) {
         em->dump();

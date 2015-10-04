@@ -29,7 +29,8 @@ class Protocol_manager
 //         virtual int close_mbox();
 
         // Emails
-        virtual vector<Email*> fetch_emails_list(int start, int end);
+        virtual void fetch_emails_list(
+                vector<Email*>& emails, int number, int offset);
 //         virtual string fetch_email_infos(int uid);
 //         virtual string fetch_email_part(int uid, string section);
 };

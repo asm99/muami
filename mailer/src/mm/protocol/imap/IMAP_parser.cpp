@@ -249,12 +249,10 @@ IMAP_parser::parse_emails(string s)
     return emails;
 }
 
-// Get a list of emails with infos (UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE)
-vector<Email*>
-IMAP_parser::parse_emails_infos(string s)
+// List of emails with infos (UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE)
+void
+IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 {
-    vector<Email*> emails;
-
     const string delim = "))\r\n"; // email block delimiter
     istringstream iss(s);
     string token;
@@ -330,8 +328,6 @@ IMAP_parser::parse_emails_infos(string s)
 
         s.erase(0, to_pos);
     }
-
-    return emails;
 }
 
 // // Parse a FETCH (RFC822.HEADER BODYSTRUCTURE) response into an Email object

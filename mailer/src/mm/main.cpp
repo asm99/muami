@@ -15,7 +15,8 @@ int main()
         p_mgr->login(acc->user(), acc->pass());
         p_mgr->select_mbox("INBOX");
 
-        vector<Email*> emails = p_mgr->fetch_emails_list(10, 20);
+        vector<Email*> emails {};
+        p_mgr->fetch_emails_list(emails, 10, 1);
 
         cout << "nb of emails: " << emails.size() << endl;
 

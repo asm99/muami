@@ -56,7 +56,7 @@ class IMAP_parser
 //                 string s, Bodypart* tree, string section, bool is_child);
 //         Bodystructure* parse_bodystructure(string s);
         vector<Email*> parse_emails(string s);
-        vector<Email*> parse_emails_infos(string s);
+        void parse_emails_infos(vector<Email*>& emails, string s);
         Email* parse_email(string s);
 };
 
