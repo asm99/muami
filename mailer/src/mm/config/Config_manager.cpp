@@ -1,9 +1,9 @@
 #include "Config_manager.hpp"
-#include <QDebug>
-// Global configuration filename
+
+/* Global configuration filename */
 const string Config_manager::Conf_dir_rel_path = ".config/muami/accounts";
 
-// Constructor
+/* Constructor */
 Config_manager::Config_manager()
     : accounts()
 {
@@ -65,17 +65,23 @@ Config_manager::get_account_from_string(string s, const string& fname)
 {
     stringstream iss(s);
     string line;
-    string field, colon, val;
+    string field, colon, tmp, val;
     stringstream ss;
 
     Account* acc = new Account();
     acc->set_id(fname);
 
     while (getline(iss, line)) {
+        val.clear();
+
         if (line.empty()) continue;
         ss.clear();
         ss << line;
-        ss >> field >> colon >> val;
+        ss >> field >> colon;
+
+        while (ss >> tmp) {
+            val += tmp;
+        }
 
         if      (field == "imap")  { acc->set_imap(val);  }
         else if (field == "iport") { acc->set_iport(val); }
