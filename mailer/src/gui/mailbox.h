@@ -6,6 +6,9 @@
 #include <QListWidget>
 #include <QtGui>
 #include <QtCore>
+#include "src/mm/config/Config_manager.hpp"
+#include "src/mm/protocol/Protocol_manager.hpp"
+#include "src/mm/protocol/imap/IMAP_manager.hpp"
 
 namespace Ui {
 class MailBox;
@@ -23,6 +26,8 @@ public:
     QList<QStringList> accountList;
 
     QStringList addressesBook;
+
+    vector<Email*> emails;
 
     bool checkbox ;
 
@@ -44,6 +49,7 @@ private slots:
     /** Recherche et info **/
 
     /** Gestion des dossiers + mails **/
+    void displayMailSubject(Email*);
     void addChildren(QTreeWidgetItem *, QString);
     void showFolderContent(QListWidgetItem*);
     void showFolderMenu(const QPoint &pos);

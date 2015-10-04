@@ -1,7 +1,7 @@
 #ifndef BODY_H
 #define BODY_H
 
-#include "codings/codings.hpp"
+#include "../coding/coding.h"
 
 class Body
 {

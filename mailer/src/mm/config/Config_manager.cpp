@@ -1,5 +1,5 @@
 #include "Config_manager.hpp"
-
+#include <QDebug>
 // Global configuration filename
 const string Config_manager::Conf_dir_rel_path = ".config/muami/accounts";
 

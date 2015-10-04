@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QCompleter>
+#include <algorithm>
 #include "ui_mailbox.h"
 #include "src/gui/mailbox.h"
 #include "src/gui/writemail.h"
@@ -44,11 +45,34 @@ MailBox::MailBox(QWidget *parent) :
     toggleButtons(false) ;
     toggleNakedApp(false);
 
-    accountRegistered();
+    //accountRegistered();
 
-//    Config_manager* cm {};
-//    std::vector<Account*> accounts = cm->get_accounts();
-//    Account* acc = accounts[0];
+    try {
+        Config_manager* cm = new Config_manager();
+        Account* acc = cm->get_account_at_index(0); // first account
+
+        Protocol_manager* p_mgr =
+            new IMAP_manager(acc->imap() + ":" + acc->iport());
+        p_mgr->login(acc->user(), acc->pass());
+        p_mgr->select_mbox("INBOX");
+
+        emails = p_mgr->fetch_emails_list(10, 20);
+        reverse(emails.begin(), emails.end());
+        cout << "nb of emails: " << emails.size() << endl;
+
+        for (auto em : emails) {
+            em->dump();
+            displayMailSubject(em);
+        }
+
+
+
+        p_mgr->logout();
+    }
+
+    catch (const exception& e) {
+        cerr << e.what() << endl;
+    }
 
     inboxButtonsStyle();
     groupBoxButtonStyle();
@@ -128,6 +152,61 @@ MailBox::~MailBox()
 }
 
 /** ++ Gestion des dossiers + leur contenu ++ **/
+void MailBox::displayMailSubject(Email *mail)
+{
+    ui->actionTransf_rer->setVisible(false);
+    ui->actionR_pondre->setVisible(false);
+    ui->actionIsoler->setVisible(false);
+    ui->actionSupprimer->setVisible(false);
+    ui->mailField->setVisible(true);
+
+    QListWidgetItem *item = new QListWidgetItem(ui->mailList);
+    QString subject = QString::fromStdString(mail->envelope().subject().str());
+    QString from = QString::fromStdString(mail->envelope().from()->name());
+    QStringList dateLine = QString::fromStdString(mail->internaldate()).split(" ");
+    QString date = dateLine.at(0) + " - " + dateLine.at(1);
+    QString toDisplay = from + "\n" + date + "\n" + subject ;
+    item->setText(toDisplay);
+    item->setWhatsThis(QString::number(mail->uid()));
+    ui->mailList->addItem(item);
+}
+
+void MailBox::showMailContent(QListWidgetItem* mail)
+{
+    ui->actionTransf_rer->setVisible(true);
+    ui->actionR_pondre->setVisible(true);
+    ui->actionIsoler->setVisible(false);
+    toggleAccountPanel(false);
+
+    int id = mail->whatsThis().toInt();
+
+    /** Boucle pour chercher l'id du mail dans le vecteur et afficher
+     * son contenu
+     */
+
+/*    QString letter = mail->whatsThis() ;
+    QFile email(letter) ;
+    if (!email.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        return;
+    }
+    QTextStream in(&email);
+    QString doc = in.readAll() ;
+    ui->displayer->setText(doc);
+    ui->displayer->setReadOnly(true);
+    ui->deleteButton->setVisible(true);
+    ui->actionSupprimer->setVisible(true);
+    toggleFields(false) ;
+    toggleButtons(true) ;
+    ui->sendButton->setVisible(false);
+    ui->actionEnvoyer->setVisible(false);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
+    ui->cancelButton->setVisible(false);
+    ui->groupInbox->setVisible(false);
+    */
+
+}
+
 void MailBox::addChildren(QTreeWidgetItem *item, QString filePath)
 {
     QDir* rootDir = new QDir(filePath);
@@ -206,33 +285,6 @@ void MailBox::showMailMenu(const QPoint &pos)
         QAction *selectedItem = myMenu.exec(globalPos);
 }
 
-void MailBox::showMailContent(QListWidgetItem* mail)
-{
-    ui->actionTransf_rer->setVisible(true);
-    ui->actionR_pondre->setVisible(true);
-    ui->actionIsoler->setVisible(false);
-    toggleAccountPanel(false);
-
-    QString letter = mail->whatsThis() ;
-    QFile email(letter) ;
-    if (!email.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream in(&email);
-    QString doc = in.readAll() ;
-    ui->displayer->setText(doc);
-    ui->displayer->setReadOnly(true);
-    ui->deleteButton->setVisible(true);
-    ui->actionSupprimer->setVisible(true);
-    toggleFields(false) ;
-    toggleButtons(true) ;
-    ui->sendButton->setVisible(false);
-    ui->actionEnvoyer->setVisible(false);
-    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
-    ui->cancelButton->setVisible(false);
-    ui->groupInbox->setVisible(false);
-}
 /** ~~ Gestion des dossiers + leur contenu ~~ **/
 
 

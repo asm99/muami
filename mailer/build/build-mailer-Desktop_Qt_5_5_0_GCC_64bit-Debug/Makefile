@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I../../../mailer -I. -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. -I. -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/furya/Qt5.5.0/5.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
@@ -36,7 +36,7 @@ DISTNAME      = mailer1.0.0
 DISTDIR = /home/furya/Bureau/L2/Qt/mailer/build/build-mailer-Desktop_Qt_5_5_0_GCC_64bit-Debug/.tmp/mailer1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/furya/Qt5.5.0/5.5/gcc_64 -Wl,-rpath,/home/furya/Qt5.5.0/5.5/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/furya/Qt5.5.0/5.5/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lcrypto -lssl -L/home/furya/Qt5.5.0/5.5/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -54,6 +54,24 @@ SOURCES       = ../../src/gui/main.cpp \
 		../../src/gui/addressbook.cpp \
 		../../src/gui/handleissues.cpp \
 		../../src/gui/attachfilewindow.cpp \
+		../../src/mm/coding/base64.cpp \
+		../../src/mm/coding/coding.cpp \
+		../../src/mm/coding/qp.cpp \
+		../../src/mm/config/Account.cpp \
+		../../src/mm/config/Config_manager.cpp \
+		../../src/mm/crypto/md5.cpp \
+		../../src/mm/email/Address.cpp \
+		../../src/mm/email/Addresses.cpp \
+		../../src/mm/email/Email.cpp \
+		../../src/mm/email/Envelope.cpp \
+		../../src/mm/email/Nstring.cpp \
+		../../src/mm/email/RFC822_header.cpp \
+		../../src/mm/protocol/imap/IMAP_manager.cpp \
+		../../src/mm/protocol/imap/IMAP_parser.cpp \
+		../../src/mm/ssl/SSL_manager.cpp \
+		../../src/mm/utils/Date_formatter.cpp \
+		../../src/mm/utils/error.cpp \
+		../../src/mm/utils/util.cpp \
 		../../my_qlabel.cpp qrc_icons.cpp \
 		moc_mailbox.cpp \
 		moc_writemail.cpp \
@@ -67,6 +85,24 @@ OBJECTS       = main.o \
 		addressbook.o \
 		handleissues.o \
 		attachfilewindow.o \
+		base64.o \
+		coding.o \
+		qp.o \
+		Account.o \
+		Config_manager.o \
+		md5.o \
+		Address.o \
+		Addresses.o \
+		Email.o \
+		Envelope.o \
+		Nstring.o \
+		RFC822_header.o \
+		IMAP_manager.o \
+		IMAP_parser.o \
+		SSL_manager.o \
+		Date_formatter.o \
+		error.o \
+		util.o \
 		my_qlabel.o \
 		qrc_icons.o \
 		moc_mailbox.o \
@@ -194,6 +230,7 @@ DIST          = /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_pre.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf \
+		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf \
@@ -210,12 +247,49 @@ DIST          = /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../../src/gui/addressbook.h \
 		../../src/gui/handleissues.h \
 		../../src/gui/attachfilewindow.h \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/crypto/md5.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/protocol/imap/IMAP_manager.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/utils/util.hpp \
 		../../my_qlabel.h ../../src/gui/main.cpp \
 		../../src/gui/mailbox.cpp \
 		../../src/gui/writemail.cpp \
 		../../src/gui/addressbook.cpp \
 		../../src/gui/handleissues.cpp \
 		../../src/gui/attachfilewindow.cpp \
+		../../src/mm/coding/base64.cpp \
+		../../src/mm/coding/coding.cpp \
+		../../src/mm/coding/qp.cpp \
+		../../src/mm/config/Account.cpp \
+		../../src/mm/config/Config_manager.cpp \
+		../../src/mm/crypto/md5.cpp \
+		../../src/mm/email/Address.cpp \
+		../../src/mm/email/Addresses.cpp \
+		../../src/mm/email/Email.cpp \
+		../../src/mm/email/Envelope.cpp \
+		../../src/mm/email/Nstring.cpp \
+		../../src/mm/email/RFC822_header.cpp \
+		../../src/mm/protocol/imap/IMAP_manager.cpp \
+		../../src/mm/protocol/imap/IMAP_parser.cpp \
+		../../src/mm/ssl/SSL_manager.cpp \
+		../../src/mm/utils/Date_formatter.cpp \
+		../../src/mm/utils/error.cpp \
+		../../src/mm/utils/util.cpp \
 		../../my_qlabel.cpp
 QMAKE_TARGET  = mailer
 DESTDIR       = #avoid trailing-slash linebreak
@@ -366,6 +440,7 @@ Makefile: ../../mailer.pro /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/qmak
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_pre.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf \
+		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf \
 		/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf \
@@ -502,6 +577,7 @@ Makefile: ../../mailer.pro /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/qmak
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_pre.prf:
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf:
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf:
+/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf:
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf:
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf:
 /home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf:
@@ -533,8 +609,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../src/gui/icons.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/gui/mailbox.h ../../src/gui/writemail.h ../../src/gui/addressbook.h ../../src/gui/handleissues.h ../../src/gui/attachfilewindow.h ../../my_qlabel.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/gui/main.cpp ../../src/gui/mailbox.cpp ../../src/gui/writemail.cpp ../../src/gui/addressbook.cpp ../../src/gui/handleissues.cpp ../../src/gui/attachfilewindow.cpp ../../my_qlabel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/gui/mailbox.h ../../src/gui/writemail.h ../../src/gui/addressbook.h ../../src/gui/handleissues.h ../../src/gui/attachfilewindow.h ../../src/mm/coding/base64.hpp ../../src/mm/coding/coding.hpp ../../src/mm/coding/qp.hpp ../../src/mm/config/Account.hpp ../../src/mm/config/Config_manager.hpp ../../src/mm/crypto/md5.hpp ../../src/mm/email/Address.hpp ../../src/mm/email/Addresses.hpp ../../src/mm/email/Email.hpp ../../src/mm/email/Envelope.hpp ../../src/mm/email/Nstring.hpp ../../src/mm/email/RFC822_header.hpp ../../src/mm/protocol/imap/IMAP_manager.hpp ../../src/mm/protocol/imap/IMAP_parser.hpp ../../src/mm/protocol/Protocol_manager.hpp ../../src/mm/ssl/SSL_manager.hpp ../../src/mm/utils/Date_formatter.hpp ../../src/mm/utils/error.hpp ../../src/mm/utils/util.hpp ../../my_qlabel.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/gui/main.cpp ../../src/gui/mailbox.cpp ../../src/gui/writemail.cpp ../../src/gui/addressbook.cpp ../../src/gui/handleissues.cpp ../../src/gui/attachfilewindow.cpp ../../src/mm/coding/base64.cpp ../../src/mm/coding/coding.cpp ../../src/mm/coding/qp.cpp ../../src/mm/config/Account.cpp ../../src/mm/config/Config_manager.cpp ../../src/mm/crypto/md5.cpp ../../src/mm/email/Address.cpp ../../src/mm/email/Addresses.cpp ../../src/mm/email/Email.cpp ../../src/mm/email/Envelope.cpp ../../src/mm/email/Nstring.cpp ../../src/mm/email/RFC822_header.cpp ../../src/mm/protocol/imap/IMAP_manager.cpp ../../src/mm/protocol/imap/IMAP_parser.cpp ../../src/mm/ssl/SSL_manager.cpp ../../src/mm/utils/Date_formatter.cpp ../../src/mm/utils/error.cpp ../../src/mm/utils/util.cpp ../../my_qlabel.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../src/gui/gen/mailbox.ui ../../src/gui/gen/writemail.ui ../../src/gui/gen/addressbook.ui ../../src/gui/gen/handleissues.ui ../../src/gui/gen/attachfilewindow.ui $(DISTDIR)/
 
 
@@ -951,6 +1027,26 @@ moc_mailbox.cpp: /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QMainWindow \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/protocol/imap/IMAP_manager.hpp \
 		../../src/gui/mailbox.h
 	/home/furya/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/furya/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/furya/Bureau/L2/Qt/mailer -I/home/furya/Qt5.5.0/5.5/gcc_64/include -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../../src/gui/mailbox.h -o moc_mailbox.cpp
 
@@ -2521,7 +2617,27 @@ main.o: ../../src/gui/main.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtextlist.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
-		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/protocol/imap/IMAP_manager.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../src/gui/main.cpp
 
 mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QDir \
@@ -2896,6 +3012,26 @@ mailbox.o: ../../src/gui/mailbox.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtCo
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtexttable.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qdesktopservices.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtGui/qtguiversion.h \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/protocol/imap/IMAP_manager.hpp \
 		../../src/gui/writemail.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QFrame \
 		../../src/gui/handleissues.h \
@@ -3274,7 +3410,27 @@ writemail.o: ../../src/gui/writemail.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h \
 		../../src/gui/attachfilewindow.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QTreeWidget \
-		../../src/gui/mailbox.h
+		../../src/gui/mailbox.h \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/protocol/imap/IMAP_manager.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o writemail.o ../../src/gui/writemail.cpp
 
 addressbook.o: ../../src/gui/addressbook.cpp /home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDesktopWidget \
@@ -4160,6 +4316,199 @@ attachfilewindow.o: ../../src/gui/attachfilewindow.cpp /home/furya/Qt5.5.0/5.5/g
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QDialog \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attachfilewindow.o ../../src/gui/attachfilewindow.cpp
+
+base64.o: ../../src/mm/coding/base64.cpp ../../src/mm/coding/base64.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o base64.o ../../src/mm/coding/base64.cpp
+
+coding.o: ../../src/mm/coding/coding.cpp ../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coding.o ../../src/mm/coding/coding.cpp
+
+qp.o: ../../src/mm/coding/qp.cpp ../../src/mm/coding/qp.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qp.o ../../src/mm/coding/qp.cpp
+
+Account.o: ../../src/mm/config/Account.cpp ../../src/mm/config/Account.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Account.o ../../src/mm/config/Account.cpp
+
+Config_manager.o: ../../src/mm/config/Config_manager.cpp ../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp \
+		../../src/mm/utils/error.hpp \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/QDebug \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qdebug.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qalgorithms.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobal.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qconfig.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qfeatures.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtypetraits.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qsysinfo.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlogging.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qflags.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_gcc.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv7.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv6.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_armv5.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_ia64.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_mips.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_x86.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qatomic_unix.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmutex.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnumeric.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qhash.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qchar.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiterator.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlist.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qrefcount.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qarraydata.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qbytearray.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qnamespace.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstring.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringlist.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qregexp.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpair.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmap.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qtextstream.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qiodevice.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcoreevent.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qmetatype.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qlocale.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvariant.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qshareddata.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qvector.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qpoint.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qset.h \
+		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtCore/qcontiguouscache.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Config_manager.o ../../src/mm/config/Config_manager.cpp
+
+md5.o: ../../src/mm/crypto/md5.cpp ../../src/mm/crypto/md5.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o md5.o ../../src/mm/crypto/md5.cpp
+
+Address.o: ../../src/mm/email/Address.cpp ../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Address.o ../../src/mm/email/Address.cpp
+
+Addresses.o: ../../src/mm/email/Addresses.cpp ../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Addresses.o ../../src/mm/email/Addresses.cpp
+
+Email.o: ../../src/mm/email/Email.cpp ../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Email.o ../../src/mm/email/Email.cpp
+
+Envelope.o: ../../src/mm/email/Envelope.cpp ../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Envelope.o ../../src/mm/email/Envelope.cpp
+
+Nstring.o: ../../src/mm/email/Nstring.cpp ../../src/mm/email/Nstring.hpp \
+		../../src/mm/utils/util.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Nstring.o ../../src/mm/email/Nstring.cpp
+
+RFC822_header.o: ../../src/mm/email/RFC822_header.cpp ../../src/mm/email/RFC822_header.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RFC822_header.o ../../src/mm/email/RFC822_header.cpp
+
+IMAP_manager.o: ../../src/mm/protocol/imap/IMAP_manager.cpp ../../src/mm/protocol/imap/IMAP_manager.hpp \
+		../../src/mm/protocol/Protocol_manager.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/utils/Date_formatter.hpp \
+		../../src/mm/config/Config_manager.hpp \
+		../../src/mm/config/Account.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IMAP_manager.o ../../src/mm/protocol/imap/IMAP_manager.cpp
+
+IMAP_parser.o: ../../src/mm/protocol/imap/IMAP_parser.cpp ../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/utils/Date_formatter.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IMAP_parser.o ../../src/mm/protocol/imap/IMAP_parser.cpp
+
+SSL_manager.o: ../../src/mm/ssl/SSL_manager.cpp ../../src/mm/ssl/SSL_manager.hpp \
+		../../src/mm/utils/error.hpp \
+		../../src/mm/protocol/imap/IMAP_parser.hpp \
+		../../src/mm/email/Email.hpp \
+		../../src/mm/email/RFC822_header.hpp \
+		../../src/mm/email/Bodypart.hpp \
+		../../src/mm/email/Bodystructure.hpp \
+		../../src/mm/email/Envelope.hpp \
+		../../src/mm/email/Address.hpp \
+		../../src/mm/utils/util.hpp \
+		../../src/mm/email/Addresses.hpp \
+		../../src/mm/email/Nstring.hpp \
+		../../src/mm/coding/coding.hpp \
+		../../src/mm/coding/base64.hpp \
+		../../src/mm/coding/qp.hpp \
+		../../src/mm/utils/Date_formatter.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SSL_manager.o ../../src/mm/ssl/SSL_manager.cpp
+
+Date_formatter.o: ../../src/mm/utils/Date_formatter.cpp ../../src/mm/utils/Date_formatter.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Date_formatter.o ../../src/mm/utils/Date_formatter.cpp
+
+error.o: ../../src/mm/utils/error.cpp ../../src/mm/utils/error.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o error.o ../../src/mm/utils/error.cpp
+
+util.o: ../../src/mm/utils/util.cpp ../../src/mm/utils/util.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o util.o ../../src/mm/utils/util.cpp
 
 my_qlabel.o: ../../my_qlabel.cpp ../../my_qlabel.h \
 		/home/furya/Qt5.5.0/5.5/gcc_64/include/QtWidgets/QWidget \

@@ -168,7 +168,7 @@ SSL_manager::myconnect(const string& machine_port)
     }
 }
 
-/* Send an IMAP command to the server and return the response */
+/* Send an IMAP command to the server and return the response */
 string
 SSL_manager::fetch_response(const string& cmd)
 {

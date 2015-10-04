@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <stdexcept>
+#include <errno.h>
 #include "Account.hpp"
 #include "../utils/error.hpp"
 
