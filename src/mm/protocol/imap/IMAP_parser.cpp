@@ -156,11 +156,12 @@ IMAP_parser::parse_list(map<string, Mailbox*>& mboxes, const string& s)
                 break;
         }
         liss >> separator >> name;
+        string stripped_name = util::strip_chars(name, "\"");
 
         Mailbox* mb = new Mailbox();
         mb->set_attributes(attributes);
         mb->set_separator(separator);
-        mboxes[name] = mb;
+        mboxes[stripped_name] = mb;
     }
 }
 
