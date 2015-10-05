@@ -1,11 +1,9 @@
-#include <QDesktopWidget>
-#include <QCompleter>
 #include "ui_writemail.h"
-#include "src/gui/writemail.h"
-#include "src/gui/addressbook.h"
-#include "src/gui/handleissues.h"
-#include "src/gui/attachfilewindow.h"
-#include "src/gui/mailbox.h"
+#include "src/gui/gui_writemail.h"
+#include "src/gui/gui_addressbook.h"
+#include "src/gui/gui_handleissues.h"
+#include "src/gui/gui_attachfilewindow.h"
+#include "src/gui/gui_mailbox.h"
 
 /**
  * Delete action : Envoyer l'id du mail en lecture à cette fenetre en parametre

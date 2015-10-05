@@ -14,6 +14,7 @@
 #include <cstring>
 #include <cctype>
 #include <vector>
+#include <map>
 #include "../../email/Email.hpp"
 #include "../../email/RFC822_header.hpp"
 #include "../../email/Envelope.hpp"

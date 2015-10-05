@@ -1,5 +1,4 @@
-#include <QDesktopWidget>
-#include "src/gui/handleissues.h"
+#include "src/gui/gui_handleissues.h"
 #include "ui_handleissues.h"
 
 HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :

@@ -2,6 +2,7 @@
 #define HANDLEISSUES_H
 
 #include <QDialog>
+#include <QDesktopWidget>
 
 namespace Ui {
 class HandleIssues;
@@ -18,11 +19,8 @@ public:
     ~HandleIssues();
 
 private slots:
-
     void on_ouiButton_clicked();
-
     void on_okButton_clicked();
-
     void on_nonButton_clicked();
 
 private:

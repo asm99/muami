@@ -1,8 +1,7 @@
-#include <QDir>
 #include "ui_attachfilewindow.h"
-#include "src/gui/attachfilewindow.h"
-#include "src/gui/writemail.h"
-#include "src/gui/handleissues.h"
+#include "src/gui/gui_attachfilewindow.h"
+#include "src/gui/gui_writemail.h"
+#include "src/gui/gui_handleissues.h"
 
 AttachFileWindow::AttachFileWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,11 +12,9 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     ui->fileDetails->setReadOnly(true);
     ui->fileDetails->setVisible(true);
 
-    ui->infoLabel->setVisible(false); //INFO LABEL
-
     displayHelper();
-
     objStyle();
+    connectWidgets();
 
     QString way = "/home";
     QDir *path = new QDir("/home");             // Compte principal
@@ -35,56 +32,6 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
     }
 
     ui->pathAccessor->setText(way);
-
-    connect(ui->pathAccessor,
-            SIGNAL(returnPressed()),
-            SLOT(accessToFolder())) ;
-
-    connect(ui->findFile,
-            SIGNAL(textChanged(QString)),
-            SLOT(findFile(QString)));
-
-    connect(ui->contentList,
-            SIGNAL(itemClicked(QListWidgetItem*)),
-            SLOT(showDetails(QListWidgetItem*)));
-
-    connect(ui->addButton,
-            SIGNAL(clicked()),
-            SLOT(addFile())) ;
-
-    connect(this,
-            SIGNAL(sendFileToMail(QString)),
-            this->parentWidget(),
-            SLOT(addFile(QString)));
-
-    connect(ui->leaveButton,
-            SIGNAL(clicked()),
-            SLOT(close()));
-
-    connect(ui->leaveButton,
-            SIGNAL(clicked()),
-            this->parentWidget(),
-            SLOT(openAttachFileWindow()));
-
-    connect(ui->backButton,
-            SIGNAL(clicked()),
-            SLOT(onBackButtonClicked()));
-
-    connect(ui->goButton,
-            SIGNAL(clicked()),
-            SLOT(onGoButtonClicked()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseHover()),
-            SLOT(showInfo()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseNotHover()),
-            SLOT(hideInfo()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseClick()),
-            SLOT(infoButton()));
 }
 
 AttachFileWindow::~AttachFileWindow()
@@ -299,40 +246,6 @@ void AttachFileWindow::findFile(QString toFind)
     }
 }
 
-void AttachFileWindow::infoButton()
-{
-    if(ui->fileDetails->isVisible())
-        ui->fileDetails->setVisible(false);
-    else ui->fileDetails->setVisible(true);
-}
-
-void AttachFileWindow::showInfo()
-{
-    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
-    foreach(QPushButton *button, buttons)
-    {
-        button->setIcon(QIcon());
-    }
-
-    ui->addButton->setText("Ajouter\nun fichier");
-    ui->backButton->setText("Remonter\nl'arborescence");
-    ui->goButton->setText("Descendre\nl'arborescence");
-    ui->leaveButton->setText("Fermer");
-}
-
-void AttachFileWindow::hideInfo()
-{
-    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
-    foreach(QPushButton *button, buttons)
-    {
-        button->setText("");
-    }
-    ui->addButton->setIcon(QIcon(":/icon/res/document-add.png"));
-    ui->backButton->setIcon(QIcon(":/icon/res/out.png"));
-    ui->goButton->setIcon(QIcon(":/icon/res/in.png"));
-    ui->leaveButton->setIcon(QIcon(":/icon/res/browser-close-2.png"));
-}
-
 /** ~~ Volet des fichiers + description ~~ **/
 
 
@@ -368,7 +281,6 @@ void AttachFileWindow::objStyle()
                         border:0px;";
     ui->findFile->setStyleSheet(style);
     ui->pathAccessor->setStyleSheet(style);
-    ui->infoLabel->setStyleSheet("border:0px");
 
     ui->fileDetails->setStyleSheet("background-color:#252b2b;"
                                    "color:#9fabaa;"
@@ -386,4 +298,45 @@ void AttachFileWindow::objStyle()
     ui->folderList->setStyleSheet("background-color:#252b2b;"
                                   "color:#9fabaa;"
                                   "border:0px;");
+}
+
+void AttachFileWindow::connectWidgets()
+{
+    connect(ui->pathAccessor,
+            SIGNAL(returnPressed()),
+            SLOT(accessToFolder())) ;
+
+    connect(ui->findFile,
+            SIGNAL(textChanged(QString)),
+            SLOT(findFile(QString)));
+
+    connect(ui->contentList,
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(showDetails(QListWidgetItem*)));
+
+    connect(ui->addButton,
+            SIGNAL(clicked()),
+            SLOT(addFile())) ;
+
+    connect(this,
+            SIGNAL(sendFileToMail(QString)),
+            this->parentWidget(),
+            SLOT(addFile(QString)));
+
+    connect(ui->leaveButton,
+            SIGNAL(clicked()),
+            SLOT(close()));
+
+    connect(ui->leaveButton,
+            SIGNAL(clicked()),
+            this->parentWidget(),
+            SLOT(openAttachFileWindow()));
+
+    connect(ui->backButton,
+            SIGNAL(clicked()),
+            SLOT(onBackButtonClicked()));
+
+    connect(ui->goButton,
+            SIGNAL(clicked()),
+            SLOT(onGoButtonClicked()));
 }

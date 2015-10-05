@@ -1,8 +1,6 @@
-#include <QDesktopWidget>
-#include <algorithm>
-#include "src/gui/addressbook.h"
-#include "src/gui/handleissues.h"
-#include "src/gui/writemail.h"
+#include "src/gui/gui_addressbook.h"
+#include "src/gui/gui_handleissues.h"
+#include "src/gui/gui_writemail.h"
 #include "ui_addressbook.h"
 
 AddressBook::AddressBook(QWidget *parent, QString addressBook) :
@@ -27,7 +25,7 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     //ui->menuBar->hide();
 
     addressBookPath = addressBook ;
-    modified = false ;              // Repère les modifs apportées
+    modified = false ;
 
     loadAddressFile(addressBookPath);
 

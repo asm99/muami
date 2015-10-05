@@ -1,16 +1,5 @@
-#include <QDir>
-#include <QDesktopWidget>
-#include <QWidget>
-#include <QMouseEvent>
-#include <QCompleter>
-#include <algorithm>
 #include "ui_mailbox.h"
-#include "src/gui/mailbox.h"
-#include "src/gui/writemail.h"
-#include "src/gui/handleissues.h"
-#include "src/gui/attachfilewindow.h"
-#include "src/gui/addressbook.h"
-#include "my_qlabel.h"
+#include "src/gui/gui_mailbox.h"
 
 MailBox::MailBox(QWidget *parent) :
     QMainWindow(parent),
@@ -38,9 +27,6 @@ MailBox::MailBox(QWidget *parent) :
     ui->displayer->setReadOnly(true);
     ui->displayer->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
-    ui->infoLabel->setAttribute(Qt::WA_Hover);
-    ui->infoLabel->setMouseTracking(true);
-
     toggleFields(false) ;
     toggleButtons(false) ;
     toggleNakedApp(false);
@@ -48,100 +34,36 @@ MailBox::MailBox(QWidget *parent) :
     //accountRegistered();
 
     try {
-        Config_manager* cm = new Config_manager();
-        Account* acc = cm->get_account_at_index(0); // first account
+            Config_manager* cm = new Config_manager();
+            Account* acc = cm->get_account_at_index(0); // first account
 
-        Protocol_manager* p_mgr =
-            new IMAP_manager(acc->imap() + ":" + acc->iport());
-        p_mgr->login(acc->user(), acc->pass());
-        p_mgr->select_mbox("INBOX");
+            acc->connect();
+            acc->login();
+            acc->list_mboxes();
+            acc->select_mbox("INBOX");
+            acc->fetch_emails_list(10, 1);
 
-        emails = p_mgr->fetch_emails_list(10, 20);
-        reverse(emails.begin(), emails.end());
-        cout << "nb of emails: " << emails.size() << endl;
+            cout << "nb of emails: " << acc->cur_mbox()->emails().size() << endl;
 
-        for (auto em : emails) {
-            em->dump();
-            displayMailSubject(em);
+            for (auto em : acc->cur_mbox()->emails()) {
+                em->dump();
+            }
+
+            acc->logout();
         }
-
-
-
-        p_mgr->logout();
-    }
-
-    catch (const exception& e) {
-        cerr << e.what() << endl;
-    }
+        catch (const exception& e) {
+            cerr << e.what() << endl;
+        }
 
     inboxButtonsStyle();
     groupBoxButtonStyle();
     listStyle();
     checkbox = false ;
     loadAddressFile();
-    ui->infoLabel->setVisible(false); //INFO LABEL DISABLED
 
     ui->inbox->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->inbox,
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(showFolderMenu(const QPoint &)));
-
-    connect(ui->inbox,
-            SIGNAL(itemClicked(QListWidgetItem*)),
-            SLOT(showFolderContent(QListWidgetItem*)));
-
-    connect(ui->delAccount,
-            SIGNAL(clicked()),
-            SLOT(delAccount()));
-
-    connect(ui->previousAccount,
-            SIGNAL(clicked()),
-            SLOT(previousAccount()));
-
-    connect(ui->nextAccount,
-            SIGNAL(clicked()),
-            SLOT(nextAccount())),
-
     ui->mailList->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->mailList,
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(showMailMenu(const QPoint &)));
 
-    connect(ui->mailList,
-            SIGNAL(itemClicked(QListWidgetItem*)),
-            SLOT(showMailContent(QListWidgetItem*)));
-
-    connect(ui->addFileButton_2,
-            SIGNAL(clicked()),
-            SLOT(openAttachFileWindow()));
-
-    connect(ui->deleteFile,
-            SIGNAL(clicked()),
-            SLOT(deleteFileAction()));
-
-    connect(ui->mailField,
-            SIGNAL(textChanged(QString)),
-            SLOT(findMail(QString)));
-
-    connect(ui->addressBook_2,
-            SIGNAL(clicked()),
-            SLOT(showAddressBook()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseHover()),
-            SLOT(showInfo()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseNotHover()),
-            SLOT(hideInfo()));
-
-    connect(ui->infoLabel,
-            SIGNAL(mouseClick()),
-            SLOT(inboxBarInfo1()));
-
-    connect(ui->accountLabel2,
-            SIGNAL(returnPressed()),
-            SLOT(addNewAccount()));
 }
 
 
@@ -573,101 +495,6 @@ void MailBox::findMail(QString toFind)
             item->setHidden(false);
         }
     }
-}
-
-void MailBox::showInfo()
-{
-    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
-    foreach(QPushButton *button, buttons)
-    {
-        button->setIcon(QIcon());
-    }
-    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
-    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
-    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
-    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
-    ui->inboxButton->setText("Boite de\nréception");
-    ui->sendButton->setText("Envoyer");
-    ui->repButton->setText("Répondre");
-    ui->repAllButton->setText("Répondre à\ntous");
-    ui->transferButton->setText("Transférer");
-    ui->newButton->setText("Nouveau\ncourrier");
-    ui->isolateButton->setText("Isoler le\ncourrier");
-    ui->deleteButton->setText("Supprimer le\ncourrier");
-    ui->cancelButton->setText("Annuler les\nmodifications");
-}
-
-void MailBox::inboxBarInfo1()
-{
-    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
-    ui->previousAccount->setText("Accéder au\ncompte précédent");
-    ui->previousAccount->setVisible(true);
-    ui->addAccount->setVisible(false);
-    ui->delAccount->setVisible(false);
-    ui->nextAccount->setVisible(false);
-    QTimer::singleShot(1000, this, SLOT(inboxBarInfo2()));
-}
-
-void MailBox::inboxBarInfo2()
-{
-    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
-    ui->delAccount->setText("Supprimer\nle compte");
-    ui->previousAccount->setVisible(false);
-    ui->addAccount->setVisible(false);
-    ui->delAccount->setVisible(true);
-    ui->nextAccount->setVisible(false);
-    QTimer::singleShot(1000, this, SLOT(inboxBarInfo3()));
-}
-
-void MailBox::inboxBarInfo3()
-{
-    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
-    ui->nextAccount->setText("Accéder au\ncompte suivant");
-    ui->previousAccount->setVisible(false);
-    ui->addAccount->setVisible(false);
-    ui->delAccount->setVisible(false);
-    ui->nextAccount->setVisible(true);
-    QTimer::singleShot(1000, this, SLOT(inboxBarInfo4()));
-}
-
-void MailBox::inboxBarInfo4()
-{
-    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
-    ui->addAccount->setText("Ajouter\nun compte");
-    ui->previousAccount->setVisible(false);
-    ui->addAccount->setVisible(true);
-    ui->delAccount->setVisible(false);
-    ui->nextAccount->setVisible(false);
-    QTimer::singleShot(1000, this, SLOT(hideInfo()));
-}
-
-void MailBox::hideInfo()
-{
-    QList<QPushButton*> buttons = this->findChildren<QPushButton*>();
-    foreach(QPushButton *button, buttons)
-    {
-        button->setText("");
-    }
-    ui->previousAccount->setVisible(true);
-    ui->addAccount->setVisible(true);
-    ui->delAccount->setVisible(true);
-    ui->nextAccount->setVisible(true);
-    ui->inboxButton->setIcon(QIcon(":/icon/res/inbox-2.png"));
-    ui->sendButton->setIcon(QIcon(":/icon/res/send.png"));
-    ui->repButton->setIcon(QIcon(":/icon/res/reply.png"));
-    ui->repAllButton->setIcon(QIcon(":/icon/res/reply-all.png"));
-    ui->transferButton->setIcon(QIcon(":/icon/res/transfer.png"));
-    ui->newButton->setIcon(QIcon(":/icon/res/compose-4.png"));
-    ui->isolateButton->setIcon(QIcon(":/icon/res/windows.png"));
-    ui->deleteButton->setIcon(QIcon(":/icon/res/bin-3.png"));
-    ui->previousAccount->setIcon(QIcon(":/icon/res/arrow-left.png"));
-    ui->nextAccount->setIcon(QIcon(":/icon/res/arrow-right.png"));
-    ui->addAccount->setIcon(QIcon(":/icon/res/user-4-add.png"));
-    ui->delAccount->setIcon(QIcon(":/icon/res/user-4-remove.png"));
-    ui->addFileButton_2->setIcon(QIcon(":/icon/res/document-add.png"));
-    ui->addressBook_2->setIcon(QIcon(":/icon/res/address-book-2.png"));
-    ui->deleteFile->setIcon(QIcon(":/icon/res/document-remove.png"));
-    ui->cancelButton->setIcon(QIcon(":/icon/res/delete.png"));
 }
 /** ~~ Recherche & info ~~ **/
 
@@ -1348,7 +1175,6 @@ void MailBox::toggleNakedApp(bool n)
         ui->mailList->setVisible(!n);
         ui->mailField->setVisible(!n);
         ui->attachedFileList->setVisible(!n);
-        ui->infoLabel->setVisible(!n);
         toggleAccountPanel(false);
         ui->addAccount->setVisible(true);
         ui->groupInbox->setVisible(true);
@@ -1375,7 +1201,6 @@ sélectionné dans la liste des courriers du volet à gauche";
         ui->emptyLabel->setVisible(n);
         ui->emptyLabel_2->setVisible(n);
         ui->emptyLabel_3->setVisible(n);
-        ui->infoLabel->setVisible(!n);
         ui->groupBox->setVisible(!n);
         ui->mailList->setVisible(!n);
         ui->displayer->setVisible(!n);
@@ -1502,3 +1327,50 @@ void MailBox::on_inboxButton_clicked()
 }
 /** ~~ Gestion de l'affichage ~~ **/
 
+void MailBox::connectWidgets()
+{
+    connect(ui->inbox,
+            SIGNAL(customContextMenuRequested(const QPoint &)),
+            SLOT(showFolderMenu(const QPoint &)));
+
+    connect(ui->inbox,
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(showFolderContent(QListWidgetItem*)));
+
+    connect(ui->delAccount,
+            SIGNAL(clicked()),
+            SLOT(delAccount()));
+
+    connect(ui->previousAccount,
+            SIGNAL(clicked()),
+            SLOT(previousAccount()));
+
+    connect(ui->nextAccount,
+            SIGNAL(clicked()),
+            SLOT(nextAccount())),
+
+
+    connect(ui->mailList,
+            SIGNAL(customContextMenuRequested(const QPoint &)),
+            SLOT(showMailMenu(const QPoint &)));
+
+    connect(ui->mailList,
+            SIGNAL(itemClicked(QListWidgetItem*)),
+            SLOT(showMailContent(QListWidgetItem*)));
+
+    connect(ui->addFileButton_2,
+            SIGNAL(clicked()),
+            SLOT(openAttachFileWindow()));
+
+    connect(ui->deleteFile,
+            SIGNAL(clicked()),
+            SLOT(deleteFileAction()));
+
+    connect(ui->mailField,
+            SIGNAL(textChanged(QString)),
+            SLOT(findMail(QString)));
+
+    connect(ui->addressBook_2,
+            SIGNAL(clicked()),
+            SLOT(showAddressBook()));
+}

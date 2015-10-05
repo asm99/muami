@@ -1,14 +1,17 @@
-#ifndef MAILBOX_H
-#define MAILBOX_H
+#ifndef GUI_MAILBOX_H
+#define GUI_MAILBOX_H
 
-#include <QMainWindow>
-#include <QTreeWidget>
-#include <QListWidget>
-#include <QtGui>
-#include <QtCore>
-#include "src/mm/config/Config_manager.hpp"
-#include "src/mm/protocol/Protocol_manager.hpp"
-#include "src/mm/protocol/imap/IMAP_manager.hpp"
+#include <QDir>
+#include <QWidget>
+#include <QMouseEvent>
+#include <QCompleter>
+#include "src/gui/gui_writemail.h"
+#include "src/gui/gui_handleissues.h"
+#include "src/gui/gui_attachfilewindow.h"
+#include "src/gui/gui_addressbook.h"
+#include "../mm/config/Config_manager.hpp"
+#include "../mm/protocol/Protocol_manager.hpp"
+#include "../mm/protocol/imap/IMAP_manager.hpp"
 
 namespace Ui {
 class MailBox;
@@ -20,32 +23,20 @@ class MailBox : public QMainWindow
     
 public:
     explicit MailBox(QWidget *parent = 0);
-
     ~MailBox();
-
     QList<QStringList> accountList;
-
     QStringList addressesBook;
-
     vector<Email*> emails;
-
     bool checkbox ;
 
 public slots:
     void getAddressesListFromBook(QStringList);
-
     void getAddressesListFromNewMail(QStringList);
 
 private slots:
 
     /** Recherche et info **/
     void findMail(QString);
-    void showInfo();
-    void inboxBarInfo1();
-    void inboxBarInfo2();
-    void inboxBarInfo3();
-    void inboxBarInfo4();
-    void hideInfo();
     /** Recherche et info **/
 
     /** Gestion des dossiers + mails **/
@@ -145,6 +136,8 @@ private slots:
     void openedMailButtons() ;
     /** Gestion de l'affichage dynamique **/
 
+    void connectWidgets();
+
 private:
     Ui::MailBox *ui;
 
@@ -154,4 +147,4 @@ private:
 };
 
 
-#endif // MAILBOX_H
+#endif // GUI_MAILBOX_H

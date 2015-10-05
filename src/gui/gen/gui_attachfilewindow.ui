@@ -245,7 +245,7 @@
          <property name="handleWidth">
           <number>2</number>
          </property>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <property name="spacing">
             <number>0</number>
@@ -291,37 +291,6 @@
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="my_qlabel" name="infoLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>25</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="mouseTracking">
-                <bool>true</bool>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cliquez-moi pour afficher le volet des détails de fichier&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="../icons.qrc">:/icon/res/info-outline.png</pixmap>
-               </property>
-               <property name="scaledContents">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
           </layout>
@@ -344,16 +313,8 @@
     </item>
    </layout>
    <zorder></zorder>
-   <zorder>addButtonList</zorder>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>my_qlabel</class>
-   <extends>QLabel</extends>
-   <header location="global">my_qlabel.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../icons.qrc"/>
  </resources>

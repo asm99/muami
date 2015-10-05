@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "src/gui/mailbox.h"
+#include "../gui/gui_mailbox.h"
 
 int main(int argc, char *argv[])
 {
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
                                       color: #333536;}");
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf8"));
-    MailBox w;
+    MailBox w ;
     w.show();
     return a.exec();
 }

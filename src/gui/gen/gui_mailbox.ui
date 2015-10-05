@@ -809,43 +809,6 @@ p, li { white-space: pre-wrap; }
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="my_qlabel" name="infoLabel">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="mouseTracking">
-                 <bool>true</bool>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>0</number>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="pixmap">
-                 <pixmap resource="../icons.qrc">:/icon/res/info-outline.png</pixmap>
-                </property>
-                <property name="scaledContents">
-                 <bool>true</bool>
-                </property>
-                <property name="indent">
-                 <number>-1</number>
-                </property>
-               </widget>
-              </item>
              </layout>
             </item>
             <item>
@@ -1468,13 +1431,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>my_qlabel</class>
-   <extends>QLabel</extends>
-   <header location="global">my_qlabel.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../icons.qrc"/>
  </resources>

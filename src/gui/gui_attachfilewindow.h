@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTreeWidget>
 #include <QListWidget>
+#include <QDir>
 #include <QtGui>
 #include <QtCore>
 
@@ -24,34 +25,18 @@ signals:
 
 private slots:
     void on_folderList_itemDoubleClicked(QListWidgetItem *item);
-
     void on_folderList_itemClicked(QListWidgetItem *item);
-
     void onBackButtonClicked();
-
     void onGoButtonClicked();
-
     void accessToFolder();
-
     void findFile(QString);
-
     void displayPathContent(QString str);
-
     void displayHelper();
-
     void showDetails(QListWidgetItem *item);
-
-    void infoButton();
-
-    void showInfo();
-
-    void hideInfo();
-
     void objStyle();
-
     void addFile();
-
     void on_contentList_itemDoubleClicked(QListWidgetItem *item);
+    void connectWidgets();
 
 private:
     Ui::AttachFileWindow *ui;

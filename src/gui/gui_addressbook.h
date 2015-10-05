@@ -1,11 +1,9 @@
 #ifndef ADDRESSBOOK_H
 #define ADDRESSBOOK_H
 
-#include <QMainWindow>
-#include <QtGui>
-#include <QtCore>
+#include <QDesktopWidget>
 #include <QTreeWidgetItem>
-#include "src/gui/writemail.h"
+#include "src/gui/gui_writemail.h"
 
 namespace Ui {
 class AddressBook;
@@ -20,36 +18,25 @@ public:
     ~AddressBook();
 
     QStringList addresses ;
-
     QString addressBookPath ;
-
-    bool modified ;
-
+    bool modified ; // Used to check if some entries have been modified
+                    // to ask the user to save before closing the window
+                    // or not
     void loadAddressFile(QString);
     
 signals:
     void addToMail(QString);
-
     void sendAddressesList(QStringList);
 
 private slots:
-
     void addAddressToBook();
-
     void findAddress(QString);
-
     void clickToAdd();
-
     void forceAddAddress(QTreeWidgetItem *, int);
-
     void deleteAddress();
-
     void confirmDelete();
-
     void saveModification();
-
     void modificationAdded(QTreeWidgetItem*,int);
-
     void checkBeforeClose();
 
 private:
