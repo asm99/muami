@@ -137,8 +137,8 @@ SSL_manager::rd_sockdata()
 }
 
 /* Establish a secure connection to an IMAP server with OpenSSL */
-void
-SSL_manager::myconnect(const string& machine_port)
+int
+SSL_manager::mm_connect(const string& address, const string& port)
 {
     SSL* ssl;
     int t;
@@ -154,21 +154,26 @@ SSL_manager::myconnect(const string& machine_port)
 
     BIO_get_ssl(bio, &ssl);
 
-    BIO_set_conn_hostname(bio, machine_port.c_str());
+    string machine = address + ":" + port;
+    BIO_set_conn_hostname(bio, machine.c_str());
     t = BIO_do_connect(bio);
     if (t <= 0) {
         ERR_print_errors_fp(stderr);
-        error("Cannot connect to server", 1);
+        cerr << "Cannot connect to server." << endl;
+        return t;
     }
 
     t = BIO_do_handshake(bio);
     if (t <= 0) {
         cerr << "Cannot establish SSL connection: failed handshake." << endl;
         ERR_print_errors_fp(stderr);
+        return t;
     }
+
+    return t;
 }
 
-/* Send an IMAP command to the server and return the response */
+/* Send an IMAP command to the server and return the response */
 string
 SSL_manager::fetch_response(const string& cmd)
 {
@@ -186,8 +191,8 @@ SSL_manager::fetch_response(const string& cmd)
 }
 
 /* Clean things up when connecting */
-void
-SSL_manager::mydisconnect()
+int
+SSL_manager::mm_disconnect()
 {
     //BIO_set_close(bio, BIO_CLOSE);
     //SSL_CTX_free(ctx);
@@ -195,5 +200,7 @@ SSL_manager::mydisconnect()
     //BIO_get_ssl(bio, ssl);
     BIO_ssl_shutdown(bio);
     //BIO_reset(bio);         // To reuse the connection, use this line
-    BIO_free_all(bio);  // To free it from memory, use this line
+//     BIO_free_all(bio);  // To free it from memory, use this line
+    int t = BIO_free(bio);  // To free it from memory, use this line
+    return t;
 }

@@ -59,22 +59,51 @@ Config_manager::read_conf_file(const string& path, const string& filename)
     return ss.str();
 }
 
-/* Load an account from a config file content */
+/* Create an account from a configuration object */
 Account*
-Config_manager::get_account_from_string(string s, const string& fname)
+Config_manager::create_account_from_conf(const Conf& conf)
+{
+    string in_server   = conf.in_server();
+    string in_port     = conf.in_port();
+    string smtp_server = conf.smtp_server();
+    string smtp_port   = conf.smtp_port();
+    string from        = conf.from();
+    string user        = conf.user();
+    string pass        = conf.pass();
+    Email_Protocol protocol = conf.protocol();
+
+    if (   in_server.empty()
+        || in_port.empty()
+        || smtp_server.empty()
+        || smtp_port.empty()
+        || from.empty()
+        || user.empty()
+        || pass.empty()
+        || protocol == PROTOCOL_UNDEFINED)
+    {
+        throw Config_manager::Conf_Invalid();
+    }
+
+    Account* acc = new Account(conf);
+    return acc;
+}
+
+/* Load a Conf object from a configuration file content */
+Conf
+Config_manager::get_conf_from_string(const string& s)
 {
     stringstream iss(s);
     string line;
     string field, colon, tmp, val;
     stringstream ss;
-
-    Account* acc = new Account();
-    acc->set_id(fname);
+    Conf conf {};
 
     while (getline(iss, line)) {
         val.clear();
 
-        if (line.empty()) continue;
+        if (line.empty())
+            continue;
+
         ss.clear();
         ss << line;
         ss >> field >> colon;
@@ -83,16 +112,21 @@ Config_manager::get_account_from_string(string s, const string& fname)
             val += tmp;
         }
 
-        if      (field == "imap")  { acc->set_imap(val);  }
-        else if (field == "iport") { acc->set_iport(val); }
-        else if (field == "smtp")  { acc->set_smtp(val);  }
-        else if (field == "sport") { acc->set_sport(val); }
-        else if (field == "from")  { acc->set_from(val);  }
-        else if (field == "user")  { acc->set_user(val);  }
-        else if (field == "pass")  { acc->set_pass(val);  }
-        else if (field == "sport") { acc->set_sport(val); }
+        if      (field == "in_server")   { conf.set_in_server(val);   }
+        else if (field == "in_port")     { conf.set_in_port(val);     }
+        else if (field == "smtp_server") { conf.set_smtp_server(val); }
+        else if (field == "smtp_port")   { conf.set_smtp_port(val);   }
+        else if (field == "from")        { conf.set_from(val);        }
+        else if (field == "user")        { conf.set_user(val);        }
+        else if (field == "pass")        { conf.set_pass(val);        }
+        else if (field == "protocol") {
+            if      (val == "IMAP") { conf.set_protocol(PROTOCOL_IMAP);      }
+            else if (val == "POP3") { conf.set_protocol(PROTOCOL_POP3);      }
+            else                    { conf.set_protocol(PROTOCOL_UNDEFINED); }
+        }
     }
-    return acc;
+
+    return conf;
 }
 
 /* Get all the accounts from the config dir */
@@ -104,7 +138,8 @@ Config_manager::load_accounts(vector<Account*>& accs)
 
     for (auto fname : files) {
         string content = read_conf_file(path, fname);
-        Account* acc = get_account_from_string(content, fname);
+        Conf cfg = get_conf_from_string(content);
+        Account* acc = create_account_from_conf(cfg);
         accs.push_back(acc);
     }
 }

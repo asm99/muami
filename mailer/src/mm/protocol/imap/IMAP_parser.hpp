@@ -38,26 +38,26 @@ enum class IMAP_Responses_Status : char {
     IMAP_RESPONSE_STATUS_UNKNOWN
 };
 
-class IMAP_parser
+namespace IMAP_parser
 {
-    private:
-        unsigned char parse_flags(const string& s);
-
-        /* Mailbox parsing functions */
-        unsigned int parse_mbox_flags(const string& s);
-        unsigned int parse_mbox_perm_flags(const string& s);
-        unsigned int parse_mbox_exists(const string& s);
-        unsigned int parse_mbox_recent(const string& s);
-        unsigned int parse_mbox_star_line(const string& s, const string& token);
-        unsigned int parse_mbox_ok_line(const string& s, const string& token);
-        unsigned int parse_mbox_unseen(const string& s);
-        unsigned int parse_mbox_uidvalidity(const string& s);
-        unsigned int parse_mbox_uidnext(const string& s);
-        int parse_mbox_permissions(const string& s);
-
-    public:
-        IMAP_parser() {};
-        ~IMAP_parser() {};
+//     private:
+//         unsigned char parse_flags(const string& s);
+//
+//         /* Mailbox parsing functions */
+//         unsigned int parse_mbox_flags(const string& s);
+//         unsigned int parse_mbox_perm_flags(const string& s);
+//         unsigned int parse_mbox_exists(const string& s);
+//         unsigned int parse_mbox_recent(const string& s);
+//         unsigned int parse_mbox_star_line(const string& s, const string& token);
+//         unsigned int parse_mbox_ok_line(const string& s, const string& token);
+//         unsigned int parse_mbox_unseen(const string& s);
+//         unsigned int parse_mbox_uidvalidity(const string& s);
+//         unsigned int parse_mbox_uidnext(const string& s);
+//         int parse_mbox_permissions(const string& s);
+//
+//     public:
+//         IMAP_parser() {};
+//         ~IMAP_parser() {};
 
         bool check_server_imap_capability(string s);
 
@@ -65,6 +65,7 @@ class IMAP_parser
         // !!!!!!! to make private after tests !!!!!!!!
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         /* Mailbox parsing functions */
+        void parse_list(map<string, Mailbox*>& mboxes, const string& s);
         void parse_mailbox_infos(Mailbox& mb, const string& s);
 
         RFC822_header* parse_header(string s);
@@ -74,6 +75,6 @@ class IMAP_parser
         vector<Email*> parse_emails(string s);
         void parse_emails_infos(vector<Email*>& emails, string s);
         Email* parse_email(string s);
-};
+}
 
 #endif /* end of include guard: IMAP_PARSER_H */

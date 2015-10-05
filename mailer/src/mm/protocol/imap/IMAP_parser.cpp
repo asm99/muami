@@ -1,21 +1,42 @@
 #include "IMAP_parser.hpp"
 
+namespace {
 /* Mailbox parsing functions */
 
+/* Get bits flag according to a string of flags */
+unsigned char
+parse_flags(const string& s)
+{
+    string token;
+    stringstream ss(s);
+    unsigned char flags = 0;
+
+    while (getline(ss, token, ' ')) {
+        if      (token == "\\Seen")     { flags |= FL_SEEN;      }
+        else if (token == "\\Answered") { flags |= FL_ANSWERED;  }
+        else if (token == "\\Flagged")  { flags |= FL_FLAGGED;   }
+        else if (token == "$Forwarded") { flags |= FL_FORWARDED; }
+        else if (token == "\\Deleted")  { flags |= FL_DELETED;   }
+        else if (token == "\\Drafts")   { flags |= FL_DRAFT;     }
+    }
+
+    return flags;
+}
+
 unsigned int
-IMAP_parser::parse_mbox_flags(const string& s)
+parse_mbox_flags(const string& s)
 {
     return parse_flags(s);
 }
 
 unsigned int
-IMAP_parser::parse_mbox_perm_flags(const string& s)
+parse_mbox_perm_flags(const string& s)
 {
     return parse_flags(s);
 }
 
 unsigned int
-IMAP_parser::parse_mbox_star_line(const string& s, const string& token)
+parse_mbox_star_line(const string& s, const string& token)
 {
     istringstream iss(s);
     int k;
@@ -34,7 +55,7 @@ IMAP_parser::parse_mbox_star_line(const string& s, const string& token)
  * Returns 0 on failure
  */
 unsigned int
-IMAP_parser::parse_mbox_exists(const string& s)
+parse_mbox_exists(const string& s)
 {
     return parse_mbox_star_line(s, "EXISTS");
 }
@@ -44,7 +65,7 @@ IMAP_parser::parse_mbox_exists(const string& s)
  * Returns 0 on failure
  */
 unsigned int
-IMAP_parser::parse_mbox_recent(const string& s)
+parse_mbox_recent(const string& s)
 {
     return parse_mbox_star_line(s, "RECENT");
 }
@@ -56,7 +77,7 @@ IMAP_parser::parse_mbox_recent(const string& s)
  * FIXME: istringstream good() not working?!?!
  */
 unsigned int
-IMAP_parser::parse_mbox_ok_line(const string& s, const string& token)
+parse_mbox_ok_line(const string& s, const string& token)
 {
     size_t tok_pos, cl_bracket_pos;
     tok_pos = s.find(token);
@@ -82,25 +103,25 @@ IMAP_parser::parse_mbox_ok_line(const string& s, const string& token)
 }
 
 unsigned int
-IMAP_parser::parse_mbox_unseen(const string& s)
+parse_mbox_unseen(const string& s)
 {
     return parse_mbox_ok_line(s, "UNSEEN");
 }
 
 unsigned int
-IMAP_parser::parse_mbox_uidvalidity(const string& s)
+parse_mbox_uidvalidity(const string& s)
 {
     return parse_mbox_ok_line(s, "UIDVALIDITY");
 }
 
 unsigned int
-IMAP_parser::parse_mbox_uidnext(const string& s)
+parse_mbox_uidnext(const string& s)
 {
     return parse_mbox_ok_line(s, "UIDNEXT");
 }
 
 int
-IMAP_parser::parse_mbox_permissions(const string& s)
+parse_mbox_permissions(const string& s)
 {
     size_t pos = s.find("READ-WRITE");
 
@@ -109,6 +130,38 @@ IMAP_parser::parse_mbox_permissions(const string& s)
     }
 
     return PERMISSION_READ_ONLY;
+}
+
+} // unnamed namespace
+
+// * LIST (\HasNoChildren \Drafts) "." Drafts
+// * LIST (\HasNoChildren \Trash) "." Trash
+// * LIST (\HasNoChildren \Sent) "." Sent
+// * LIST (\HasNoChildren) "." INBOX
+// a OK List completed.
+void
+IMAP_parser::parse_list(map<string, Mailbox*>& mboxes, const string& s)
+{
+    istringstream iss(s);
+    string line, token;
+    string star, list, attributes, separator, name;
+    while (getline(iss, line)) {
+        attributes.clear();
+
+        istringstream liss(line);
+        liss >> star >> list;
+        while (liss >> token) {
+            attributes += token + " ";
+            if (token.back() == ')')
+                break;
+        }
+        liss >> separator >> name;
+
+        Mailbox* mb = new Mailbox();
+        mb->set_attributes(attributes);
+        mb->set_separator(separator);
+        mboxes[name] = mb;
+    }
 }
 
 /*
@@ -147,7 +200,6 @@ IMAP_parser::parse_mailbox_infos(Mailbox& mb, const string& s)
             mb.set_permissions(parse_mbox_permissions(line));
         }
     }
-
 }
 
 /*
@@ -166,26 +218,6 @@ IMAP_parser::check_server_imap_capability(string s)
         return true;
     }
     return false;
-}
-
-/* Get bits flag according to a string of flags */
-unsigned char
-IMAP_parser::parse_flags(const string& s)
-{
-    string token;
-    stringstream ss(s);
-    unsigned char flags = 0;
-
-    while (getline(ss, token, ' ')) {
-        if      (token == "\\Seen")     { flags |= FL_SEEN;      }
-        else if (token == "\\Answered") { flags |= FL_ANSWERED;  }
-        else if (token == "\\Flagged")  { flags |= FL_FLAGGED;   }
-        else if (token == "$Forwarded") { flags |= FL_FORWARDED; }
-        else if (token == "\\Deleted")  { flags |= FL_DELETED;   }
-        else if (token == "\\Drafts")   { flags |= FL_DRAFT;     }
-    }
-
-    return flags;
 }
 
 /*
@@ -380,7 +412,7 @@ IMAP_parser::parse_flags(const string& s)
 // }
 
 // List of emails with infos (UID FLAGS INTERNALDATE RFC822.SIZE ENVELOPE)
-    void
+void
 IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 {
     const string delim = "))\r\n"; // email block delimiter
@@ -553,10 +585,8 @@ main()
 //  a OK [READ-WRITE] Select completed (0.000 secs).
 //  DONE";
 
-    IMAP_parser* imap_prsr = new IMAP_parser();
-
     Mailbox mb {};
-    imap_prsr->parse_mailbox_infos(mb, sel_resp);
+    IMAP_parser::parse_mailbox_infos(mb, sel_resp);
     mb.dump();
 
     return 0;

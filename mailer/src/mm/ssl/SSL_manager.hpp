@@ -33,8 +33,8 @@ class SSL_manager
         SSL_manager();
         ~SSL_manager() {};
 
-        void myconnect(const string& machine_port);
-        void mydisconnect();
+        int mm_connect(const string& address, const string& port);
+        int mm_disconnect();
         string fetch_response(const string& cmd);
 };
 

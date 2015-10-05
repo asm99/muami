@@ -19,7 +19,9 @@ class IMAP_manager : public Protocol_manager
         string prepare_cmd(const string cmd);
 
     public:
-        IMAP_manager(const string machine_port);
+        class Protocol_Invalid {}; /* Exception */
+
+        IMAP_manager();
         ~IMAP_manager();
 };
 

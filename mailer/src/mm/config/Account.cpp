@@ -1,118 +1,90 @@
 #include "Account.hpp"
 
-// Setters
-
-void
-Account::set_id(const string& s)
+Account::Account(const Conf& cf)
 {
-	acc_id = s;
-}
+    acc_conf = cf;
+    mboxes = {};
 
-void
-Account::set_imap(const string& s)
-{
-	acc_imap = s;
-}
-
-void
-Account::set_iport(const string& s)
-{
-	acc_iport = s;
-}
-
-void
-Account::set_smtp(const string& s)
-{
-	acc_smtp = s;
-}
-
-void
-Account::set_sport(const string& s)
-{
-	acc_sport = s;
-}
-
-void
-Account::set_from(const string& s)
-{
-	acc_from = s;
-}
-
-void
-Account::set_user(const string& s)
-{
-	acc_user = s;
-}
-
-void
-Account::set_pass(const string& s)
-{
-	acc_pass = s;
+    if (acc_conf.protocol() == PROTOCOL_IMAP) {
+        prtcl_mgr = new IMAP_manager();
+    } else {
+        cerr << "Error: unsupported protocol." << endl;
+        exit(1);
+    }
 }
 
 // Getters
 
-string
-Account::id()
+Conf&
+Account::conf()
 {
-	return acc_id;
+    return acc_conf;
 }
 
-string
-Account::imap()
+Mailbox*
+Account::cur_mbox()
 {
-	return acc_imap;
+    return mboxes[cur_mbox_name];
 }
 
-string
-Account::iport()
+/* Network related functions */
+int
+Account::connect()
 {
-	return acc_iport;
+    prtcl_mgr->connect(acc_conf.in_server(), acc_conf.in_port());
+    return 1;
 }
 
-string
-Account::smtp()
+int
+Account::login()
 {
-	return acc_smtp;
+    prtcl_mgr->login(acc_conf.user(), acc_conf.pass());
+    return 1;
 }
 
-string
-Account::sport()
+/*
+ * List root level mailboxes. We're ignoring other arguments for now
+ * FIXME: Add support for finer listing
+ */
+int
+Account::list_mboxes()
 {
-	return acc_sport;
+    prtcl_mgr->list(mboxes, "%", "%");
+    return 1;
 }
 
-string
-Account::from()
+int
+Account::select_mbox(const string& nm)
 {
-	return acc_from;
+    if (nm == cur_mbox_name) {
+        return 0;
+    }
+
+    cur_mbox_name = nm;
+    prtcl_mgr->select_mbox(nm);
+    return 1;
 }
 
-string
-Account::user()
+int
+Account::logout()
 {
-	return acc_user;
+    prtcl_mgr->logout();
+    return 1;
 }
 
-string
-Account::pass()
+int
+Account::fetch_emails_list(int number, int offset)
 {
-	return acc_pass;
+    prtcl_mgr->fetch_emails_list(
+            mboxes[cur_mbox_name]->emails(),
+            number, offset);
+    return 1;
 }
 
 // DEBUG
 
 void
-Account::dump()
+Account::dump() const
 {
-    cout << "--- Account ---\n"
-         << "id:    " << id()    << endl
-         << "imap:  " << imap()  << endl
-         << "iport: " << iport() << endl
-         << "smtp:  " << smtp()  << endl
-         << "sport: " << sport() << endl
-         << "from:  " << from()  << endl
-         << "user:  " << user()  << endl
-         << "pass:  " << pass()  << endl;
+    acc_conf.dump();
 }
-

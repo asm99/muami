@@ -6,15 +6,23 @@
 
 #include "IMAP_manager.hpp"
 
-IMAP_manager::IMAP_manager(const string machine_port)
+/* Constructor */
+IMAP_manager::IMAP_manager()
 {
-	this->ssl_mgr = new SSL_manager();
-	this->ssl_mgr->myconnect(machine_port);
+	ssl_mgr = new SSL_manager();
 }
 
+/* Destructor */
 IMAP_manager::~IMAP_manager()
 {
-	delete this->ssl_mgr;
+	delete ssl_mgr;
+}
+
+/* Connect to server */
+int
+Protocol_manager::connect(const string& address, const string& port)
+{
+	return ssl_mgr->mm_connect(address, port);
 }
 
 /*
@@ -72,6 +80,22 @@ Protocol_manager::login(const string& user, const string& pass)
 	string cmd = "LOGIN " + user + " " + pass;
 	string pr_cmd = prepare_cmd(cmd);
 	string resp = ssl_mgr->fetch_response(pr_cmd);
+	return resp;
+}
+
+/*
+ * LIST command
+ * Doc: https://tools.ietf.org/html/rfc3501#section-6.3.8
+ */
+string
+Protocol_manager::list(
+        map<string, Mailbox*>& mboxes,
+        const string& reference, const string& name)
+{
+	string cmd = "LIST \"" + reference + "\" \"" + name + "\"";
+	string pr_cmd = prepare_cmd(cmd);
+	string resp = ssl_mgr->fetch_response(pr_cmd);
+    IMAP_parser::parse_list(mboxes, resp);
 	return resp;
 }
 
@@ -187,9 +211,7 @@ Protocol_manager::fetch_emails_list(
         vector<Email*>& emails, int number, int offset)
 {
     string resp = server_fetch_emails_list(offset, offset + number);
-    IMAP_parser* prsr = new IMAP_parser();
-    prsr->parse_emails_infos(emails, resp);
-    delete prsr;
+    IMAP_parser::parse_emails_infos(emails, resp);
 }
 
 string
@@ -240,25 +262,25 @@ Protocol_manager::rename_mbox(const string& old_nm, const string& new_nm)
 int
 main()
 {
-    Config_manager* cm = new Config_manager();
-    Account* acc = cm->get_account_at_index(0); // first account
-
-    Protocol_manager* p_mgr =
-        new IMAP_manager(acc->imap() + ":" + acc->iport());
-    string login_resp = p_mgr->login(acc->user(), acc->pass());
-    p_mgr->check_response_status(login_resp);
-
-    string selmb_resp = p_mgr->select_mbox("INBOX");
-    p_mgr->check_response_status(selmb_resp);
-
-    vector<Email*> emails {};
-    p_mgr->fetch_emails_list(emails, 10, 15);
-    cout << "nb of emails: " << emails.size() << endl;
-    for (auto em : emails) {
-        em->dump();
-    }
-
-    string logout_resp = p_mgr->logout();
-    p_mgr->check_response_status(logout_resp);
+//     Config_manager* cm = new Config_manager();
+//     Account* acc = cm->get_account_at_index(0); // first account
+//
+//     Protocol_manager* p_mgr =
+//         new IMAP_manager(acc->imap() + ":" + acc->iport());
+//     string login_resp = p_mgr->login(acc->user(), acc->pass());
+//     p_mgr->check_response_status(login_resp);
+//
+//     string selmb_resp = p_mgr->select_mbox("INBOX");
+//     p_mgr->check_response_status(selmb_resp);
+//
+//     vector<Email*> emails {};
+//     p_mgr->fetch_emails_list(emails, 10, 15);
+//     cout << "nb of emails: " << emails.size() << endl;
+//     for (auto em : emails) {
+//         em->dump();
+//     }
+//
+//     string logout_resp = p_mgr->logout();
+//     p_mgr->check_response_status(logout_resp);
 }
 #endif

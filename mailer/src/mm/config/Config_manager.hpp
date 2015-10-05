@@ -20,6 +20,7 @@
 #include <pwd.h>
 #include <stdexcept>
 #include "Account.hpp"
+#include "Conf.hpp"
 #include "../utils/error.hpp"
 
 using namespace std;
@@ -33,10 +34,13 @@ class Config_manager
         string get_conf_dir_abs_path();
         vector<string> list_conf_dir(const string& path);
         string read_conf_file(const string& path, const string& fname);
-        Account* get_account_from_string(string s, const string& fname);
+        Conf get_conf_from_string(const string& s);
+        Account* create_account_from_conf(const Conf& conf);
         void load_accounts(vector<Account*>& accs);
 
     public:
+        class Conf_Invalid {}; /* Exception */
+
         Config_manager();
         ~Config_manager() {};
 

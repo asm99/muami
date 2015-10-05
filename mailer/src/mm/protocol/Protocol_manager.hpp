@@ -1,8 +1,11 @@
 #ifndef PROTOCOL_MANAGER_H
 #define PROTOCOL_MANAGER_H
 
+#include <map>
 #include "../email/Email.hpp"
+#include "../email/Mailbox.hpp"
 #include "../ssl/SSL_manager.hpp"
+#include "protocols.hpp"
 
 using namespace std;
 
@@ -18,11 +21,14 @@ class Protocol_manager
 
         // General
         virtual int check_response_status(const string& s);
+        virtual int connect(const string& address, const string& port);
         virtual string login(const string& user, const string& pass);
         virtual string logout();
 //         virtual int noop();
 
         // Mailboxes
+        virtual string list(map<string, Mailbox*>& mbxes,
+                const string& reference, const string& name);
         virtual string select_mbox(const string& nm);
 //         virtual int create_mbox(string nm);
         virtual string rename_mbox(const string& old_nm, const string& new_nm);

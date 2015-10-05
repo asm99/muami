@@ -2,10 +2,10 @@ CPP = g++
 CFLAGS = -g -Wall -Wextra -std=c++11
 LIBS = -lcrypto -lssl
 EXE = muami
-SRCS = main.cpp \
-	   coding/base64.cpp \
+SRCS = coding/base64.cpp \
 	   coding/coding.cpp \
 	   coding/qp.cpp \
+	   config/Conf.cpp \
 	   config/Config_manager.cpp \
 	   config/Account.cpp \
 	   crypto/md5.cpp \
@@ -23,7 +23,7 @@ SRCS = main.cpp \
 	   utils/Date_formatter.cpp \
 	   utils/util.cpp
 
-all: $(SRCS)
+all: $(SRCS) main.cpp
 	$(CPP) $(CFLAGS) $^ -o $(EXE) $(LIBS) -DDEBUG
 
 address: email/Address.cpp utils/util.cpp
@@ -35,8 +35,8 @@ addresses: email/Addresses.cpp email/Address.cpp utils/util.cpp
 base64: coding/base64.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ -DBASE64_DEBUG -lssl -lcrypto
 
-config_manager: config/Config_manager.cpp config/Account.cpp utils/error.cpp
-	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG
+config_manager: $(SRCS)
+	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG -lssl -lcrypto
 
 date_formatter: utils/Date_formatter.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DDATE_FORMATTER_DEBUG
