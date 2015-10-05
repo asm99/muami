@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/picture">
-        <file>res/address_book.png</file>
-    </qresource>
-</RCC>
