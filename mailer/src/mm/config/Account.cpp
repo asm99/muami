@@ -86,5 +86,12 @@ Account::fetch_emails_list(int number, int offset)
 void
 Account::dump() const
 {
+    /* Dump config */
     acc_conf.dump();
+
+    /* Dump mailboxes names */
+    map<string, Mailbox*>::const_iterator it;
+    for (it = mboxes.begin(); it != mboxes.end(); ++it) {
+        cout << "mailbox: " << it->first << endl;
+    }
 }
