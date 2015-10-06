@@ -14,7 +14,6 @@
 #include <cstring>
 #include <cctype>
 #include <vector>
-#include <map>
 #include "../../email/Email.hpp"
 #include "../../email/RFC822_header.hpp"
 #include "../../email/Envelope.hpp"
@@ -23,6 +22,7 @@
 #include "../../utils/Date_formatter.hpp"
 #include "../../utils/util.hpp"
 #include "../../email/Mailbox.hpp"
+#include "../../debug/debug.hpp"
 
 using namespace std;
 
@@ -41,33 +41,11 @@ enum class IMAP_Responses_Status : char {
 
 namespace IMAP_parser
 {
-//     private:
-//         unsigned char parse_flags(const string& s);
-//
-//         /* Mailbox parsing functions */
-//         unsigned int parse_mbox_flags(const string& s);
-//         unsigned int parse_mbox_perm_flags(const string& s);
-//         unsigned int parse_mbox_exists(const string& s);
-//         unsigned int parse_mbox_recent(const string& s);
-//         unsigned int parse_mbox_star_line(const string& s, const string& token);
-//         unsigned int parse_mbox_ok_line(const string& s, const string& token);
-//         unsigned int parse_mbox_unseen(const string& s);
-//         unsigned int parse_mbox_uidvalidity(const string& s);
-//         unsigned int parse_mbox_uidnext(const string& s);
-//         int parse_mbox_permissions(const string& s);
-//
-//     public:
-//         IMAP_parser() {};
-//         ~IMAP_parser() {};
-
         bool check_server_imap_capability(string s);
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // !!!!!!! to make private after tests !!!!!!!!
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         /* Mailbox parsing functions */
         void parse_list(map<string, Mailbox*>& mboxes, const string& s);
-        void parse_mailbox_infos(Mailbox& mb, const string& s);
+        void parse_select(Mailbox* mb, const string& s);
 
         RFC822_header* parse_header(string s);
 //         void imap_parse_bodystructure(

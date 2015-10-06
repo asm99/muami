@@ -9,6 +9,7 @@
 
 #include "../Protocol_manager.hpp"
 #include "../../email/Email.hpp"
+#include "../../debug/debug.hpp"
 
 using namespace std;
 

@@ -112,7 +112,7 @@ SSL_manager::rd_sockdata()
                      << "Returned " << t << endl;
             }
 #ifdef DEBUG
-            cout << "Reached the end of the data stream." << endl;
+            debug("Reached the end of the data stream.");
 #endif
             break;
         }
@@ -130,7 +130,8 @@ SSL_manager::rd_sockdata()
     buf[bytes_read] = '\0';
 
 #ifdef DEBUG
-    cout << "rd_sockdata: " << buf << endl;
+    debug("rd_sockdata: ");
+    debug(buf);
 #endif
 
     return buf;

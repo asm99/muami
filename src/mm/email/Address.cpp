@@ -115,12 +115,10 @@ operator>>(istream& is, Address* a)
 void
 Address::dump()
 {
-    cout << "---  Address ---\n"
-         << "addr-name   : " << name()    << "\n"
-         << "addr-adl    : " << adl()     << "\n"
-         << "addr-mailbox: " << mailbox() << "\n"
-         << "addr-host   : " << host() << "\n"
-         << endl;
+    debug("addr-name    : " + name()    );
+    debug("addr-adl     : " + adl()     );
+    debug("addr-mailbox : " + mailbox() );
+    debug("addr-host    : " + host()    );
 }
 
 #ifdef ADDRESS_DEBUG

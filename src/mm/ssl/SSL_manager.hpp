@@ -16,6 +16,7 @@
 #include <openssl/err.h>
 #include "../utils/error.hpp"
 #include "../protocol/imap/IMAP_parser.hpp"
+#include "../debug/debug.hpp"
 
 using namespace std;
 

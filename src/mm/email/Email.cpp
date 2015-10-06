@@ -93,12 +93,10 @@ Email::rfc822_header()
 void
 Email::dump()
 {
-    cout << "--- Email ---\n"
-         << "  |—— uid: " << uid() << endl
-         << "  |—— rfc822_size: " << rfc822_size() << endl
-         << "  |—— friendly_time: " << friendly_time() << endl
-         << "  |—— internaldate: " << internaldate() << endl
-         << "  |—— flags: " << flags() << endl
-         << "  |—— envelope: " << endl;
+    debug("uid           : " + uid()          );
+    debug("rfc822_size   : " + rfc822_size()  );
+    debug("friendly_time : " + friendly_time());
+    debug("internaldate  : " + internaldate() );
+    debug("flags         : " + flags()        );
     envelope().dump();
 }

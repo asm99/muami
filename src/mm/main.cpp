@@ -1,4 +1,5 @@
 #include "config/Config_manager.hpp"
+#include "debug/debug.hpp"
 
 using namespace std;
 
@@ -11,10 +12,13 @@ int main()
         acc->connect();
         acc->login();
         acc->list_mboxes();
+#ifdef DEBUG
+        acc->dump();
+#endif
         acc->select_mbox("INBOX");
         acc->fetch_emails_list(10, 1);
 
-        cout << "nb of emails: " << acc->cur_mbox()->emails().size() << endl;
+        debug("nb of emails: " + acc->cur_mbox()->emails().size());
 
 		for (auto em : acc->cur_mbox()->emails()) {
 			em->dump();

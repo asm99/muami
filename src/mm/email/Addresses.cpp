@@ -69,7 +69,7 @@ void
 Addresses::dump()
 {
     unsigned int sz = addrs.size();
-    cout << "Addresses size: " << sz << endl;
+	debug("Addresses size: " + sz);
     for (unsigned int i = 0; i < sz; i++) {
         addrs[i]->dump();
     }

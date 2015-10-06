@@ -48,12 +48,18 @@ Protocol_manager::check_response_status(const string& s)
 
     while (getline(ss, token, ' ')) {
         if (token.compare(0, 4, "ABCD") == 0) {
-            cout << "status line: " << token << endl;
+#ifdef DEBUG
+	debug("status line: " + token);
+#endif
 
             string mystr;
             int k;
             ss >> mystr >> k;
-            cout << "check resp, code: " << mystr << ", " << k << endl;
+#ifdef DEBUG
+            ostringstream oss;
+            oss << k;
+            debug("check resp, code: " + mystr + ", " + oss.str());
+#endif
         }
     }
     return 1;
@@ -68,7 +74,7 @@ prepare_cmd(const string cmd)
 	string tag = get_next_tag();
 	string pr_cmd = tag + " " + cmd + "\r\n";
 #ifdef DEBUG
-    cout << "--- DEBUG: Prepared command: " << pr_cmd << endl;
+	debug("Prepared command: " + pr_cmd );
 #endif
 	return pr_cmd;
 }
@@ -101,11 +107,12 @@ Protocol_manager::list(
 
 // Select a mailbox
 string
-Protocol_manager::select_mbox(const string& nm)
+Protocol_manager::select_mbox(Mailbox* mb, const string& nm)
 {
 	string cmd = "SELECT " + nm;
 	string pr_cmd = prepare_cmd(cmd);
 	string resp = ssl_mgr->fetch_response(pr_cmd);
+    IMAP_parser::parse_select(mb, resp);
 	return resp;
 }
 
@@ -208,9 +215,9 @@ Protocol_manager::server_fetch_emails_list(int start, int end)
 /* Fetch emails list */
 void
 Protocol_manager::fetch_emails_list(
-        vector<Email*>& emails, int number, int offset)
+        vector<Email*>& emails, int start, int end)
 {
-    string resp = server_fetch_emails_list(offset, offset + number);
+    string resp = server_fetch_emails_list(start, end);
     IMAP_parser::parse_emails_infos(emails, resp);
 }
 

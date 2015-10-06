@@ -12,12 +12,6 @@ Nstring::str() const
     return nstr;
 }
 
-void
-Nstring::dump()
-{
-    cout << str() << endl;
-}
-
 /*
  * FIXME: date should not strip '('
  */

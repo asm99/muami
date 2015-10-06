@@ -5,6 +5,7 @@
 #include "Bodypart.hpp"
 #include "Envelope.hpp"
 #include "flags.hpp"
+#include "../debug/debug.hpp"
 
 using namespace std;
 

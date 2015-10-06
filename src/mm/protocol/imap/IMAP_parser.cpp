@@ -35,11 +35,11 @@ parse_mbox_perm_flags(const string& s)
     return parse_flags(s);
 }
 
-unsigned int
+unsigned long
 parse_mbox_star_line(const string& s, const string& token)
 {
     istringstream iss(s);
-    int k;
+    long k;
     string star, word;
 
     iss >> star >> k >> word;
@@ -54,7 +54,7 @@ parse_mbox_star_line(const string& s, const string& token)
  * Get the number of emails in the mailbox
  * Returns 0 on failure
  */
-unsigned int
+unsigned long
 parse_mbox_exists(const string& s)
 {
     return parse_mbox_star_line(s, "EXISTS");
@@ -64,7 +64,7 @@ parse_mbox_exists(const string& s)
  * Get the number of recent emails in the mailbox
  * Returns 0 on failure
  */
-unsigned int
+unsigned long
 parse_mbox_recent(const string& s)
 {
     return parse_mbox_star_line(s, "RECENT");
@@ -76,7 +76,7 @@ parse_mbox_recent(const string& s)
  * Returns 0 on failure
  * FIXME: istringstream good() not working?!?!
  */
-unsigned int
+unsigned long
 parse_mbox_ok_line(const string& s, const string& token)
 {
     size_t tok_pos, cl_bracket_pos;
@@ -92,7 +92,7 @@ parse_mbox_ok_line(const string& s, const string& token)
             cl_bracket_pos - (tok_pos + token.length()));
 
     istringstream num_iss(num_s);
-    unsigned int k;
+    unsigned long k;
     num_iss >> k;
 
 //     if (num_iss.good()) {
@@ -102,19 +102,19 @@ parse_mbox_ok_line(const string& s, const string& token)
     return 0;
 }
 
-unsigned int
+unsigned long
 parse_mbox_unseen(const string& s)
 {
     return parse_mbox_ok_line(s, "UNSEEN");
 }
 
-unsigned int
+unsigned long
 parse_mbox_uidvalidity(const string& s)
 {
     return parse_mbox_ok_line(s, "UIDVALIDITY");
 }
 
-unsigned int
+unsigned long
 parse_mbox_uidnext(const string& s)
 {
     return parse_mbox_ok_line(s, "UIDNEXT");
@@ -170,36 +170,36 @@ IMAP_parser::parse_list(map<string, Mailbox*>& mboxes, const string& s)
  * FIXME: no default values when keywords are not found!!!!
  */
 void
-IMAP_parser::parse_mailbox_infos(Mailbox& mb, const string& s)
+IMAP_parser::parse_select(Mailbox* mb, const string& s)
 {
     istringstream iss(s);
     string line;
     size_t pos;
 
     while (getline(iss, line)) {
-        if ((pos = line.find("* FLAGS")) != string::npos) {
-            mb.set_flags(parse_mbox_flags(line));
+        if (line.compare(0, 7, "* FLAGS") == 0) {
+            mb->set_flags(parse_mbox_flags(line));
         }
-        else if ((pos = line.find("* OK [PERMANENTFLAGS")) != string::npos) {
-            mb.set_perm_flags(parse_mbox_perm_flags(line));
+        else if (line.compare(0, 20, "* OK [PERMANENTFLAGS") == 0) {
+            mb->set_perm_flags(parse_mbox_perm_flags(line));
         }
         else if ((pos = line.find("EXISTS")) != string::npos) {
-            mb.set_exists(parse_mbox_exists(line));
+            mb->set_exists(parse_mbox_exists(line));
         }
         else if ((pos = line.find("RECENT")) != string::npos) {
-            mb.set_recent(parse_mbox_recent(line));
+            mb->set_recent(parse_mbox_recent(line));
         }
-        else if ((pos = line.find("* OK [UNSEEN")) != string::npos) {
-            mb.set_unseen(parse_mbox_unseen(line));
+        else if (line.compare(0, 12, "* OK [UNSEEN") == 0) {
+            mb->set_unseen(parse_mbox_unseen(line));
         }
-        else if ((pos = line.find("* OK [UIDVALIDITY")) != string::npos) {
-            mb.set_uidvalidity(parse_mbox_uidvalidity(line));
+        else if (line.compare(0, 17, "* OK [UIDVALIDITY") == 0) {
+            mb->set_uidvalidity(parse_mbox_uidvalidity(line));
         }
-        else if ((pos = line.find("* OK [UIDNEXT")) != string::npos) {
-            mb.set_uidnext(parse_mbox_uidnext(line));
+        else if (line.compare(0, 13, "* OK [UIDNEXT") == 0) {
+            mb->set_uidnext(parse_mbox_uidnext(line));
         }
-        else if ((pos = line.find("* OK [[READ-")) != string::npos) {
-            mb.set_permissions(parse_mbox_permissions(line));
+        else if (line.compare(0, 10, "* OK [READ") == 0) {
+            mb->set_permissions(parse_mbox_permissions(line));
         }
     }
 }
@@ -213,7 +213,6 @@ bool
 IMAP_parser::check_server_imap_capability(string s)
 {
     for (auto& c : s) c = toupper(c);
-//     cout << "s: " + s << endl;
 
     if (s.find("* OK [CAPABILITY") != string::npos
         && s.find("IMAP4REV1") != string::npos) {
@@ -438,7 +437,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         to_pos = delim_pos + delim.length();
         token = s.substr(0, to_pos); // token holds an email info block
 #ifdef IMAP_PARSER_DEBUG
-        cout << "token: " << token << endl;
+        debug("token: " + token);
 #endif
 
         uid_pos = token.find(uid_s);
@@ -463,14 +462,13 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         env_tok = token.substr(offset, token.length() - offset);
 
 #ifdef IMAP_PARSER_DEBUG
-        cout << "uid tok: " << uid_tok << endl
-            << "flags tok: " << flags_tok << endl
-            << "idate tok: " << idate_tok << endl
-            << "formatted idate: "
-            << df->format_date(util::strip_chars(idate_tok, "\""))
-            << endl
-            << "size tok: " << size_tok << endl
-            << "env tok: " << env_tok << endl;
+	debug("uid tok        : " + uid_tok );
+	debug("flags tok      : " + flags_tok );
+	debug("idate tok      : " + idate_tok );
+    debug("formatted idate: " +
+            df->format_date(util::strip_chars(idate_tok, "\"")));
+	debug("size tok       : " + size_tok );
+	debug("env tok        : " + env_tok );
 #endif
 
         Email* em = new Email();
@@ -565,10 +563,9 @@ void
 print_before_after_section(bool is_child, string old)
 {
     string new_s = util::get_new_section(old, is_child);
-    cout << "section old, new => " << old << ", " << new_s << ", ";
-    if (is_child) cout << "CHILD";
-    else          cout << "SIBLING";
-    cout << endl;
+    debug("section old, new => " + old + ", " + new_s);
+    if (is_child) debug("CHILD");
+    else          debug("SIBLING");
 }
 
 // Test various cases of sections labelling and nesting

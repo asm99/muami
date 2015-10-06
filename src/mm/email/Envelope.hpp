@@ -45,6 +45,7 @@
 #include "Nstring.hpp"
 #include "../utils/util.hpp"
 #include "../coding/coding.hpp"
+#include "../debug/debug.hpp"
 
 using namespace std;
 

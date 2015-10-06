@@ -29,14 +29,15 @@ class Protocol_manager
         // Mailboxes
         virtual string list(map<string, Mailbox*>& mbxes,
                 const string& reference, const string& name);
-        virtual string select_mbox(const string& nm);
+        virtual string select_mbox(Mailbox* mb, const string& nm);
 //         virtual int create_mbox(string nm);
         virtual string rename_mbox(const string& old_nm, const string& new_nm);
 //         virtual int close_mbox();
 
         // Emails
         virtual void fetch_emails_list(
-                vector<Email*>& emails, int number, int offset);
+                vector<Email*>& emails,
+                int start, int end);
 //         virtual string fetch_email_infos(int uid);
 //         virtual string fetch_email_part(int uid, string section);
 };

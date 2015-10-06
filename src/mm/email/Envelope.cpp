@@ -145,16 +145,16 @@ Envelope::to() const
 void
 Envelope::dump()
 {
-    cout << "Date: "; env_date.dump();
-    cout << "Subject: "; env_subject.dump();
-    if (env_from)     { cout << "From: "; env_from->dump(); }
-    if (env_sender)   { cout << "Sender: "; env_sender->dump(); }
-    if (env_reply_to) { cout << "Reply to: "; env_reply_to->dump(); }
-    if (env_to)       { cout << "To: "; env_to->dump(); }
-    if (env_cc)       { cout << "CC:\n"; env_cc->dump(); }
-    if (env_bcc)      { cout << "\nBCC:\n"; env_bcc->dump(); }
-    cout << "\nenv_in_reply_to: "; env_in_reply_to.dump();
-    cout << "env_message_id: "; env_message_id.dump();
+    debug("Date: " + env_date.str());
+    debug("Subject: " + env_subject.str());
+    if (env_from)     { debug("From: ");    env_from->dump();     }
+    if (env_sender)   { debug("Sender: ");  env_sender->dump();   }
+    if (env_reply_to) { debug("Reply to:"); env_reply_to->dump(); }
+    if (env_to)       { debug("To: ");      env_to->dump();       }
+    if (env_cc)       { debug("CC:");       env_cc->dump();       }
+    if (env_bcc)      { debug("BCC:");      env_bcc->dump();      }
+    debug("env_in_reply_to: "); env_in_reply_to.str();
+    debug("env_message_id: ");  env_message_id.str();
 }
 
 istream&

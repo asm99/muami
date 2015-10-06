@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "../protocol/protocols.hpp"
+#include "../debug/debug.hpp"
 
 using namespace std;
 

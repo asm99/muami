@@ -106,13 +106,13 @@ Conf::protocol() const
 void
 Conf::dump() const
 {
-    cout << "--- Account ---\n"
-         << "in_server  : " << in_server()   << endl
-         << "in_port    : " << in_port()     << endl
-         << "smtp_server: " << smtp_server() << endl
-         << "smtp_port  : " << smtp_port()   << endl
-         << "from       : " << from()        << endl
-         << "user       : " << user()        << endl
-         << "pass       : " << pass()        << endl;
+    debug("--- Account ---");
+    debug("in_server  : " + in_server()  );
+    debug("in_port    : " + in_port()    );
+    debug("smtp_server: " + smtp_server());
+    debug("smtp_port  : " + smtp_port()  );
+    debug("from       : " + from()       );
+    debug("user       : " + user()       );
+    debug("pass       : " + pass()       );
 }
 

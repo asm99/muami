@@ -15,31 +15,31 @@ Mailbox::set_perm_flags(unsigned int n)
 }
 
 void
-Mailbox::set_exists(unsigned int n)
+Mailbox::set_exists(unsigned long n)
 {
     mb_exists = n;
 }
 
 void
-Mailbox::set_recent(unsigned int n)
+Mailbox::set_recent(unsigned long n)
 {
     mb_recent = n;
 }
 
 void
-Mailbox::set_unseen(unsigned int n)
+Mailbox::set_unseen(unsigned long n)
 {
     mb_unseen = n;
 }
 
 void
-Mailbox::set_uidvalidity(unsigned int n)
+Mailbox::set_uidvalidity(unsigned long n)
 {
     mb_uidvalidity = n;
 }
 
 void
-Mailbox::set_uidnext(unsigned int n)
+Mailbox::set_uidnext(unsigned long n)
 {
     mb_uidnext = n;
 }
@@ -76,31 +76,31 @@ Mailbox::perm_flags() const
     return mb_perm_flags;
 }
 
-unsigned int
+unsigned long
 Mailbox::exists() const
 {
     return mb_exists;
 }
 
-unsigned int
+unsigned long
 Mailbox::recent() const
 {
     return mb_recent;
 }
 
-unsigned int
+unsigned long
 Mailbox::unseen() const
 {
     return mb_unseen;
 }
 
-unsigned int
+unsigned long
 Mailbox::uidvalidity() const
 {
     return mb_uidvalidity;
 }
 
-unsigned int
+unsigned long
 Mailbox::uidnext() const
 {
     return mb_uidnext;
@@ -135,13 +135,13 @@ Mailbox::emails()
 void
 Mailbox::dump()
 {
-    cout << "flags      : " << flags() << "\n"
-         << "perm_flags : " << perm_flags() << "\n"
-         << "exists     : " << exists() << "\n"
-         << "recent     : " << recent() << "\n"
-         << "unseen     : " << unseen() << "\n"
-         << "uidvalidity: " << uidvalidity() << "\n"
-         << "uidnext    : " << uidnext() << "\n"
-         << "permissions: " << permissions() << endl;
+    debug("flags      : " + flags()       );
+    debug("perm_flags : " + perm_flags()  );
+    debug("exists     : " + exists()      );
+    debug("recent     : " + recent()      );
+    debug("unseen     : " + unseen()      );
+    debug("uidvalidity: " + uidvalidity() );
+    debug("uidnext    : " + uidnext()     );
+    debug("permissions: " + permissions() );
 }
 

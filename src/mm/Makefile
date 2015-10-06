@@ -9,6 +9,7 @@ SRCS = coding/base64.cpp \
 	   config/Config_manager.cpp \
 	   config/Account.cpp \
 	   crypto/md5.cpp \
+	   debug/debug.cpp \
 	   email/Address.cpp \
 	   email/Addresses.cpp \
 	   email/Email.cpp \

@@ -21,11 +21,11 @@ class Mailbox
     private:
         unsigned int mb_flags;
         unsigned int mb_perm_flags;
-        unsigned int mb_exists;
-        unsigned int mb_recent;
-        unsigned int mb_unseen;
-        unsigned int mb_uidvalidity;
-        unsigned int mb_uidnext;
+        unsigned long mb_exists;
+        unsigned long mb_recent;
+        unsigned long mb_unseen;
+        unsigned long mb_uidvalidity;
+        unsigned long mb_uidnext;
         int mb_permissions;
 
         string mb_attributes;
@@ -40,11 +40,11 @@ class Mailbox
         // Setters
         void set_flags(unsigned int n);
         void set_perm_flags(unsigned int n);
-        void set_exists(unsigned int n);
-        void set_recent(unsigned int n);
-        void set_unseen(unsigned int n);
-        void set_uidvalidity(unsigned int n);
-        void set_uidnext(unsigned int n);
+        void set_exists(unsigned long n);
+        void set_recent(unsigned long n);
+        void set_unseen(unsigned long n);
+        void set_uidvalidity(unsigned long n);
+        void set_uidnext(unsigned long n);
         void set_permissions(int n);
 
         void set_attributes(const string& s);
@@ -53,11 +53,11 @@ class Mailbox
         // Getters
         unsigned int flags() const;
         unsigned int perm_flags() const;
-        unsigned int exists() const;
-        unsigned int recent() const;
-        unsigned int unseen() const;
-        unsigned int uidvalidity() const;
-        unsigned int uidnext() const;
+        unsigned long exists() const;
+        unsigned long recent() const;
+        unsigned long unseen() const;
+        unsigned long uidvalidity() const;
+        unsigned long uidnext() const;
         int permissions() const;
 
         string attributes();

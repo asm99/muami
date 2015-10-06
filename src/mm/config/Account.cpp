@@ -61,7 +61,7 @@ Account::select_mbox(const string& nm)
     }
 
     cur_mbox_name = nm;
-    prtcl_mgr->select_mbox(nm);
+    prtcl_mgr->select_mbox(cur_mbox(), nm);
     return 1;
 }
 
@@ -75,9 +75,9 @@ Account::logout()
 int
 Account::fetch_emails_list(int number, int offset)
 {
-    prtcl_mgr->fetch_emails_list(
-            mboxes[cur_mbox_name]->emails(),
-            number, offset);
+    int start = mboxes[cur_mbox_name]->exists() - number - offset + 1;
+    int end = mboxes[cur_mbox_name]->exists() - offset;
+    prtcl_mgr->fetch_emails_list(mboxes[cur_mbox_name]->emails(), start, end);
     return 1;
 }
 
@@ -92,6 +92,6 @@ Account::dump() const
     /* Dump mailboxes names */
     map<string, Mailbox*>::const_iterator it;
     for (it = mboxes.begin(); it != mboxes.end(); ++it) {
-        cout << "mailbox: " << it->first << endl;
+        debug("mailbox: " + it->first);
     }
 }
