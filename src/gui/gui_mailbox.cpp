@@ -1,4 +1,4 @@
-#include "ui_mailbox.h"
+#include "ui_gui_mailbox.h"
 #include "src/gui/gui_mailbox.h"
 
 MailBox::MailBox(QWidget *parent) :
@@ -21,35 +21,22 @@ MailBox::MailBox(QWidget *parent) :
     ui->deleteFile->setVisible(false);
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->attachedFileList->setVisible(false);
-    ui->accountLabel1->setVisible(false);
-    ui->accountLabel2->setVisible(false);
 
     ui->displayer->setReadOnly(true);
     ui->displayer->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
     toggleFields(false) ;
     toggleButtons(false) ;
-    toggleNakedApp(false);
-
-    //accountRegistered();
+    turnAccountPanelOff();
 
     try {
             Config_manager* cm = new Config_manager();
-            Account* acc = cm->get_account_at_index(0); // first account
-
-            acc->connect();
-            acc->login();
-            acc->list_mboxes();
-            acc->select_mbox("INBOX");
-            acc->fetch_emails_list(10, 1);
-
-            cout << "nb of emails: " << acc->cur_mbox()->emails().size() << endl;
-
-            for (auto em : acc->cur_mbox()->emails()) {
-                em->dump();
-            }
-
-            acc->logout();
+            currentAccount = 0;
+            accountConnector(cm, currentAccount);
+            /** Repasser cm en globale lorsque la commande NOOP sera implémentée
+             * ça permet de maintenir les sockets, ne nécessitant plus la
+             * création de cm à la demande
+             */
         }
         catch (const exception& e) {
             cerr << e.what() << endl;
@@ -58,10 +45,9 @@ MailBox::MailBox(QWidget *parent) :
     inboxButtonsStyle();
     groupBoxButtonStyle();
     listStyle();
-    checkbox = false ;
     loadAddressFile();
-
-    ui->inbox->setContextMenuPolicy(Qt::CustomContextMenu);
+    connectWidgets();
+    checkbox = false ;
     ui->mailList->setContextMenuPolicy(Qt::CustomContextMenu);
 
 }
@@ -73,7 +59,29 @@ MailBox::~MailBox()
     delete ui;
 }
 
-/** ++ Gestion des dossiers + leur contenu ++ **/
+/** ++ Display mails ++ **/
+void MailBox::accountConnector(Config_manager *cm, int accountIndex)
+{
+    Account* acc = cm->get_account_at_index(accountIndex);
+
+    acc->connect();
+    acc->login();
+    acc->list_mboxes();
+    acc->select_mbox("INBOX");
+    acc->fetch_emails_list(5, 1);
+
+    ui->mailList->clear();
+
+    cout << "nb of emails: " << acc->cur_mbox()->emails().size() << endl;
+
+    for (auto em : acc->cur_mbox()->emails()) {
+        em->dump();
+        displayMailSubject(em);
+    }
+
+    acc->logout();
+}
+
 void MailBox::displayMailSubject(Email *mail)
 {
     ui->actionTransf_rer->setVisible(false);
@@ -95,100 +103,23 @@ void MailBox::displayMailSubject(Email *mail)
 
 void MailBox::showMailContent(QListWidgetItem* mail)
 {
+    ui->displayer->setReadOnly(true);
     ui->actionTransf_rer->setVisible(true);
     ui->actionR_pondre->setVisible(true);
     ui->actionIsoler->setVisible(false);
     toggleAccountPanel(false);
+    toggleFields(false) ;
+    toggleButtons(true) ;
+    ui->cancelButton->setVisible(false);
+    ui->sendButton->setVisible(false);
+    ui->actionEnvoyer->setVisible(false);
+    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
 
     int id = mail->whatsThis().toInt();
 
     /** Boucle pour chercher l'id du mail dans le vecteur et afficher
      * son contenu
      */
-
-/*    QString letter = mail->whatsThis() ;
-    QFile email(letter) ;
-    if (!email.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        return;
-    }
-    QTextStream in(&email);
-    QString doc = in.readAll() ;
-    ui->displayer->setText(doc);
-    ui->displayer->setReadOnly(true);
-    ui->deleteButton->setVisible(true);
-    ui->actionSupprimer->setVisible(true);
-    toggleFields(false) ;
-    toggleButtons(true) ;
-    ui->sendButton->setVisible(false);
-    ui->actionEnvoyer->setVisible(false);
-    ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
-    ui->cancelButton->setVisible(false);
-    ui->groupInbox->setVisible(false);
-    */
-
-}
-
-void MailBox::addChildren(QTreeWidgetItem *item, QString filePath)
-{
-    QDir* rootDir = new QDir(filePath);
-    QFileInfoList filesList = rootDir->entryInfoList();
-
-    foreach(QFileInfo fileInfo, filesList)
-    {
-        if(fileInfo.isDir())
-        {
-            QTreeWidgetItem* child = new QTreeWidgetItem(item);
-            child->setText(0,fileInfo.fileName());
-            child->setWhatsThis(0, fileInfo.filePath());
-        }
-    }
-}
-
-void MailBox::showFolderMenu(const QPoint &pos)
-{/*
-    QPoint globalPos = ui->inbox->mapToGlobal(pos);
-    QMenu myMenu;
-    myMenu.addAction("Créer un dossier");
-    myMenu.addAction("Supprimer le dossier");
-    myMenu.addSeparator();
-    myMenu.addAction("Ajouter un compte",
-                     this,
-                     SLOT(on_actionAdd_triggered()));
-    myMenu.addAction("Supprimer le compte",
-                     this,
-                     SLOT(delAccount()));
-
-    QAction *selectedItem = myMenu.exec(globalPos);*/
-}
-
-void MailBox::showFolderContent(QListWidgetItem* item)
-{
-    ui->mailList->clear();
-    ui->actionTransf_rer->setVisible(false);
-    ui->actionR_pondre->setVisible(false);
-    ui->actionIsoler->setVisible(false);
-    ui->actionSupprimer->setVisible(false);
-    ui->mailField->setVisible(true);
-
-    QString str = item->whatsThis() ;
-    QDir *path = new QDir(str) ;
-    QFileInfoList filesList = path->entryInfoList();
-    filesList.removeFirst();    // Vire le .
-    filesList.removeFirst();    // et .. des listes A RETIRER PLUS TARD !!!!!!!
-    foreach(QFileInfo fileInfo, filesList)
-    {
-        if (!fileInfo.isDir())
-        {
-            QString date = fileInfo.fileName() ;
-            date.append("\nSubject\n") ;
-            date.append(fileInfo.created().toString()) ;
-            QListWidgetItem *item = new QListWidgetItem(ui->mailList);
-            item->setWhatsThis(fileInfo.filePath());
-            item->setText(date);
-            ui->mailList->addItem(item);
-        }
-    }
 }
 
 void MailBox::showMailMenu(const QPoint &pos)
@@ -207,10 +138,10 @@ void MailBox::showMailMenu(const QPoint &pos)
         QAction *selectedItem = myMenu.exec(globalPos);
 }
 
-/** ~~ Gestion des dossiers + leur contenu ~~ **/
+/** ~~ Display mails ~~ **/
 
 
-/** ++ Créer un courrier ++ **/
+/** ++ Create a new mail ++ **/
 void MailBox::on_newButton_clicked()
 {
     on_actionNouveau_courrier_triggered();
@@ -223,10 +154,10 @@ void MailBox::on_actionNouveau_courrier_triggered()
     new_mail->getAddressesListFromMailBox(addressesBook);
     toggleFields(false) ;
 }
-/** ~~ Créer un courrier ~~ **/
+/** ~~ Create a new mail ~~ **/
 
 
-/** ++ Supprimer le courrier ++ **/
+/** ++ Delete mails ++ **/
 void MailBox::on_deleteButton_clicked()
 {
     on_actionSupprimer_triggered();
@@ -281,8 +212,8 @@ void MailBox::on_actionSupprimer_triggered()
     }
 }
 
-void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
-{                                // LA FONCTION A ETE IMPLEMENTE
+void MailBox::deleteItem()
+{
     int x = 0 ;
     while(x < ui->mailList->count())
     {
@@ -302,10 +233,10 @@ void MailBox::deleteItem()       // ENVOI A LA CORBEILLE, VOIR AVEC MM SI
     ui->mailField->clear();
     checkbox = false;
 }
-/** ~~ Supprimer le courrier ~~ **/
+/** ~~ Delete mails ~~ **/
 
 
-/** ++ Annulation ++ **/
+/** ++ Cancel operation ++ **/
 void MailBox::on_cancelButton_clicked()
 {
     QString str = "Voulez-vous annuler les modifications ?" ;
@@ -319,15 +250,14 @@ void MailBox::on_actionCancel_confirmed_triggered()
     ui->mailList->setVisible(true);
     ui->mailField->setVisible(true);
     ui->attachedFileList->setVisible(false);
-    //ui->attachedLabel->setVisible(false);
     ui->deleteFile->setVisible(false);
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
 }
-/** ~~ Annulation ~~ **/
+/** ~~ Cancel operation ~~ **/
 
 
-/** ++ Répondre ++ **/
+/** ++ Reply ++ **/
 void MailBox::on_repButton_clicked()
 {
     on_actionR_pondre_triggered();
@@ -399,10 +329,10 @@ void MailBox::on_actionTransf_rer_triggered()
         openedMailButtons() ;
     }
 }
-/** ~~ Répondre ~~ **/
+/** ~~ Reply ~~ **/
 
 
-/** ++ Isoler ++ **/
+/** ++ Isolate ++ **/
 void MailBox::on_mailList_itemDoubleClicked()
 {
     on_actionIsoler_triggered();
@@ -452,7 +382,6 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     showMailContent(ui->mailList->currentItem()) ;
     ui->attachedFileList->clear();
     ui->attachedFileList->setVisible(false);
-    //ui->attachedLabel->setVisible(false);
     ui->deleteFile->setVisible(false);
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->mailList->setVisible(true);
@@ -460,22 +389,9 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     ui->mailList->resize(resizer/2, ui->mailList->height());
     ui->displayer->resize(resizer/2, ui->displayer->height());
 }
-/** ~~ Isoler ~~ **/
+/** ~~ Isolate ~~ **/
 
-/*
-void MailBox::mousePressEvent(QMouseEvent *e)
-{
-    clickPos = e->pos();
-}
-
-void MailBox::mouseMoveEvent(QMouseEvent *e)
-{
-    move(e->globalPos() - clickPos);
-}
-*/
-
-
-/** ++ Recherche & info ++ **/
+/** ++ Mail finder ++ **/
 void MailBox::findMail(QString toFind)
 {
     QRegExp finder(".*"+toFind+".*") ;
@@ -496,10 +412,10 @@ void MailBox::findMail(QString toFind)
         }
     }
 }
-/** ~~ Recherche & info ~~ **/
+/** ~~ Mail finder ~~ **/
 
 
-/** ++ Quitter l'appli ++ **/
+/** ++ Quit ++ **/
 void MailBox::on_actionQuitter_triggered()
 {
     QString str = "Voulez-vous quitter l'application ?" ;
@@ -511,179 +427,48 @@ void MailBox::get_actionQuitter_triggered()
 {
     qApp->quit();
 }
-/** ~~ Quitter l'appli ~~ **/
+/** ~~ Quit ~~ **/
 
 
-/** ++ Présence de comptes ++ **/
-void MailBox::accountRegistered()
+/** ++ Accounts navigator ++ **/
+void MailBox::previousAccount()
 {
-    bool x = false ;
+    Config_manager* cm = new Config_manager();
+    int cm_size = cm->get_accounts_count();
 
-    QString path = QDir::homePath();
-    path.append("/.config/muami/accounts/");
-
-    QDir *accountsPath = new QDir(path);
-    QFileInfoList fileList = accountsPath->entryInfoList();
-
-    foreach(QFileInfo fileInfo, fileList)
+    if (currentAccount - 1 < 0)
     {
-        QFile file(fileInfo.absoluteFilePath());
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            continue;
-        }
-        QTextStream in(&file);
-        QStringList accountInfo ;
-        QString line = in.readLine();
-        while(!line.isNull())
-        {
-            accountInfo.append(line);
-            line = in.readLine();
-        }
-        accountList.append(accountInfo);
-
-        ui->inbox->clear();
-        ui->inbox->setWhatsThis(accountInfo.at(0));
-        QDir *path = new QDir(accountInfo.at(1));
-        QFileInfoList filesList = path->entryInfoList();
-
-        foreach(QFileInfo fileInfo, filesList)
-        {
-            if (fileInfo.isDir())
-            {
-                QListWidgetItem *item = new QListWidgetItem(ui->inbox);
-                item->setText(fileInfo.fileName());
-                item->setWhatsThis(fileInfo.filePath());
-                item->setSizeHint(QSize(item->sizeHint().width(), 30));
-            }
-        }
-        ui->accountLabel1->setVisible(false);
-        ui->accountLabel2->setVisible(false);
-        ui->accountLabel1->clear();
-        ui->accountLabel2->clear();
-        x = true ;
-    }
-
-    if(x)
-    {
-        toggleNakedApp(false) ;
+        currentAccount = cm_size - 1;
     }
     else
     {
-        ui->actionNouveau_courrier->setVisible(false);
-        ui->actionSupprimer_le_compte->setVisible(false);
-        toggleNakedApp(true) ;
-
-        path = QDir::homePath();
-        path.append("/.config");
-        QDir *muamiPath = new QDir(path);
-        bool y = false ;
-        fileList = muamiPath->entryInfoList();
-        foreach(QFileInfo fileInfo, fileList)
-        {
-            if(fileInfo.isDir() && fileInfo.fileName() == "muami")
-            {
-                y = true;
-                break;
-            }
-        }
-        if(!y)
-        {
-            muamiPath->mkdir("muami");
-        }
-
-        path.append("/muami");
-        accountsPath = new QDir(path);
-        fileList = accountsPath->entryInfoList();
-        y = false ;
-        foreach(QFileInfo fileInfo, fileList)
-        {
-            if(fileInfo.isDir() && fileInfo.fileName() == "accounts")
-            {
-                y = true;
-                break;
-            }
-        }
-        if(!y)
-        {
-            accountsPath->mkdir("accounts");
-        }
+        currentAccount -= 1;
     }
-}
 
-void MailBox::previousAccount()
-{
-    QString currentAccount = ui->inbox->whatsThis();
-    for(int x = 0; x < accountList.count(); x++)
-    {
-        QString tabName = accountList.at(x).at(0);
-        if(tabName == currentAccount)
-        {
-            if(x-1 < 0)
-            {
-                QString tabName = accountList.last().at(0);
-                QString accountName = accountList.last().at(1);
-                showAccount(tabName, accountName);
-            }
-            else
-            {
-                QString tabName = accountList.at(x-1).at(0);
-                QString accountName = accountList.at(x-1).at(1);
-                showAccount(tabName, accountName);
-            }
-            break;
-        }
-    }
+    accountConnector(cm, currentAccount);
 }
 
 void MailBox::nextAccount()
 {
-    QString currentAccount = ui->inbox->whatsThis();
-    for(int x = 0; x < accountList.count(); x++)
+    Config_manager* cm = new Config_manager();
+    int cm_size = cm->get_accounts_count();
+
+    if (currentAccount + 1 == cm_size)
     {
-        QString tabName = accountList.at(x).at(0);
-        if(tabName == currentAccount)
-        {
-            if(x+1 == accountList.count())
-            {
-                QString tabName = accountList.first().at(0);
-                QString accountName = accountList.first().at(1);
-                showAccount(tabName, accountName);
-            }
-            else
-            {
-                QString tabName = accountList.at(x+1).at(0);
-                QString accountName = accountList.at(x+1).at(1);
-                showAccount(tabName, accountName);
-            }
-            break;
-        }
+        currentAccount = 0;
     }
+    else
+    {
+        currentAccount += 1;
+    }
+
+    accountConnector(cm, currentAccount);
 }
 
-void MailBox::showAccount(QString tabName, QString accountName)
-{
-    ui->inbox->clear();
-    ui->inbox->setWhatsThis(tabName);
-    QDir *path = new QDir(accountName);
-
-    QFileInfoList filesList = path->entryInfoList();
-
-    foreach(QFileInfo fileInfo, filesList)
-    {
-        if (fileInfo.isDir())
-        {
-            QListWidgetItem *item = new QListWidgetItem(ui->inbox);
-            item->setText(fileInfo.fileName());
-            item->setWhatsThis(fileInfo.filePath());
-            item->setSizeHint(QSize(item->sizeHint().width(), 30));
-        }
-    }
-}
-/** ~~ Présence de comptes ~~ **/
+/** ~~ Accounts navigator ~~ **/
 
 
-/** ++ Ajout de comptes ++ **/
+/** ++ Add account ++ **/
 void MailBox::on_addAccount_clicked()
 {
     on_actionAdd_triggered();
@@ -691,103 +476,57 @@ void MailBox::on_addAccount_clicked()
 
 void MailBox::on_actionAdd_triggered()
 {
-    if (!ui->accountLabel1->isVisible())
+    if (!ui->imapServer->isVisible())
     {
-        ui->accountLabel1->setVisible(true);
-        ui->accountLabel2->setVisible(true);
-
-        if (!accountList.length() == 0)
-        {
-            ui->accountLabel1->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-            ui->accountLabel2->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-            ui->accountLabel1->setMaximumWidth(200);
-            ui->accountLabel2->setMaximumWidth(200);
-            toggleAccountPanel(true);
-        }
-
-        else if(accountList.length() == 0)
-        {
-            ui->accountLabel1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            ui->accountLabel2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            ui->accountLabel1->setMaximumWidth(9999999);
-            ui->accountLabel2->setMaximumWidth(9999999);
-        }
+        toggleAccountPanel(true);
     }
     else
     {
-        ui->accountLabel1->setVisible(false);
-        ui->accountLabel2->setVisible(false);
+        toggleAccountPanel(false);
     }
 }
 
-void MailBox::addNewAccount() // MODIFIER LE POPUP POUR AJOUTER LES CHAMPS NECESSAIRES
-{                               // A LA PRISE EN CHARGE D'UN NOUVEAU COMPTE
-    QString tabName = ui->accountLabel1->text();
-    QString accountName = ui->accountLabel2->text();
+void MailBox::addNewAccount()
+{/*
+    Account* new_account = new Account();
+    new_account->set_id(ui->id->text().toStdString());
+    new_account->set_imap(ui->imapServer->text().toStdString());
+    new_account->set_iport(ui->imapPort->text().toStdString());
+    new_account->set_smtp(ui->smtpServer->text().toStdString());
+    new_account->set_sport(ui->smtpPort->text().toStdString());
+    new_account->set_from(ui->name->text().toStdString());
+    new_account->set_user(ui->mailAccount->text().toStdString());
+    new_account->set_pass(ui->password->text().toStdString());
     QString issues ;
-    if (accountName.length() == 0) issues.append("- Il manque le nom du compte\n");
-    if (tabName.length() == 0) issues.append("- Il manque le path du compte");
+    if (ui->id->text() == "")
+        issues.append("- Il manque l'ID\n");
+    if (ui->imapServer->text() == "")
+        issues.append("- Il manque le serveur IMAP\n");
+    if (ui->imapPort->text() == "")
+        issues.append("- Il manque le port IMAP\n");
+    if (ui->smtpServer->text() == "")
+        issues.append("- Il manque le serveur SMTP\n");
+    if (ui->smtpPort->text() == "")
+        issues.append("- Il manque le port SMTP\n");
+    if (ui->name->text() == "")
+        issues.append("- Il manque le nom d'expéditeur\n");
+    if (ui->mailAccount->text() == "")
+        issues.append("- Il manque l'adresse mail\n");
+    if (ui->password->text() == "")
+        issues.append("- Il manque le mot de passe");
     if (issues.length() != 0)
     {
         HandleIssues *box = new HandleIssues(this, issues, "account");
         box->show();
-        return;
     }
-
-    toggleNakedApp(false);
-
-    QStringList account ;
-    account.append(ui->accountLabel1->text());
-    account.append(ui->accountLabel2->text());
-
-    accountList.append(account);
-
-    QString accountFilesPath = QDir::homePath();
-    accountFilesPath.append("/.config/muami/accounts");
-    QDir *accountFilesList = new QDir(accountFilesPath);
-    QFileInfoList accountFiles = accountFilesList->entryInfoList();
-    int x = 0;
-    foreach(QFileInfo fileInfo, accountFiles)
+    else
     {
-        if(fileInfo.fileName() == account.at(1))
-        {
-            return;
-        }
-        x++ ;
-    }
-    accountFilesPath.append("/account_"+QString::number(x)); // A MODIFIER POUR EMPECHER LES DOUBLONS
-    QFile newAccountFile(accountFilesPath);
-    if(newAccountFile.open(QIODevice::ReadWrite))
-    {
-        QTextStream stream(&newAccountFile);
-        stream << account.at(0)
-               << "\n"
-               << account.at(1);
-        newAccountFile.close();
-    }
+        /** envoyer l'objet Account* à une fonction de MM **/
+    //}
 
-    ui->inbox->clear();
-    ui->inbox->setWhatsThis(ui->accountLabel1->text());
-    QDir *path = new QDir(ui->accountLabel2->text());
-
-    QFileInfoList filesList = path->entryInfoList();
-
-    foreach(QFileInfo fileInfo, filesList)
-    {
-        if (fileInfo.isDir())
-        {
-            QListWidgetItem *item = new QListWidgetItem(ui->inbox);
-            item->setText(fileInfo.fileName());
-            item->setWhatsThis(fileInfo.filePath());
-            item->setSizeHint(QSize(item->sizeHint().width(), 30));
-        }
-    }
-    ui->accountLabel1->setVisible(false);
-    ui->accountLabel2->setVisible(false);
-    ui->accountLabel1->clear();
-    ui->accountLabel2->clear();
+    //toggleNakedApp(false);
 }
-/** ~~ Ajout de comptes ~~ **/
+/** ~~ Add account ~~ **/
 
 
 /** ++ Suppression de comptes ++ **/
@@ -805,29 +544,7 @@ void MailBox::delAccount()
 
 void MailBox::delAccountTriggered()
 {
-    QString currentAccount = ui->inbox->whatsThis();
-    for(int x = 0; x < accountList.count(); x++)
-    {
-        QString tabName = accountList.at(x).at(0);
-        if(tabName == currentAccount)
-        {
-            accountList.removeAt(x);
-            break;
-        }
-    }
 
-    toggleFields(false);
-    toggleButtons(false);
-    ui->mailList->clear();
-    ui->displayer->clear() ;
-
-    if(accountList.count() != 0)
-    {
-        QString tabName = accountList.first().at(0);
-        QString accountName = accountList.first().at(1);
-        showAccount(tabName, accountName);
-    }
-    else accountRegistered();
 }
 /** ~~ Suppression de comptes ~~ **/
 
@@ -1123,7 +840,6 @@ void MailBox::toggleButtons(bool n)
     ui->actionR_pondre_tous->setVisible(n);
     ui->transferButton->setVisible(n);
     ui->actionTransf_rer->setVisible(n);
-    ui->deleteButton->setVisible(n);
     ui->actionSupprimer->setVisible(n);
     ui->sendButton->setVisible(n);
     ui->actionEnvoyer->setVisible(n);
@@ -1145,78 +861,41 @@ void MailBox::openedMailButtons()
     ui->addressBook_2->setVisible(true);
 }
 
-void MailBox::toggleNakedApp(bool n)
-{
-    if (n)
-    {
-        ui->emptyLabel->setVisible(n);
-        ui->emptyLabel->setStyleSheet("background-color:#6b767a;\
-                                        color:#FFFFFF;\
-                                        border-width:1px solid gray;");
-        ui->emptyLabel->setWordWrap(true);
-        ui->emptyLabel->resize(this->width()/3, this->height());
-
-        ui->emptyLabel_2->setVisible(n);
-        ui->emptyLabel_2->setStyleSheet("background-color:#6b767a;\
-                                        color:#FFFFFF;\
-                                        border:1px solid gray;");
-        ui->emptyLabel_2->resize(this->width()/3, this->height());
-        ui->emptyLabel_2->setWordWrap(true);
-
-        ui->emptyLabel_3->setVisible(n);
-        ui->emptyLabel_3->setStyleSheet("background-color:#6b767a;\
-                                        color:#FFFFFF;\
-                                        border:1px solid gray;");
-        ui->emptyLabel_3->resize(ui->emptyLabel_2->width(), this->height());
-        ui->emptyLabel_3->setWordWrap(true);
-
-
-        ui->displayer->setVisible(!n);
-        ui->mailList->setVisible(!n);
-        ui->mailField->setVisible(!n);
-        ui->attachedFileList->setVisible(!n);
-        toggleAccountPanel(false);
-        ui->addAccount->setVisible(true);
-        ui->groupInbox->setVisible(true);
-        ui->groupBox->setVisible(false);
-        ui->groupInbox->setMaximumWidth(999999);
-
-        QString account = "Aucun compte de messagerie n'est actuellement associé\
- à l'application.\n\nPour associer un compte de messagerie à l'application et\
- vous permettre de traiter votre courrier électronique, cliquez sur \
-\"+\"";
-        ui->emptyLabel_3->setText(account);
-
-        QString contentDisplayer = "Ce volet affiche le contenu du dossier \
-sélectionné dans le volet \"Boite\" sous forme d'une liste.\n\nPour afficher du\
- courrier, associez un compte de messagerie à l'application";
-        ui->emptyLabel->setText(contentDisplayer);
-
-        QString bodyDisplayer = "Cette partie affiche le contenu du courrier \
-sélectionné dans la liste des courriers du volet à gauche";
-        ui->emptyLabel_2->setText(bodyDisplayer);
-    }
-    else
-    {
-        ui->emptyLabel->setVisible(n);
-        ui->emptyLabel_2->setVisible(n);
-        ui->emptyLabel_3->setVisible(n);
-        ui->groupBox->setVisible(!n);
-        ui->mailList->setVisible(!n);
-        ui->displayer->setVisible(!n);
-        toggleAccountPanel(true);
-        ui->groupInbox->setMaximumWidth(200);
-    }
-}
-
 void MailBox::toggleAccountPanel(bool n)
 {
-    ui->inbox->setVisible(n);
-    ui->previousAccount->setVisible(n);
-    ui->nextAccount->setVisible(n);
-    ui->addAccount->setVisible(n);
-    ui->delAccount->setVisible(n);
-    ui->groupInbox->setVisible(n);
+    //Hide
+    ui->imapServer->setVisible(n);
+    ui->imapPort->setVisible(n);
+    ui->smtpServer->setVisible(n);
+    ui->smtpPort->setVisible(n);
+    ui->name->setVisible(n);
+    ui->mailAccount->setVisible(n);
+    ui->password->setVisible(n);
+    ui->protocolField->setVisible(n);
+    ui->submitAccount->setVisible(n);
+    ui->cancelAccount->setVisible(n);
+
+    //Display
+    ui->previousAccount->setVisible(!n);
+    ui->nextAccount->setVisible(!n);
+    ui->refreshButton->setVisible(!n);
+    ui->addAccount->setVisible(!n);
+    ui->delAccount->setVisible(!n);
+
+    //Clear fields
+    ui->imapServer->clear();
+    ui->imapPort->clear();
+    ui->smtpServer->clear();
+    ui->smtpPort->clear();
+    ui->name->clear();
+    ui->mailAccount->clear();
+    ui->password->clear();
+    ui->protocolField->clear();
+}
+
+void MailBox::turnAccountPanelOff()
+{
+    toggleAccountPanel(false);
 }
 
 void MailBox::inboxButtonsStyle()
@@ -1225,7 +904,10 @@ void MailBox::inboxButtonsStyle()
     inboxButtons << ui->previousAccount
                  << ui->addAccount
                  << ui->delAccount
-                 << ui->nextAccount;
+                 << ui->nextAccount
+                 << ui->refreshButton
+                 << ui->submitAccount
+                 << ui->cancelAccount ;
     foreach(QPushButton *button, inboxButtons)
     {
         button->setStyleSheet("border:0px; "
@@ -1246,8 +928,7 @@ void MailBox::inboxButtonsStyle()
 void MailBox::groupBoxButtonStyle()
 {
     QList<QPushButton*> groupBoxButtons ;
-    groupBoxButtons << ui->inboxButton
-                    << ui->newButton
+    groupBoxButtons << ui->newButton
                     << ui->isolateButton
                     << ui->cancelButton
                     << ui->deleteButton
@@ -1280,10 +961,6 @@ void MailBox::groupBoxButtonStyle()
 
 void MailBox::listStyle()
 {
-    ui->inbox->setStyleSheet("background-color:#252b2b;"
-                             "color:#9fabaa;"
-                             "border:0px;");
-
     ui->displayer->setStyleSheet("background-color: #FFFFFF;\
                                   border:0px;\
                                   border-left:1px solid qlineargradient"
@@ -1312,31 +989,10 @@ void MailBox::listStyle()
     ui->to->setStyleSheet(style);
 }
 
-void MailBox::on_inboxButton_clicked()
-{
-    if (ui->inbox->isVisible())
-    {
-        toggleAccountPanel(false);
-        ui->groupInbox->setVisible(false);
-    }
-    else
-    {
-        ui->groupInbox->setVisible(true);
-        toggleAccountPanel(true);
-    }
-}
 /** ~~ Gestion de l'affichage ~~ **/
 
 void MailBox::connectWidgets()
 {
-    connect(ui->inbox,
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(showFolderMenu(const QPoint &)));
-
-    connect(ui->inbox,
-            SIGNAL(itemClicked(QListWidgetItem*)),
-            SLOT(showFolderContent(QListWidgetItem*)));
-
     connect(ui->delAccount,
             SIGNAL(clicked()),
             SLOT(delAccount()));
@@ -1373,4 +1029,8 @@ void MailBox::connectWidgets()
     connect(ui->addressBook_2,
             SIGNAL(clicked()),
             SLOT(showAddressBook()));
+
+    connect(ui->cancelAccount,
+            SIGNAL(clicked()),
+            SLOT(turnAccountPanelOff()));
 }

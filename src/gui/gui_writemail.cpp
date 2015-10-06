@@ -1,4 +1,4 @@
-#include "ui_writemail.h"
+#include "ui_gui_writemail.h"
 #include "src/gui/gui_writemail.h"
 #include "src/gui/gui_addressbook.h"
 #include "src/gui/gui_handleissues.h"

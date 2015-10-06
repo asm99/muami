@@ -1,4 +1,4 @@
-#include "ui_attachfilewindow.h"
+#include "ui_gui_attachfilewindow.h"
 #include "src/gui/gui_attachfilewindow.h"
 #include "src/gui/gui_writemail.h"
 #include "src/gui/gui_handleissues.h"

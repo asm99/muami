@@ -1,7 +1,7 @@
 #include "src/gui/gui_addressbook.h"
 #include "src/gui/gui_handleissues.h"
 #include "src/gui/gui_writemail.h"
-#include "ui_addressbook.h"
+#include "ui_gui_addressbook.h"
 
 AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     QMainWindow(parent),
@@ -28,52 +28,8 @@ AddressBook::AddressBook(QWidget *parent, QString addressBook) :
     modified = false ;
 
     loadAddressFile(addressBookPath);
+    connectWidgets();
 
-    connect(ui->addToListButton,
-            SIGNAL(clicked()),
-            SLOT(addAddressToBook()));
-
-    connect(ui->addressField,
-            SIGNAL(returnPressed()),
-            SLOT(addAddressToBook()));
-
-    connect(ui->addressField,
-            SIGNAL(textChanged(QString)),
-            SLOT(findAddress(QString)));
-
-    connect(ui->addressesTree,
-            SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            SLOT(modificationAdded(QTreeWidgetItem*, int)));
-
-    connect(ui->addToMailButton,
-            SIGNAL(clicked()),
-            SLOT(clickToAdd()));
-
-    connect(this,
-            SIGNAL(addToMail(QString)),
-            this->parentWidget(),
-            SLOT(addToAddressField(QString)));
-
-    connect(ui->deleteButton,
-            SIGNAL(clicked()),
-            SLOT(deleteAddress()));
-
-    connect(ui->closeButton,
-            SIGNAL(clicked()),
-            SLOT(checkBeforeClose()));
-
-    connect(ui->addressesTree,
-            SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-            SLOT(forceAddAddress(QTreeWidgetItem*, int)));
-
-    connect(this,
-            SIGNAL(sendAddressesList(QStringList)),
-            this->parentWidget(),
-            SLOT(getAddressesListFromBook(QStringList)));
-
-    connect(ui->saveButton,
-            SIGNAL(clicked()),
-            SLOT(saveModification()));
 }
 
 AddressBook::~AddressBook()
@@ -357,4 +313,53 @@ void AddressBook::saveModification()
 void AddressBook::modificationAdded(QTreeWidgetItem* item,int n)
 {
     modified = true ;
+}
+
+void AddressBook::connectWidgets()
+{
+    connect(ui->addToListButton,
+            SIGNAL(clicked()),
+            SLOT(addAddressToBook()));
+
+    connect(ui->addressField,
+            SIGNAL(returnPressed()),
+            SLOT(addAddressToBook()));
+
+    connect(ui->addressField,
+            SIGNAL(textChanged(QString)),
+            SLOT(findAddress(QString)));
+
+    connect(ui->addressesTree,
+            SIGNAL(itemChanged(QTreeWidgetItem*,int)),
+            SLOT(modificationAdded(QTreeWidgetItem*, int)));
+
+    connect(ui->addToMailButton,
+            SIGNAL(clicked()),
+            SLOT(clickToAdd()));
+
+    connect(this,
+            SIGNAL(addToMail(QString)),
+            this->parentWidget(),
+            SLOT(addToAddressField(QString)));
+
+    connect(ui->deleteButton,
+            SIGNAL(clicked()),
+            SLOT(deleteAddress()));
+
+    connect(ui->closeButton,
+            SIGNAL(clicked()),
+            SLOT(checkBeforeClose()));
+
+    connect(ui->addressesTree,
+            SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
+            SLOT(forceAddAddress(QTreeWidgetItem*, int)));
+
+    connect(this,
+            SIGNAL(sendAddressesList(QStringList)),
+            this->parentWidget(),
+            SLOT(getAddressesListFromBook(QStringList)));
+
+    connect(ui->saveButton,
+            SIGNAL(clicked()),
+            SLOT(saveModification()));
 }

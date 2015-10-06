@@ -27,7 +27,8 @@ public:
     QList<QStringList> accountList;
     QStringList addressesBook;
     vector<Email*> emails;
-    bool checkbox ;
+    int currentAccount;
+    bool checkbox;
 
 public slots:
     void getAddressesListFromBook(QStringList);
@@ -40,10 +41,8 @@ private slots:
     /** Recherche et info **/
 
     /** Gestion des dossiers + mails **/
+    void accountConnector(Config_manager*, int);
     void displayMailSubject(Email*);
-    void addChildren(QTreeWidgetItem *, QString);
-    void showFolderContent(QListWidgetItem*);
-    void showFolderMenu(const QPoint &pos);
     void showMailContent(QListWidgetItem*);
     void showMailMenu(const QPoint &pos);
     /** Gestion des dossiers + mails **/
@@ -85,10 +84,8 @@ private slots:
     /** Quitter l'appli **/
 
     /** Affichage des comptes **/
-    void accountRegistered();
     void previousAccount();
     void nextAccount();
-    void showAccount(QString, QString);
     /** Affichage des comptes **/
 
     /** Ajout de compte **/
@@ -125,15 +122,14 @@ private slots:
     /** Gestion du carnet d'adresses **/
 
     /** Gestion de l'affichage dynamique **/
-    void on_inboxButton_clicked();
     void toggleFields(bool);
     void toggleButtons(bool);
-    void toggleNakedApp(bool);
     void toggleAccountPanel(bool);
     void inboxButtonsStyle();
     void groupBoxButtonStyle();
     void listStyle();
     void openedMailButtons() ;
+    void turnAccountPanelOff();
     /** Gestion de l'affichage dynamique **/
 
     void connectWidgets();

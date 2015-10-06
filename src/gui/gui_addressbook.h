@@ -17,9 +17,9 @@ public:
     explicit AddressBook(QWidget *parent = 0, QString addressBook = "");
     ~AddressBook();
 
-    QStringList addresses ;
-    QString addressBookPath ;
-    bool modified ; // Used to check if some entries have been modified
+    QStringList addresses;
+    QString addressBookPath;
+    bool modified;  // Used to check if some entries have been modified
                     // to ask the user to save before closing the window
                     // or not
     void loadAddressFile(QString);
@@ -38,6 +38,7 @@ private slots:
     void saveModification();
     void modificationAdded(QTreeWidgetItem*,int);
     void checkBeforeClose();
+    void connectWidgets();
 
 private:
     Ui::AddressBook *ui;

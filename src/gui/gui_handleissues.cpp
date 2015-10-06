@@ -1,5 +1,5 @@
 #include "src/gui/gui_handleissues.h"
-#include "ui_handleissues.h"
+#include "ui_gui_handleissues.h"
 
 HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     QDialog(parent),
