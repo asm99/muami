@@ -183,7 +183,7 @@ Config_manager::save_config_file(Conf& cf)
         char tmp[nm.length()];
         memcpy(tmp, nm.c_str(), sizeof tmp);
         mkstemp(tmp);
-        debug("Creating account: " + tmp);
+        debug("Creating account: " + string(tmp));
         cf.set_fname(tmp);
     } else {
         filename = get_conf_dir_abs_path() + "/" + cf.fname();
