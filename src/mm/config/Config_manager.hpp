@@ -45,7 +45,6 @@ class Config_manager
         void add_account(Account* acc);
 
         // Account creation/modification
-        int save_config_file(Conf& cf);
 
     public:
         class Conf_Invalid {}; /* Exception */
@@ -53,6 +52,7 @@ class Config_manager
         Config_manager();
         ~Config_manager() {};
 
+        int save_config_file(Conf& cf);
         // Account creation/modification
         int setup_accout(string fname, string in_server, string in_port,
                          string smtp_server, string smtp_port,

@@ -179,8 +179,12 @@ Config_manager::save_config_file(Conf& cf)
     string filename;
 
     if (cf.fname().empty()) { // new account
-        char tmp[] = "/home/karma/.config/muami/accounts/account_XXXXXX";
+        string nm = get_conf_dir_abs_path() + "/" + "account_XXXXXX";
+        char tmp[nm.length()];
+        memcpy(tmp, nm.c_str(), sizeof tmp);
         mkstemp(tmp);
+        cout << tmp << endl;
+        exit(0);
         cf.set_fname(tmp);
     } else {
         filename = get_conf_dir_abs_path() + "/" + cf.fname();
@@ -262,6 +266,10 @@ int main()
     cout << "\nFirst account dump: " << endl;
     Account* acc = cm->get_account_at_index(0);
     acc->dump();
+
+    Conf cf {};
+    cf.set_protocol(PROTOCOL_IMAP);
+    cm->save_config_file(cf);
 
     return 0;
 }
