@@ -133,13 +133,16 @@ parse_mbox_permissions(const string& s)
     return PERMISSION_READ_ONLY;
 }
 
-} // unnamed namespace
+} /* namespace  */
 
 // * LIST (\HasNoChildren \Drafts) "." Drafts
 // * LIST (\HasNoChildren \Trash) "." Trash
 // * LIST (\HasNoChildren \Sent) "." Sent
 // * LIST (\HasNoChildren) "." INBOX
 // a OK List completed.
+/*
+ * FIXME: remove the '(' and ')' in the attributes
+ */
 void
 IMAP_parser::parse_list(map<string, Mailbox*>& mboxes, const string& s)
 {

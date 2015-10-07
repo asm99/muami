@@ -5,6 +5,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 using namespace std;
 
@@ -17,6 +20,6 @@ namespace util {
     vector<string> split_string(string src, const string& delim);
     void nullify_string(string& s);
 
-}; // util
+} /* namespace util */
 
 #endif /* end of include guard: UTIL_H */

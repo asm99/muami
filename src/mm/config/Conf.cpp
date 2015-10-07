@@ -1,6 +1,11 @@
 #include "Conf.hpp"
 
 // Setters
+void
+Conf::set_fname(const string& s)
+{
+    conf_fname = s;
+}
 
 void
 Conf::set_in_server(const string& s)
@@ -51,6 +56,11 @@ Conf::set_protocol(Email_Protocol ep)
 }
 
 // Getters
+string
+Conf::fname() const
+{
+	return conf_fname;
+}
 
 string
 Conf::in_server() const
@@ -107,6 +117,7 @@ void
 Conf::dump() const
 {
     debug("--- Account ---");
+    debug("fname      : " + fname()      );
     debug("in_server  : " + in_server()  );
     debug("in_port    : " + in_port()    );
     debug("smtp_server: " + smtp_server());

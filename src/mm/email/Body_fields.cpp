@@ -1,17 +1,5 @@
 #include "Body_fields.hpp"
 
-// Default constructor
-Body_fields::Body_fields()
-{
-
-}
-
-// Default destructor
-Body_fields::~Body_fields()
-{
-
-}
-
 // Setters
 void
 Body_fields::set_param(const string& name, const string& value)
@@ -38,7 +26,7 @@ Body_fields::set_enc(const Encoding enc)
 }
 
 void
-Body_fields::set_octets(const int octets)
+Body_fields::set_octets(const unsigned long octets)
 {
     body_fld_octets = octets;
 }
@@ -72,7 +60,7 @@ Body_fields::enc()
     return body_fld_enc;
 }
 
-int
+unsigned long
 Body_fields::octets()
 {
     return body_fld_octets;

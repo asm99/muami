@@ -14,35 +14,49 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include <unistd.h>
 #include <dirent.h>
-#include <sys/types.h>
-#include <pwd.h>
 #include <stdexcept>
 #include "Account.hpp"
 #include "Conf.hpp"
+#include "../utils/util.hpp"
 #include "../utils/error.hpp"
 
 using namespace std;
 
+enum ACCOUNT_SAVE_CODES {
+    ACCOUNT_SAVE_ERR_EMPTY_FIELD = 0,
+    ACCOUNT_SAVE_ERR_OPEN_FILE,
+    ACCOUNT_SAVE_ERR_WRITE_FILE,
+    ACCOUNT_SAVE_SUCCESS,
+};
+
 class Config_manager
 {
     private:
-        static const string Conf_dir_rel_path;
         vector<Account*> accounts;
 
+        static const string Conf_dir_rel_path;
         string get_conf_dir_abs_path();
         vector<string> list_conf_dir(const string& path);
         string read_conf_file(const string& path, const string& fname);
-        Conf get_conf_from_string(const string& s);
+        Conf get_conf_from_string(const string& s, const string& fname);
         Account* create_account_from_conf(const Conf& conf);
-        void load_accounts(vector<Account*>& accs);
+        void load_accounts();
+        void add_account(Account* acc);
+
+        // Account creation/modification
+        int save_config_file(Conf& cf);
 
     public:
         class Conf_Invalid {}; /* Exception */
 
         Config_manager();
         ~Config_manager() {};
+
+        // Account creation/modification
+        int setup_accout(string fname, string in_server, string in_port,
+                         string smtp_server, string smtp_port,
+                         string from, string user, string pass);
 
         unsigned int get_accounts_count() const;
         Account* get_account_at_index(unsigned int idx);

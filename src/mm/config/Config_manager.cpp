@@ -3,13 +3,6 @@
 /* Global configuration filename */
 const string Config_manager::Conf_dir_rel_path = ".config/muami/accounts";
 
-/* Constructor */
-Config_manager::Config_manager()
-    : accounts()
-{
-    load_accounts(accounts);
-}
-
 /* Get accounts config files absolute path (in user $HOME dir) */
 string
 Config_manager::get_conf_dir_abs_path()
@@ -17,6 +10,14 @@ Config_manager::get_conf_dir_abs_path()
     struct passwd *pw = getpwuid(getuid());
     const string homedir = pw->pw_dir;
     return homedir + "/" + Conf_dir_rel_path;
+}
+
+
+/* Constructor */
+Config_manager::Config_manager()
+    : accounts()
+{
+    load_accounts();
 }
 
 /* List the filenames in the config dir */
@@ -63,6 +64,7 @@ Config_manager::read_conf_file(const string& path, const string& filename)
 Account*
 Config_manager::create_account_from_conf(const Conf& conf)
 {
+    conf.dump();
     string in_server   = conf.in_server();
     string in_port     = conf.in_port();
     string smtp_server = conf.smtp_server();
@@ -90,13 +92,14 @@ Config_manager::create_account_from_conf(const Conf& conf)
 
 /* Load a Conf object from a configuration file content */
 Conf
-Config_manager::get_conf_from_string(const string& s)
+Config_manager::get_conf_from_string(const string& s, const string& fname)
 {
     stringstream iss(s);
     string line;
     string field, colon, tmp, val;
     stringstream ss;
     Conf conf {};
+    conf.set_fname(fname);
 
     while (getline(iss, line)) {
         val.clear();
@@ -131,17 +134,23 @@ Config_manager::get_conf_from_string(const string& s)
 
 /* Get all the accounts from the config dir */
 void
-Config_manager::load_accounts(vector<Account*>& accs)
+Config_manager::load_accounts()
 {
     string path = get_conf_dir_abs_path();
     vector<string> files = list_conf_dir(path);
 
     for (auto fname : files) {
         string content = read_conf_file(path, fname);
-        Conf cfg = get_conf_from_string(content);
+        Conf cfg = get_conf_from_string(content, fname);
         Account* acc = create_account_from_conf(cfg);
-        accs.push_back(acc);
+        add_account(acc);
     }
+}
+
+void
+Config_manager::add_account(Account* acc)
+{
+    accounts.push_back(acc);
 }
 
 /* Return the number of accounts */
@@ -162,6 +171,78 @@ Config_manager::get_account_at_index(unsigned int idx)
 
     return accounts[idx];
 }
+
+// Account creation/modification
+int
+Config_manager::save_config_file(Conf& cf)
+{
+    string filename;
+
+    if (cf.fname().empty()) { // new account
+        char tmp[] = "/home/karma/.config/muami/accounts/account_XXXXXX";
+        mkstemp(tmp);
+        cf.set_fname(tmp);
+    } else {
+        filename = get_conf_dir_abs_path() + "/" + cf.fname();
+    }
+
+    ofstream ofs(filename);
+    if (!ofs) {
+        cerr << "Error: cannot create file " << filename << endl;
+        return ACCOUNT_SAVE_ERR_OPEN_FILE;
+    }
+
+    ofs << "in_server   : " << cf.in_server()   << "\n"
+        << "in_port     : " << cf.in_port()     << "\n"
+        << "smtp_server : " << cf.smtp_server() << "\n"
+        << "smtp_port   : " << cf.smtp_port()   << "\n"
+        << "from        : " << cf.from()        << "\n"
+        << "user        : " << cf.user()        << "\n"
+        << "pass        : " << cf.pass()        << "\n"
+        << "protocol    : " << "IMAP"           << "\n";
+
+    if (ofs.bad() || ofs.fail()) {
+        return ACCOUNT_SAVE_ERR_WRITE_FILE;
+    }
+
+    Account *a = new Account(cf);
+    add_account(a);
+
+    return ACCOUNT_SAVE_SUCCESS;
+}
+
+// Account creation/modification
+int
+Config_manager::setup_accout(string fname,
+                             string in_server, string in_port,
+                             string smtp_server, string smtp_port,
+                             string from, string user, string pass)
+{
+    if (in_server.empty()
+        || in_port.empty()
+        || smtp_server.empty()
+        || smtp_port.empty()
+        || from.empty()
+        || user.empty()
+        || pass.empty())
+    {
+        return ACCOUNT_SAVE_ERR_EMPTY_FIELD;
+    }
+
+    Conf cf {};
+    cf.set_fname(fname);
+    cf.set_in_server(in_server);
+    cf.set_in_port(in_port);
+    cf.set_smtp_server(smtp_server);
+    cf.set_smtp_port(smtp_port);
+    cf.set_from(from);
+    cf.set_user(user);
+    cf.set_pass(pass);
+    cf.set_protocol(PROTOCOL_IMAP);
+
+    return save_config_file(cf);
+}
+
 
 void
 Config_manager::dump_accounts() const

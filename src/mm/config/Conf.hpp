@@ -10,6 +10,7 @@ using namespace std;
 class Conf
 {
     private:
+        string conf_fname;             // config filename
         string conf_in_server;         // IMAP server address
         string conf_in_port;           // IMAPS port
         string conf_smtp_server;       // SMTP server address
@@ -24,6 +25,7 @@ class Conf
         ~Conf() {};
 
         // Setters
+        void set_fname(const string& s);
         void set_in_server(const string& s);
         void set_in_port(const string& s);
         void set_smtp_server(const string& s);
@@ -34,6 +36,7 @@ class Conf
         void set_protocol(Email_Protocol ep);
 
         // Getters
+        string fname() const;
         string in_server() const;
         string in_port() const;
         string smtp_server() const;
