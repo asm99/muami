@@ -90,18 +90,13 @@ private slots:
     /** Affichage des comptes **/
     void previousAccount();
     void nextAccount();
-    /** Affichage des comptes **/
-
-    /** Ajout de compte **/
-    void on_addAccount_clicked();
-    void on_actionAdd_triggered();
+    void accountOptions();
+    void displayAccountFields();
     void addNewAccount() ;
-    /** Ajout de compte **/
-
-    /** Suppression de compte **/
     void on_actionSupprimer_le_compte_triggered();
     void delAccount();
     void delAccountTriggered();
+    void submitAccountRequisite(QString);
     /** Suppression de compte **/
 
     /** Envoi de courrier **/
@@ -128,12 +123,10 @@ private slots:
     /** Gestion de l'affichage dynamique **/
     void toggleFields(bool);
     void toggleButtons(bool);
-    void toggleAccountPanel(bool);
     void inboxButtonsStyle();
     void groupBoxButtonStyle();
     void listStyle();
     void openedMailButtons() ;
-    void turnAccountPanelOff();
     /** Gestion de l'affichage dynamique **/
 
     void connectWidgets();

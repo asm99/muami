@@ -27,7 +27,6 @@ MailBox::MailBox(QWidget *parent) :
 
     toggleFields(false) ;
     toggleButtons(false) ;
-    turnAccountPanelOff();
 
     try {
             currentAccount = 0;
@@ -107,7 +106,6 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->actionTransf_rer->setVisible(true);
     ui->actionR_pondre->setVisible(true);
     ui->actionIsoler->setVisible(false);
-    toggleAccountPanel(false);
     toggleFields(false) ;
     toggleButtons(true) ;
     ui->cancelButton->setVisible(false);
@@ -137,7 +135,6 @@ void MailBox::showMailMenu(const QPoint &pos)
     if (ui->mailList->currentItem())
         QAction *selectedItem = myMenu.exec(globalPos);
 }
-
 /** ~~ Display mails ~~ **/
 
 
@@ -430,7 +427,7 @@ void MailBox::get_actionQuitter_triggered()
 /** ~~ Quit ~~ **/
 
 
-/** ++ Accounts navigator ++ **/
+/** ++ Account monitoring functions ++ **/
 void MailBox::previousAccount()
 {
     if (currentAccount - 1 < 0)
@@ -460,55 +457,70 @@ void MailBox::nextAccount()
     QtConcurrent::run(this, &MailBox::accountConnector);
 }
 
-/** ~~ Accounts navigator ~~ **/
-
-
-/** ++ Add account ++ **/
-void MailBox::on_addAccount_clicked()
+void MailBox::accountOptions()
 {
-    on_actionAdd_triggered();
+    bool n ;
+    if (ui->accountMenuBtn->isVisible()) n = false;
+    else if(ui->cancelAccount->isVisible()) n = true;
+
+    ui->previousAccount->setVisible(n);
+    ui->nextAccount->setVisible(n);
+    ui->accountMenuBtn->setVisible(n);
+
+    ui->addAccount->setVisible(!n);
+    ui->delAccount->setVisible(!n);
+    ui->cancelAccount->setVisible(!n);
+
+    ui->imapServer->setVisible(false);
+    ui->imapPort->setVisible(false);
+    ui->smtpServer->setVisible(false);
+    ui->smtpPort->setVisible(false);
+    ui->name->setVisible(false);
+    ui->mailAccount->setVisible(false);
+    ui->password->setVisible(false);
 }
 
-void MailBox::on_actionAdd_triggered()
+void MailBox::displayAccountFields()
 {
-    if (!ui->imapServer->isVisible())
-    {
-        toggleAccountPanel(true);
-    }
-    else
-    {
-        toggleAccountPanel(false);
-    }
+    ui->imapServer->clear();
+    ui->imapPort->clear();
+    ui->smtpServer->clear();
+    ui->smtpPort->clear();
+    ui->name->clear();
+    ui->mailAccount->clear();
+    ui->password->clear();
+
+    ui->imapServer->setVisible(true);
+    ui->imapPort->setVisible(true);
+    ui->smtpServer->setVisible(true);
+    ui->smtpPort->setVisible(true);
+    ui->name->setVisible(true);
+    ui->mailAccount->setVisible(true);
+    ui->password->setVisible(true);
 }
 
 void MailBox::addNewAccount()
-{/*
-    Account* new_account = new Account();
-    new_account->set_id(ui->id->text().toStdString());
-    new_account->set_imap(ui->imapServer->text().toStdString());
-    new_account->set_iport(ui->imapPort->text().toStdString());
-    new_account->set_smtp(ui->smtpServer->text().toStdString());
-    new_account->set_sport(ui->smtpPort->text().toStdString());
-    new_account->set_from(ui->name->text().toStdString());
-    new_account->set_user(ui->mailAccount->text().toStdString());
-    new_account->set_pass(ui->password->text().toStdString());
+{
+    QRegExp mailRegex("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
+    QRegExp port("[0-9]{2,5}");
+
+    mailRegex.setCaseSensitivity(Qt::CaseInsensitive);
+    mailRegex.setPatternSyntax(QRegExp::RegExp);
+    port.setPatternSyntax(QRegExp::RegExp);
     QString issues ;
-    if (ui->id->text() == "")
-        issues.append("- Il manque l'ID\n");
-    if (ui->imapServer->text() == "")
-        issues.append("- Il manque le serveur IMAP\n");
-    if (ui->imapPort->text() == "")
-        issues.append("- Il manque le port IMAP\n");
-    if (ui->smtpServer->text() == "")
-        issues.append("- Il manque le serveur SMTP\n");
-    if (ui->smtpPort->text() == "")
-        issues.append("- Il manque le port SMTP\n");
-    if (ui->name->text() == "")
-        issues.append("- Il manque le nom d'expéditeur\n");
-    if (ui->mailAccount->text() == "")
-        issues.append("- Il manque l'adresse mail\n");
-    if (ui->password->text() == "")
-        issues.append("- Il manque le mot de passe");
+
+    if (!mailRegex.exactMatch(ui->mailAccount->text()))
+    {
+        issues.append("- L'adresse mail est invalide.\n") ;
+    }
+    if (!port.exactMatch(ui->imapPort->text()))
+    {
+        issues.append("- Le port IMAP est invalide.\n") ;
+    }
+    if (!port.exactMatch(ui->smtpPort->text()))
+    {
+        issues.append("- Le port SMTP est invalide.\n") ;
+    }
     if (issues.length() != 0)
     {
         HandleIssues *box = new HandleIssues(this, issues, "account");
@@ -516,15 +528,22 @@ void MailBox::addNewAccount()
     }
     else
     {
-        /** envoyer l'objet Account* à une fonction de MM **/
-    //}
-
-    //toggleNakedApp(false);
+        Config_manager* new_account = new Config_manager();
+        new_account->setup_accout(
+                    "",
+                    ui->imapServer->text().toStdString(),
+                    ui->imapPort->text().toStdString(),
+                    ui->smtpServer->text().toStdString(),
+                    ui->smtpPort->text().toStdString(),
+                    ui->name->text().toStdString(),
+                    ui->mailAccount->text().toStdString(),
+                    ui->password->text().toStdString()
+                );
+        currentAccount = accountListSize;
+        QtConcurrent::run(this, &MailBox::accountConnector);
+    }
 }
-/** ~~ Add account ~~ **/
 
-
-/** ++ Suppression de comptes ++ **/
 void MailBox::on_actionSupprimer_le_compte_triggered()
 {
     delAccount();
@@ -541,7 +560,20 @@ void MailBox::delAccountTriggered()
 {
 
 }
-/** ~~ Suppression de comptes ~~ **/
+
+void MailBox::submitAccountRequisite(QString)
+{
+    if(ui->smtpServer->text() != ""
+            && ui->smtpPort->text() != ""
+            && ui->imapServer->text() != ""
+            && ui->imapPort->text() != ""
+            && ui->name->text() != ""
+            && ui->mailAccount->text() != ""
+            && ui->password->text() != "")
+        ui->submitAccount->setVisible(true);
+    else ui->submitAccount->setVisible(false);
+}
+/** ~~ Account monitoring functions ~~ **/
 
 
 /** ++ Envoi ++ **/
@@ -817,12 +849,22 @@ void MailBox::addToAddressField(QString address)
 /** ++ Gestion de l'affichage ++ **/
 void MailBox::toggleFields(bool n)
 {
+    //Mail fields
     ui->title->setVisible(n);
     ui->to->setVisible(n);
     ui->cc->setVisible(n);
     ui->bcc->setVisible(n);
     ui->addFileButton_2->setVisible(n);
     ui->addressBook_2->setVisible(n);
+
+    //Account fields
+    ui->imapServer->setVisible(n);
+    ui->imapPort->setVisible(n);
+    ui->smtpServer->setVisible(n);
+    ui->smtpPort->setVisible(n);
+    ui->name->setVisible(n);
+    ui->mailAccount->setVisible(n);
+    ui->password->setVisible(n);
 }
 
 void MailBox::toggleButtons(bool n)
@@ -840,6 +882,11 @@ void MailBox::toggleButtons(bool n)
     ui->actionEnvoyer->setVisible(n);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(n);
     ui->cancelButton->setVisible(n);
+
+    ui->submitAccount->setVisible(n);
+    ui->cancelAccount->setVisible(n);
+    ui->addAccount->setVisible(n);
+    ui->delAccount->setVisible(n);
 }
 
 void MailBox::openedMailButtons()
@@ -856,43 +903,6 @@ void MailBox::openedMailButtons()
     ui->addressBook_2->setVisible(true);
 }
 
-void MailBox::toggleAccountPanel(bool n)
-{
-    //Hide
-    ui->imapServer->setVisible(n);
-    ui->imapPort->setVisible(n);
-    ui->smtpServer->setVisible(n);
-    ui->smtpPort->setVisible(n);
-    ui->name->setVisible(n);
-    ui->mailAccount->setVisible(n);
-    ui->password->setVisible(n);
-    ui->protocolField->setVisible(n);
-    ui->submitAccount->setVisible(n);
-    ui->cancelAccount->setVisible(n);
-
-    //Display
-    ui->previousAccount->setVisible(!n);
-    ui->nextAccount->setVisible(!n);
-    ui->refreshButton->setVisible(!n);
-    ui->addAccount->setVisible(!n);
-    ui->delAccount->setVisible(!n);
-
-    //Clear fields
-    ui->imapServer->clear();
-    ui->imapPort->clear();
-    ui->smtpServer->clear();
-    ui->smtpPort->clear();
-    ui->name->clear();
-    ui->mailAccount->clear();
-    ui->password->clear();
-    ui->protocolField->clear();
-}
-
-void MailBox::turnAccountPanelOff()
-{
-    toggleAccountPanel(false);
-}
-
 void MailBox::inboxButtonsStyle()
 {
     QList<QPushButton*> inboxButtons ;
@@ -902,7 +912,8 @@ void MailBox::inboxButtonsStyle()
                  << ui->nextAccount
                  << ui->refreshButton
                  << ui->submitAccount
-                 << ui->cancelAccount ;
+                 << ui->cancelAccount
+                 << ui->accountMenuBtn;
     foreach(QPushButton *button, inboxButtons)
     {
         button->setStyleSheet("border:0px; "
@@ -933,7 +944,8 @@ void MailBox::groupBoxButtonStyle()
                     << ui->transferButton
                     << ui->deleteFile
                     << ui->addFileButton_2
-                    << ui->addressBook_2;
+                    << ui->addressBook_2
+                    << ui->refreshButton;
 
     foreach(QPushButton *button, groupBoxButtons)
     {
@@ -982,8 +994,17 @@ void MailBox::listStyle()
     ui->bcc->setStyleSheet(style);
     ui->title->setStyleSheet(style);
     ui->to->setStyleSheet(style);
+    ui->imapServer->setStyleSheet("background-color: #FFFFFF;\
+                                  border:0px;\
+                                  border-top:1px solid qlineargradient"
+                                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                     "stop:0 rgba(38, 124, 153, 255), "
+                                     "stop:1 rgba(38, 124, 153, 255));"
+                                 "border-bottom:1px solid qlineargradient"
+                                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                                     "stop:0 rgba(38, 124, 153, 255), "
+                                     "stop:1 rgba(38, 124, 153, 255));");
 }
-
 /** ~~ Gestion de l'affichage ~~ **/
 
 void MailBox::connectWidgets()
@@ -999,7 +1020,6 @@ void MailBox::connectWidgets()
     connect(ui->nextAccount,
             SIGNAL(clicked()),
             SLOT(nextAccount())),
-
 
     connect(ui->mailList,
             SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -1027,5 +1047,45 @@ void MailBox::connectWidgets()
 
     connect(ui->cancelAccount,
             SIGNAL(clicked()),
-            SLOT(turnAccountPanelOff()));
+            SLOT(accountOptions()));
+
+    connect(ui->accountMenuBtn,
+            SIGNAL(clicked()),
+            SLOT(accountOptions()));
+
+    connect(ui->addAccount,
+            SIGNAL(clicked()),
+            SLOT(displayAccountFields()));
+
+    connect(ui->imapPort,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->imapServer,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->smtpPort,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->smtpServer,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->name,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->mailAccount,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->password,
+            SIGNAL(textChanged(QString)),
+            SLOT(submitAccountRequisite(QString)));
+
+    connect(ui->submitAccount,
+            SIGNAL(clicked()),
+            SLOT(addNewAccount()));
 }
