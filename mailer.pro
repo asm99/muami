@@ -31,7 +31,7 @@ SOURCES += src/gui/main.cpp\
     src/mm/protocol/imap/IMAP_manager.cpp \
     src/mm/protocol/imap/IMAP_parser.cpp \
     src/mm/ssl/SSL_manager.cpp \
-    src/mm/utils/Date_formatter.cpp \
+    src/mm/utils/date.cpp \
     src/mm/utils/error.cpp \
     src/mm/utils/util.cpp \
     src/gui/gui_addressbook.cpp \
@@ -60,7 +60,7 @@ HEADERS  += \
     src/mm/protocol/imap/IMAP_parser.hpp \
     src/mm/protocol/Protocol_manager.hpp \
     src/mm/ssl/SSL_manager.hpp \
-    src/mm/utils/Date_formatter.hpp \
+    src/mm/utils/date.hpp \
     src/mm/utils/error.hpp \
     src/mm/utils/util.hpp \
     src/gui/gui_addressbook.h \
