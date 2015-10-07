@@ -5,6 +5,9 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QCompleter>
+#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QFuture>
 #include "src/gui/gui_writemail.h"
 #include "src/gui/gui_handleissues.h"
 #include "src/gui/gui_attachfilewindow.h"
@@ -27,6 +30,7 @@ public:
     QList<QStringList> accountList;
     QStringList addressesBook;
     vector<Email*> emails;
+    int accountListSize;
     int currentAccount;
     bool checkbox;
 
@@ -41,7 +45,7 @@ private slots:
     /** Recherche et info **/
 
     /** Gestion des dossiers + mails **/
-    void accountConnector(Config_manager*, int);
+    void accountConnector();
     void displayMailSubject(Email*);
     void showMailContent(QListWidgetItem*);
     void showMailMenu(const QPoint &pos);

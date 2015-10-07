@@ -30,9 +30,8 @@ MailBox::MailBox(QWidget *parent) :
     turnAccountPanelOff();
 
     try {
-            Config_manager* cm = new Config_manager();
             currentAccount = 0;
-            accountConnector(cm, currentAccount);
+            QtConcurrent::run(this, &MailBox::accountConnector);
             /** Repasser cm en globale lorsque la commande NOOP sera implémentée
              * ça permet de maintenir les sockets, ne nécessitant plus la
              * création de cm à la demande
@@ -49,7 +48,6 @@ MailBox::MailBox(QWidget *parent) :
     connectWidgets();
     checkbox = false ;
     ui->mailList->setContextMenuPolicy(Qt::CustomContextMenu);
-
 }
 
 
@@ -60,9 +58,11 @@ MailBox::~MailBox()
 }
 
 /** ++ Display mails ++ **/
-void MailBox::accountConnector(Config_manager *cm, int accountIndex)
+void MailBox::accountConnector()
 {
-    Account* acc = cm->get_account_at_index(accountIndex);
+    Config_manager* cm = new Config_manager();
+    accountListSize = cm->get_accounts_count();
+    Account* acc = cm->get_account_at_index(currentAccount);
 
     acc->connect();
     acc->login();
@@ -433,27 +433,22 @@ void MailBox::get_actionQuitter_triggered()
 /** ++ Accounts navigator ++ **/
 void MailBox::previousAccount()
 {
-    Config_manager* cm = new Config_manager();
-    int cm_size = cm->get_accounts_count();
-
     if (currentAccount - 1 < 0)
     {
-        currentAccount = cm_size - 1;
+        currentAccount = accountListSize - 1;
     }
     else
     {
         currentAccount -= 1;
     }
 
-    accountConnector(cm, currentAccount);
+    QtConcurrent::run(this, &MailBox::accountConnector);
 }
 
 void MailBox::nextAccount()
 {
-    Config_manager* cm = new Config_manager();
-    int cm_size = cm->get_accounts_count();
-
-    if (currentAccount + 1 == cm_size)
+    cout<<currentAccount<<endl;
+    if (currentAccount + 1 == accountListSize)
     {
         currentAccount = 0;
     }
@@ -462,7 +457,7 @@ void MailBox::nextAccount()
         currentAccount += 1;
     }
 
-    accountConnector(cm, currentAccount);
+    QtConcurrent::run(this, &MailBox::accountConnector);
 }
 
 /** ~~ Accounts navigator ~~ **/
