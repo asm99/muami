@@ -13,6 +13,8 @@
 #include "Conf.hpp"
 #include "../protocol/Protocol_manager.hpp"
 #include "../protocol/imap/IMAP_manager.hpp"
+#include "../email/Mailbox.hpp"
+#include "../debug/debug.hpp"
 
 using namespace std;
 

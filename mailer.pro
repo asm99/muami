@@ -20,6 +20,7 @@ SOURCES += src/gui/main.cpp\
     src/mm/config/Conf.cpp \
     src/mm/config/Config_manager.cpp \
     src/mm/crypto/md5.cpp \
+    src/mm/debug/debug.cpp \
     src/mm/email/Address.cpp \
     src/mm/email/Addresses.cpp \
     src/mm/email/Email.cpp \
@@ -47,6 +48,7 @@ HEADERS  += \
     src/mm/config/Conf.hpp \
     src/mm/config/Config_manager.hpp \
     src/mm/crypto/md5.hpp \
+    src/mm/debug/debug.hpp \
     src/mm/email/Address.hpp \
     src/mm/email/Addresses.hpp \
     src/mm/email/Email.hpp \

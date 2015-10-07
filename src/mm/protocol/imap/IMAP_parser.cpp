@@ -8,10 +8,11 @@ unsigned char
 parse_flags(const string& s)
 {
     string token;
-    stringstream ss(s);
+    istringstream iss(s);
     unsigned char flags = 0;
 
-    while (getline(ss, token, ' ')) {
+    while (iss >> token) {
+//     while (getline(ss, token, ' ')) {
         if      (token == "\\Seen")     { flags |= FL_SEEN;      }
         else if (token == "\\Answered") { flags |= FL_ANSWERED;  }
         else if (token == "\\Flagged")  { flags |= FL_FLAGGED;   }
@@ -229,19 +230,20 @@ IMAP_parser::check_server_imap_capability(string s)
  * parenthesized-list)
  * FIXME: treating all messages as RFC822 messages
  */
-// Bodystructure*
-// IMAP_parser::parse_bodystructure(string s)
-// {
-// //     cout << s << endl;
-//     Bodystructure* bs = new Bodystructure();
-//
-//     /* treating all messages as RFC822 messages */
-//     string rfc822msg = "(\"message\" ";
-//
+Bodystructure*
+IMAP_parser::parse_bodystructure(string s)
+{
+    cout << s << endl;
+    Bodystructure* bs = new Bodystructure();
+
+    /* treating all messages as RFC822 messages */
+    string rfc822msg = "(\"message\" ";
+
 //     int i = BS_TYPE;
-//     string s_cpy = s;
-//     int spacepos, parenpos;
-//     int max_bs_field;
+    int i = 0;
+    string s_cpy = s;
+    int spacepos, parenpos;
+    int max_bs_field;
 //     if (s_cpy.compare(0, 7, "(\"text\"") == 0) {
 //         max_bs_field = BS_TEXT_EXTENSION_PARAMETERS;
 //     } else if (s_cpy.compare(rfc822msg) == 0) {
@@ -249,7 +251,7 @@ IMAP_parser::check_server_imap_capability(string s)
 //     } else {
 //         max_bs_field = BS_EXTENSION_PARAMETERS;
 //     }
-//
+
 //     int k;
 //     string token, cl_token;
 //     while(s_cpy[0] && i < max_bs_field) {
@@ -280,82 +282,80 @@ IMAP_parser::check_server_imap_capability(string s)
 //         s_cpy = s_cpy.substr(spacepos+1, s_cpy.length() - spacepos - 1);
 //         i++;
 //     }
-//
-//     return bs;
-// }
-//
-// /*
-//  * Parse BODYSTRUCTURE response into a prefix tree of bodyparts
-//  * examples of responses structures:
-//  * 46 (bp)
-//  * 56 ((bp) (bp) "alternative" extp…)
-//  * 43 (((bp) (bp) "alternative" extp…) (bp) "mixed" extp…)
-//  * 89 ((bp) (bp) (bp) (bp) "mixed" extp…)
-//  * TODO: parse mutipart/alternative types and params
-//  */
-// void
-// IMAP_parser::imap_parse_bodystructure(
-//         string s,
-//         Bodypart* tree,
-//         string section,
-//         bool is_child)
-// {
-// //     cout << "bs s: " << s << "\n";
-//     if (s.length() <= 0) {
-//         return;
-//     }
-//
-//     if (s[0] == '(') {
-//         int start = (s[1] == '(') ? 1 : 0;
-//         int bp_len = util::get_bodypart_length(
-//                 s.substr(start, s.length()- start));
-//         string car = s.substr(start, s.length() - start);
-//
-//         Bodypart *bp_child = new Bodypart();
-// //         bp_child->child = nullptr;
-// //         bp_child->sibling = nullptr;
-//         Bodypart *bp_sib = new Bodypart();
-// //         bp_sib->child = nullptr;
-// //         bp_sib->sibling = nullptr;
-//
-//         if (!bp_child || !bp_sib) {
-//             return;
-//         }
-//
-//         string ns_chd = util::get_new_section(section, true);
-//         string ns_sbg;
-//         if (is_child) {
-//             ns_sbg = util::get_new_section(ns_chd, false);
-//         } else {
-//             ns_sbg = util::get_new_section(section, false);
-//         }
-//
-//         if (s[1] == '(') { /* nested bodypart(s) */
-//             tree->section = section;
-//             tree->child = bp_child;
-//             tree->sibling = bp_sib;
-//
-//             imap_parse_bodystructure(car,
-//                     tree->child, ns_chd, true);
-// //             imap_parse_bodystructure(s + bp_len,
-// //                     tree->sibling, ns_sbg, false);
-//             imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
+
+    return bs;
+}
+
+/*
+ * Parse BODYSTRUCTURE response into a prefix tree of bodys
+ * examples of responses structures:
+ * 46 (bp)
+ * 56 ((bp) (bp) "alternative" extp…)
+ * 43 (((bp) (bp) "alternative" extp…) (bp) "mixed" extp…)
+ * 89 ((bp) (bp) (bp) (bp) "mixed" extp…)
+ * TODO: parse mutipart/alternative types and params
+ */
+void
+IMAP_parser::imap_parse_bodystructure(
+        string s,
+        Body* tree,
+        string section,
+        bool is_child)
+{
+    cout << "bs s: " << s << "\n";
+    if (s.length() <= 0) {
+        return;
+    }
+
+    if (s[0] == '(') {
+        int start = (s[1] == '(') ? 1 : 0;
+        int bp_len = util::get_body_length(
+                s.substr(start, s.length()- start));
+        string car = s.substr(start, s.length() - start);
+
+        Body *bp_child = new Body();
+        Body *bp_sib = new Body();
+
+        if (!bp_child || !bp_sib) {
+            return;
+        }
+
+        string ns_chd = util::get_new_section(section, true);
+        string ns_sbg;
+        if (is_child) {
+            ns_sbg = util::get_new_section(ns_chd, false);
+        } else {
+            ns_sbg = util::get_new_section(section, false);
+        }
+
+        if (s[1] == '(') { /* nested body(s) */
+            tree->section = section;
+            tree->child = bp_child;
+            tree->sibling = bp_sib;
+
+            imap_parse_bodystructure(car,
+                    tree->child, ns_chd, true);
+//             imap_parse_bodystructure(s.substr(bp_len, s.length()- bp_len,
 //                     tree->sibling, ns_sbg, false);
-//         } else {
-//             tree->section = section;
-//             tree->bodystructure = parse_bodystructure(s);
-//             tree->sibling = bp_sib;
-//
-// //             imap_parse_bodystructure(s + bp_len-1,
-// //                     tree->sibling, ns_sbg, false);
-//             imap_parse_bodystructure(s.substr(bp_len, s.length() -(bp_len-1)),
+            imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
+                    tree->sibling, ns_sbg, false);
+        } else {
+            tree->section = section;
+            tree->bodystructure = parse_bodystructure(s);
+            tree->sibling = bp_sib;
+
+//             imap_parse_bodystructure(s + bp_len-1,
 //                     tree->sibling, ns_sbg, false);
-//         }
-//     } else {  /* multipart trailing fields: "mixed"… / "alternative"… */
-//         return;
-//     }
-// }
-//
+            imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
+                    tree->sibling, ns_sbg, false);
+            imap_parse_bodystructure(s.substr(bp_len, s.length() -(bp_len-1)),
+                    tree->sibling, ns_sbg, false);
+        }
+    } else {  /* multipart trailing fields: "mixed"… / "alternative"… */
+        return;
+    }
+}
+
 // /* Parse a RFC822.HEADER response into a header struct
 //  * Only most common fields are looked up for
 //  */
@@ -431,8 +431,6 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 
     string uid_tok, flags_tok, idate_tok, size_tok, env_tok;
 
-    Date_formatter *df {};
-
     while ((delim_pos = s.find(delim)) != string::npos) {
         to_pos = delim_pos + delim.length();
         token = s.substr(0, to_pos); // token holds an email info block
@@ -466,7 +464,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 	debug("flags tok      : " + flags_tok );
 	debug("idate tok      : " + idate_tok );
     debug("formatted idate: " +
-            df->format_date(util::strip_chars(idate_tok, "\"")));
+            Date::format_date(util::strip_chars(idate_tok, "\"")));
 	debug("size tok       : " + size_tok );
 	debug("env tok        : " + env_tok );
 #endif
@@ -477,7 +475,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         em->set_flags(parse_flags(util::strip_chars(flags_tok, "()")));
         string stripped_date = util::strip_chars(idate_tok, "\"");
         em->set_internaldate(stripped_date);
-        em->set_friendly_time(df->format_date(stripped_date));
+        em->set_friendly_time(Date::format_date(stripped_date));
 
         istringstream iss(env_tok);
         Envelope env {};
@@ -492,68 +490,68 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
     }
 }
 
-// // Parse a FETCH (RFC822.HEADER BODYSTRUCTURE) response into an Email object
-// Email*
-// IMAP_parser::parse_email(string s)
-// {
-// 	string b_start_str = "BODYSTRUCTURE ";
-// 	string b_end_str = "\r\nABCD";
-// 	size_t b_spos = s.find(b_start_str);
-// 	size_t b_epos = s.find(b_end_str);
-// 	string hdr_s = s.substr(0, b_spos-1);
-// 	size_t bs_start = b_spos + b_start_str.length();
-// 	string bs = s.substr(bs_start, b_epos - bs_start);
-//
-// //     cout << s << endl;
-// //     cout << "hdr_s: " + hdr_s << endl;
-// //     cout << "bs: " + bs << endl;
-//
-// // 	RFC822_header* hdr = this->parse_header(hdr_s);
-// //     hdr->Dump_header(hdr);
-//
-// 	Bodypart* bp = new Bodypart();
-// 	Bodystructure* bodyst = new Bodystructure();
-//
-// 	bodyst->type = "/";
-// 	bodyst->subtype = "/";
-// 	bp->bodystructure = bodyst;
-//
-//     string base_section;
-// //     cout << "str: " << s << endl;
-// //     cout << "bs: " << bs << endl;
-// 	if (strncmp(bs.c_str(), "(\"", 2) == 0) { /* no child or sibling */
-// 		base_section = "1";
-// 	} else {
-// 		base_section = "0";
-// 	}
-//
-// 	imap_parse_bodystructure(bs, bp, base_section, true);
-//
-// 	Email* em = new Email();
-//
-// // 	em->rfc822_hdr = hdr;
-// 	em->bodypart = bp;
-// // 	em->text = NULL;
-// 	return em;
-// }
-//
-// /* Dump a prefix tree of bodyparts */
+// Parse a FETCH (RFC822.HEADER BODYSTRUCTURE) response into an Email object
+Email*
+IMAP_parser::parse_email(string s)
+{
+	string b_start_str = "BODYSTRUCTURE ";
+	string b_end_str = "\r\nABCD";
+	size_t b_spos = s.find(b_start_str);
+	size_t b_epos = s.find(b_end_str);
+	string hdr_s = s.substr(0, b_spos-1);
+	size_t bs_start = b_spos + b_start_str.length();
+	string bs = s.substr(bs_start, b_epos - bs_start);
+
+//     cout << s << endl;
+//     cout << "hdr_s: " + hdr_s << endl;
+//     cout << "bs: " + bs << endl;
+
+// 	RFC822_header* hdr = this->parse_header(hdr_s);
+//     hdr->Dump_header(hdr);
+
+	Body* bp = new Body();
+	Bodystructure* bodyst = new Bodystructure();
+
+	bodyst->type = "/";
+	bodyst->subtype = "/";
+	bp->bodystructure = bodyst;
+
+    string base_section;
+//     cout << "str: " << s << endl;
+//     cout << "bs: " << bs << endl;
+	if (strncmp(bs.c_str(), "(\"", 2) == 0) { /* no child or sibling */
+		base_section = "1";
+	} else {
+		base_section = "0";
+	}
+
+	imap_parse_bodystructure(bs, bp, base_section, true);
+
+	Email* em = new Email();
+
+// 	em->rfc822_hdr = hdr;
+	em->body = bp;
+// 	em->text = NULL;
+	return em;
+}
+
+// /* Dump a prefix tree of bodys */
 // void
-// dump_bodypart_tree(Bodypart* bp)
+// dump_body_tree(Body* bp)
 // {
 //     if (!bp) {
 //         return;
 //     }
 //
 //     if (bp->bodystructure) {
-//         cout << "type/subtype [section]: "
-//             << bp->bodystructure->type << "/"
-//             << bp->bodystructure->subtype
-//             << " [" << bp->section << "]" << endl;
+//         debug("type/subtype [section]: "
+//             + bp->bodystructure->type
+//             + "/" + bp->bodystructure->subtype
+//             + " [" << bp->section << "]");
 //     }
 //
-//     dump_bodypart_tree(bp->child);
-//     dump_bodypart_tree(bp->sibling);
+//     dump_body_tree(bp->child);
+//     dump_body_tree(bp->sibling);
 // }
 
 #ifdef IMAP_PARSER_DEBUG

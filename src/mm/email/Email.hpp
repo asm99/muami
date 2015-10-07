@@ -1,10 +1,10 @@
 #ifndef EMAIL_H
 #define EMAIL_H
 
-#include "RFC822_header.hpp"
-#include "Bodypart.hpp"
-#include "Envelope.hpp"
 #include "flags.hpp"
+#include "RFC822_header.hpp"
+#include "Body.hpp"
+#include "Envelope.hpp"
 #include "../debug/debug.hpp"
 
 using namespace std;
@@ -19,9 +19,13 @@ class Email
         string em_internaldate;
         Envelope em_envelope;
         RFC822_header* em_rfc822_header;
-//         Bodypart em_*bodypart;
 
     public:
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!! TO MAKE PRIVATE !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Body *body;
+
         Email(): em_envelope() {};
         ~Email() {};
 

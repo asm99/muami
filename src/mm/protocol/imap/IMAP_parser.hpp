@@ -14,14 +14,14 @@
 #include <cstring>
 #include <cctype>
 #include <vector>
+#include "../../email/Bodystructure.hpp"
+#include "../../email/Body.hpp"
 #include "../../email/Email.hpp"
-#include "../../email/RFC822_header.hpp"
 #include "../../email/Envelope.hpp"
-// #include "../email/Bodystructure.hpp"
-// #include "../email/Bodypart.hpp"
-#include "../../utils/Date_formatter.hpp"
-#include "../../utils/util.hpp"
 #include "../../email/Mailbox.hpp"
+#include "../../email/RFC822_header.hpp"
+#include "../../utils/date.hpp"
+#include "../../utils/util.hpp"
 #include "../../debug/debug.hpp"
 
 using namespace std;
@@ -48,9 +48,9 @@ namespace IMAP_parser
         void parse_select(Mailbox* mb, const string& s);
 
         RFC822_header* parse_header(string s);
-//         void imap_parse_bodystructure(
-//                 string s, Bodypart* tree, string section, bool is_child);
-//         Bodystructure* parse_bodystructure(string s);
+        void imap_parse_bodystructure(
+                string s, Body* tree, string section, bool is_child);
+        Bodystructure* parse_bodystructure(string s);
         vector<Email*> parse_emails(string s);
         void parse_emails_infos(vector<Email*>& emails, string s);
         Email* parse_email(string s);

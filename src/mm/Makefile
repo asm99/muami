@@ -1,5 +1,5 @@
 CPP = g++
-CFLAGS = -g -Wall -Wextra -std=c++11
+CFLAGS = -g -Wall -Wextra -std=c++11 -O0
 LIBS = -lcrypto -lssl
 EXE = muami
 SRCS = coding/base64.cpp \
@@ -21,7 +21,7 @@ SRCS = coding/base64.cpp \
 	   protocol/imap/IMAP_parser.cpp \
 	   ssl/SSL_manager.cpp \
 	   utils/error.cpp \
-	   utils/Date_formatter.cpp \
+	   utils/date.cpp \
 	   utils/util.cpp
 
 all: $(SRCS) main.cpp
@@ -39,7 +39,7 @@ base64: coding/base64.cpp
 config_manager: $(SRCS)
 	$(CPP) $(CFLAGS) $^ -o $@ -DCONFIG_MANAGER_DEBUG -lssl -lcrypto
 
-date_formatter: utils/Date_formatter.cpp
+date_formatter: utils/date.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) -DDATE_FORMATTER_DEBUG
 
 debug: SDebugger.cpp utils/error.cpp
@@ -54,13 +54,13 @@ envelope: email/Envelope.cpp email/Address.cpp email/Addresses.cpp \
 
 imap_manager: protocol/imap/IMAP_manager.cpp protocol/imap/IMAP_parser.cpp \
 	ssl/SSL_manager.cpp config/Config_manager.cpp config/Account.cpp \
-	utils/error.cpp email/Email.cpp utils/Date_formatter.cpp utils/util.cpp \
+	utils/error.cpp email/Email.cpp utils/date.cpp utils/util.cpp \
 	email/Envelope.cpp email/Address.cpp email/Addresses.cpp \
 	email/Nstring.cpp
 	$(CPP) $(CFLAGS) $^ -o $@ $(DBGFLAG) $(LIBS) -DIMAP_MANAGER_DEBUG
 
 imap_parser: protocol/imap/IMAP_parser.cpp email/RFC822_header.cpp \
-	utils/Date_formatter.cpp email/Email.cpp email/Envelope.cpp \
+	utils/date.cpp email/Email.cpp email/Envelope.cpp \
 	coding/coding.cpp coding/qp.cpp coding/base64.cpp \
 	email/Nstring.cpp email/Address.cpp email/Addresses.cpp utils/util.cpp \
 	email/Mailbox.cpp

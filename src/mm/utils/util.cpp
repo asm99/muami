@@ -32,8 +32,8 @@ util::strip_chars(string& src, const string& set)
 }
 
 /*
- * Compute the next section of a bodypart based on wether its a child or a
- * sibling within a bodyparts prefix tree
+ * Compute the next section of a body based on wether its a child or a
+ * sibling within a bodys prefix tree
  * Children/Siblings scheme (nested = child):
  * (((bp) (bp)) (bp))
  * |||    |     |
@@ -70,13 +70,13 @@ util::get_new_section(string section, bool is_child)
 }
 
 /*
- * Count a bodypart length
- * Note: by definition a bodypart is contained inside parenthesis but fields
- * can also have parenthesis so we delimit a bodypart only by the first and
+ * Count a body length
+ * Note: by definition a body is contained inside parenthesis but fields
+ * can also have parenthesis so we delimit a body only by the first and
  * last parenthesis (toplevel parenthesis)
  */
 int
-util::get_bodypart_length(const string& s)
+util::get_body_length(const string& s)
 {
     int level = 0;
     unsigned int count;
@@ -178,7 +178,7 @@ main()
     }
 
     string bs = "(\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 12 2 NIL NIL NIL NIL))";
-    cout << "bs length: " << util::get_bodypart_length(bs)
+    cout << "bs length: " << util::get_body_length(bs)
          << " - bs.length(): " << bs.length() << endl;
 
     string to_split = "abc;.def;.ghi;jkl;.mno;pqr;.stu";
