@@ -1,5 +1,23 @@
 #include "Conf.hpp"
 
+bool
+Conf::is_complete() const
+{
+    if (   conf_in_server.empty()
+        || conf_in_port.empty()
+        || conf_smtp_server.empty()
+        || conf_smtp_port.empty()
+        || conf_from.empty()
+        || conf_user.empty()
+        || conf_pass.empty()
+        || conf_protocol == PROTOCOL_UNDEFINED)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 // Setters
 void
 Conf::set_fname(const string& s)

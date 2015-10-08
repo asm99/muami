@@ -24,6 +24,8 @@ class Conf
         Conf() {};
         ~Conf() {};
 
+        bool is_complete() const;
+
         // Setters
         void set_fname(const string& s);
         void set_in_server(const string& s);

@@ -64,25 +64,7 @@ Config_manager::read_conf_file(const string& path, const string& filename)
 Account*
 Config_manager::create_account_from_conf(const Conf& conf)
 {
-    conf.dump();
-    string in_server   = conf.in_server();
-    string in_port     = conf.in_port();
-    string smtp_server = conf.smtp_server();
-    string smtp_port   = conf.smtp_port();
-    string from        = conf.from();
-    string user        = conf.user();
-    string pass        = conf.pass();
-    Email_Protocol protocol = conf.protocol();
-
-    if (   in_server.empty()
-        || in_port.empty()
-        || smtp_server.empty()
-        || smtp_port.empty()
-        || from.empty()
-        || user.empty()
-        || pass.empty()
-        || protocol == PROTOCOL_UNDEFINED)
-    {
+    if (!conf.is_complete()) {
         throw Config_manager::Conf_Invalid();
     }
 
@@ -209,9 +191,9 @@ Config_manager::save_config_file(Conf& cf)
         << "pass        : " << cf.pass()        << "\n"
         << "protocol    : " << "IMAP"           << "\n";
 
-//     if (ofs.bad() || ofs.fail()) {
-//         return ACCOUNT_SAVE_ERR_WRITE_FILE;
-//     }
+    if (ofs.bad() || ofs.fail()) {
+        return ACCOUNT_SAVE_ERR_WRITE_FILE;
+    }
 
     ofs.close();
 
@@ -228,17 +210,6 @@ Config_manager::setup_accout(string fname,
                              string smtp_server, string smtp_port,
                              string from, string user, string pass)
 {
-    if (in_server.empty()
-        || in_port.empty()
-        || smtp_server.empty()
-        || smtp_port.empty()
-        || from.empty()
-        || user.empty()
-        || pass.empty())
-    {
-        return ACCOUNT_SAVE_ERR_EMPTY_FIELD;
-    }
-
     Conf cf {};
     cf.set_fname(fname);
     cf.set_in_server(in_server);
@@ -249,6 +220,10 @@ Config_manager::setup_accout(string fname,
     cf.set_user(user);
     cf.set_pass(pass);
     cf.set_protocol(PROTOCOL_IMAP);
+
+    if (!cf.is_complete()) {
+        return ACCOUNT_SAVE_ERR_EMPTY_FIELD;
+    }
 
     return save_config_file(cf);
 }
