@@ -180,12 +180,16 @@ Config_manager::save_config_file(Conf& cf)
 
     if (cf.fname().empty()) { // new account
         string nm = get_conf_dir_abs_path() + "/" + "account_XXXXXX";
-        char tmp[nm.length()+1];
+        char tmp[nm.length()];
         memset(tmp, 0, sizeof tmp);
         memcpy(tmp, nm.c_str(), sizeof tmp);
-        mkstemp(tmp);
-        debug("Saving account to file: " + string(tmp));
-        cf.set_fname(tmp);
+        int t = mkstemp(tmp);
+        if (t < 0) {    // error
+            perror("mkstemp");
+        }
+        filename = string(tmp);
+        debug("Saving account to file: " + filename);
+        cf.set_fname(filename);
     } else {
         filename = get_conf_dir_abs_path() + "/" + cf.fname();
     }
@@ -205,9 +209,11 @@ Config_manager::save_config_file(Conf& cf)
         << "pass        : " << cf.pass()        << "\n"
         << "protocol    : " << "IMAP"           << "\n";
 
-    if (ofs.bad() || ofs.fail()) {
-        return ACCOUNT_SAVE_ERR_WRITE_FILE;
-    }
+//     if (ofs.bad() || ofs.fail()) {
+//         return ACCOUNT_SAVE_ERR_WRITE_FILE;
+//     }
+
+    ofs.close();
 
     Account *a = new Account(cf);
     add_account(a);
@@ -267,9 +273,11 @@ int main()
     Account* acc = cm->get_account_at_index(0);
     acc->dump();
 
-    Conf cf {};
-    cf.set_protocol(PROTOCOL_IMAP);
-    cm->save_config_file(cf);
+
+    cm->setup_accout(
+            "", "imap.server.com", "993",
+            "smtp.server.com", "25",
+            "boloss", "bl@boloss.com", "passwd");
 
     return 0;
 }

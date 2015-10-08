@@ -12,7 +12,6 @@ parse_flags(const string& s)
     unsigned char flags = 0;
 
     while (iss >> token) {
-//     while (getline(ss, token, ' ')) {
         if      (token == "\\Seen")     { flags |= FL_SEEN;      }
         else if (token == "\\Answered") { flags |= FL_ANSWERED;  }
         else if (token == "\\Flagged")  { flags |= FL_FLAGGED;   }

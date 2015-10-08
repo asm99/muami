@@ -43,6 +43,7 @@ class Config_manager
         Account* create_account_from_conf(const Conf& conf);
         void load_accounts();
         void add_account(Account* acc);
+        int save_config_file(Conf& cf);
 
         // Account creation/modification
 
@@ -52,7 +53,6 @@ class Config_manager
         Config_manager();
         ~Config_manager() {};
 
-        int save_config_file(Conf& cf);
         // Account creation/modification
         int setup_accout(string fname, string in_server, string in_port,
                          string smtp_server, string smtp_port,
