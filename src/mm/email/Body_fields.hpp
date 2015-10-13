@@ -1,8 +1,10 @@
 #ifndef BODY_FIELDS_H
 #define BODY_FIELDS_H
 
-#include <map>
-#include "../codings/codings.hpp"
+#include <sstream>
+#include "Body_params.hpp"
+#include "Nstring.hpp"
+#include "../coding/coding.hpp"
 
 using namespace std;
 
@@ -20,29 +22,33 @@ using namespace std;
 class Body_fields
 {
     private:
-        map<string, string> body_fld_param;
-        string body_fld_id;
-        string body_fld_desc;
+        Nstring body_fld_id;
+        Nstring body_fld_desc;
+        Body_params* body_fld_param;
         Encoding body_fld_enc;
         unsigned long body_fld_octets;
 
     public:
-        Body_fields(): body_fld_param() {};
+        Body_fields();
         ~Body_fields() {};
 
         // Setters
-        void set_param(const string& name, const string& value);
-        void set_id(const string& id);
-        void set_desc(const string& desc);
+        void set_id(const Nstring& id);
+        void set_desc(const Nstring& desc);
         void set_enc(const Encoding enc);
         void set_octets(const unsigned long octets);
 
         // Getters
-        string param(const string& name);
         string id();
         string desc();
+        Body_params* params();
         Encoding enc();
         unsigned long octets();
+
+        // DEBUG
+        void dump();
 };
+
+stringstream& operator>>(stringstream& ss, Body_fields* bf);
 
 #endif /* end of include guard: BODY_FIELDS_H */

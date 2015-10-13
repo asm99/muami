@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
@@ -13,6 +14,7 @@ using namespace std;
 
 namespace util {
 
+    void lower(string& s);
     vector<int> explode_to_ints(string s, const string& delim);
     string strip_chars(string& src, const string& set);
     string get_new_section(string section, bool is_child);

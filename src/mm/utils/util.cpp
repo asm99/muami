@@ -1,5 +1,12 @@
 #include "util.hpp"
 
+// Transform a string to lowercase
+void
+util::lower(string& s)
+{
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+}
+
 // From string "1.2.3" to vector of ints (1, 2, 3)
 vector<int>
 util::explode_to_ints(string s, const string& delim)
@@ -194,6 +201,17 @@ main()
     for (auto s : strv) {
         cout << s << " == nullify ==> ";
         util::nullify_string(s);
+        cout << s << endl;
+    }
+
+    vector<string> uppers = {
+        "ABCD",
+        "aBcD",
+        "abcd",
+    };
+
+    for (auto s : uppers) {
+        util::lower(s);
         cout << s << endl;
     }
 

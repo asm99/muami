@@ -14,7 +14,6 @@
 #include <cstring>
 #include <cctype>
 #include <vector>
-#include "../../email/Bodystructure.hpp"
 #include "../../email/Body.hpp"
 #include "../../email/Email.hpp"
 #include "../../email/Envelope.hpp"
@@ -49,8 +48,8 @@ namespace IMAP_parser
 
         RFC822_header* parse_header(string s);
         void imap_parse_bodystructure(
-                string s, Body* tree, string section, bool is_child);
-        Bodystructure* parse_bodystructure(string s);
+                stringstream& ss, Body* tree, string section, bool is_child);
+//         Bodystructure* parse_bodystructure(string s);
         vector<Email*> parse_emails(string s);
         void parse_emails_infos(vector<Email*>& emails, string s);
         Email* parse_email(string s);

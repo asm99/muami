@@ -12,6 +12,16 @@ Nstring::str() const
     return nstr;
 }
 
+// Operators overload
+Nstring&
+Nstring::operator=(const Nstring& ns)
+{
+    if (this != &ns) {
+        nstr = ns.nstr;
+    }
+    return *this;
+}
+
 /*
  * FIXME: date should not strip '('
  */
@@ -21,6 +31,8 @@ operator>>(istream& is, Nstring& ns)
     string acc, s;
     int count = 0;
     bool is_raw = false;
+    size_t pos;  // ")(" pos
+
     while(is >> s) {
         if (count == 0) {
             if (s.find("NIL") != string::npos) { // Nstring is NIL
@@ -44,6 +56,16 @@ operator>>(istream& is, Nstring& ns)
 
         if (s.back() == '"' && s[s.length()-2] != '\\')
             break;
+
+        if (s.back() == ')') {
+            break;
+        }
+
+        if ((pos = s.find(")(")) != string::npos) {
+            for (unsigned int i = s.length()-1; i > pos; --i) {
+                is.putback(s[i]);
+            }
+        }
 
         count++;
     }

@@ -162,7 +162,7 @@ Config_manager::save_config_file(Conf& cf)
 
     if (cf.fname().empty()) { // new account
         string nm = get_conf_dir_abs_path() + "/" + "account_XXXXXX";
-        char tmp[nm.length()];
+        char tmp[nm.length()+1];
         memset(tmp, 0, sizeof tmp);
         memcpy(tmp, nm.c_str(), sizeof tmp);
         int t = mkstemp(tmp);

@@ -33,13 +33,14 @@
 
 using namespace std;
 
-enum class Encoding : char {
+typedef enum Encoding {
     ENC_7BIT = 0,
     ENC_8BIT,
     ENC_BINARY,
     ENC_BASE64,
     ENC_QUOTED_PRINTABLE,
-};
+    ENC_UNKNOWN,
+} Encoding;
 
 string mmdecode(string s, bool is_hdr);
 

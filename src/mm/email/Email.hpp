@@ -26,8 +26,8 @@ class Email
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Body *body;
 
-        Email(): em_envelope() {};
-        ~Email() {};
+        Email(): em_envelope() { body = new Body(); };
+        ~Email() { delete body; };
 
         // Setters
         void set_uid(int u);

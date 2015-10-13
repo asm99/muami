@@ -1,19 +1,35 @@
+/*
+ * MELKONIAN Marc
+ * IED 13410425
+ * Body.hpp: a BODY part of a message in the RFC3501 grammar
+ */
+
 #ifndef BODY_H
 #define BODY_H
 
-#include "Bodystructure.hpp"
+#include <sstream>
+#include "Bodypart.hpp"
 
-/* E-mail body part */
+using namespace std;
+
+typedef enum Body_type {
+    Body_type_1part = 0,
+    Body_type_mpart,
+} Body_type;
+
 class Body
 {
     public:
-        std::string section;
-        Bodystructure* bodystructure;
+        Body_type type;
+        string section;
         Body* sibling;
         Body* child;
+        Bodypart* bodypart;
 
-        Body() { sibling = nullptr; child = nullptr; };
+        Body();
         ~Body() {};
+
+        void dump();
 };
 
 #endif /* end of include guard: BODY_H */

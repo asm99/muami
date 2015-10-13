@@ -1,7 +1,6 @@
 #include "IMAP_parser.hpp"
 
-namespace {
-/* Mailbox parsing functions */
+namespace { /* Mailbox parsing functions */
 
 /* Get bits flag according to a string of flags */
 unsigned char
@@ -224,69 +223,69 @@ IMAP_parser::check_server_imap_capability(string s)
     return false;
 }
 
-/*
- * Parse a BODYSTRUCTURE response into a bodystructure struct
- * doc: https://tools.ietf.org/html/rfc3501#page-73
- * ("type" "subtype" (parameters) "id" "description" "encoding" size (ext_prms))
- * (string string parenthesized-list string string string number
- * parenthesized-list)
- * FIXME: treating all messages as RFC822 messages
- */
-Bodystructure*
-IMAP_parser::parse_bodystructure(string s)
-{
-    cout << s << endl;
-    Bodystructure* bs = new Bodystructure();
-
-    /* treating all messages as RFC822 messages */
-    string rfc822msg = "(\"message\" ";
-
-//     int i = BS_TYPE;
-    int i = 0;
-    string s_cpy = s;
-    int spacepos, parenpos;
-    int max_bs_field;
-//     if (s_cpy.compare(0, 7, "(\"text\"") == 0) {
-//         max_bs_field = BS_TEXT_EXTENSION_PARAMETERS;
-//     } else if (s_cpy.compare(rfc822msg) == 0) {
-//         max_bs_field = BS_MESSAGE_RFC822_LINES_SIZE;
-//     } else {
-//         max_bs_field = BS_EXTENSION_PARAMETERS;
-//     }
-
-//     int k;
-//     string token, cl_token;
-//     while(s_cpy[0] && i < max_bs_field) {
-//         spacepos = s_cpy.find(" ");
-//         if (s_cpy[0] == '(' && i != BS_TYPE) {
-//             parenpos = s_cpy.find(") ");
-//             s_cpy = s_cpy.substr(parenpos + 2, s_cpy.length()-parenpos -2);
-//             i++;
-//             continue;
-//         }
+// /*
+//  * Parse a BODYSTRUCTURE response into a bodystructure struct
+//  * doc: https://tools.ietf.org/html/rfc3501#page-73
+//  * ("type" "subtype" (parameters) "id" "description" "encoding" size (ext_prms))
+//  * (string string parenthesized-list string string string number
+//  * parenthesized-list)
+//  * FIXME: treating all messages as RFC822 messages
+//  */
+// Bodystructure*
+// IMAP_parser::parse_bodystructure(string s)
+// {
+//     cout << s << endl;
+//     Bodystructure* bs = new Bodystructure();
 //
-//         k = s_cpy.find(" ");
-//         if (k <= 0) {
-//             i++;
-//             break;
-//         }
+//     /* treating all messages as RFC822 messages */
+//     string rfc822msg = "(\"message\" ";
 //
-//         token = s_cpy.substr(0, k-1);
-//         cl_token = util::strip_chars(token, "(\"");
+// //     int i = BS_TYPE;
+//     int i = 0;
+//     string s_cpy = s;
+//     int spacepos, parenpos;
+//     int max_bs_field;
+// //     if (s_cpy.compare(0, 7, "(\"text\"") == 0) {
+// //         max_bs_field = BS_TEXT_EXTENSION_PARAMETERS;
+// //     } else if (s_cpy.compare(rfc822msg) == 0) {
+// //         max_bs_field = BS_MESSAGE_RFC822_LINES_SIZE;
+// //     } else {
+// //         max_bs_field = BS_EXTENSION_PARAMETERS;
+// //     }
 //
-//         if (i == BS_TYPE) {
-//             bs->type = cl_token;
-//         }
-//         if (i == BS_SUBTYPE) {
-//             bs->subtype = cl_token;
-//         }
+// //     int k;
+// //     string token, cl_token;
+// //     while(s_cpy[0] && i < max_bs_field) {
+// //         spacepos = s_cpy.find(" ");
+// //         if (s_cpy[0] == '(' && i != BS_TYPE) {
+// //             parenpos = s_cpy.find(") ");
+// //             s_cpy = s_cpy.substr(parenpos + 2, s_cpy.length()-parenpos -2);
+// //             i++;
+// //             continue;
+// //         }
+// //
+// //         k = s_cpy.find(" ");
+// //         if (k <= 0) {
+// //             i++;
+// //             break;
+// //         }
+// //
+// //         token = s_cpy.substr(0, k-1);
+// //         cl_token = util::strip_chars(token, "(\"");
+// //
+// //         if (i == BS_TYPE) {
+// //             bs->type = cl_token;
+// //         }
+// //         if (i == BS_SUBTYPE) {
+// //             bs->subtype = cl_token;
+// //         }
+// //
+// //         s_cpy = s_cpy.substr(spacepos+1, s_cpy.length() - spacepos - 1);
+// //         i++;
+// //     }
 //
-//         s_cpy = s_cpy.substr(spacepos+1, s_cpy.length() - spacepos - 1);
-//         i++;
-//     }
-
-    return bs;
-}
+//     return bs;
+// }
 
 /*
  * Parse BODYSTRUCTURE response into a prefix tree of bodys
@@ -299,63 +298,97 @@ IMAP_parser::parse_bodystructure(string s)
  */
 void
 IMAP_parser::imap_parse_bodystructure(
-        string s,
-        Body* tree,
+        stringstream& ss,
+        Body* node,
         string section,
         bool is_child)
 {
-    cout << "bs s: " << s << "\n";
-    if (s.length() <= 0) {
+//     cout << "bs s: " << s << "\n";
+    if (ss.rdbuf()->in_avail() == 0)
         return;
+
+    char c; // head
+
+    if (ss.get(c) && c == '(') {        // body
+        if (ss.peek() == '(') {         // multipart body (body-type-mpart)
+            node->type = Body_type_mpart;
+            Body* child = new Body();
+            node->child = child;
+            IMAP_parser::imap_parse_bodystructure(
+                    ss,
+                    node->child,
+                    util::get_new_section(section, true),
+                    true);
+
+            do {
+                node->section = section;
+                Body *sibling = new Body();
+                node->sibling = sibling;
+                IMAP_parser::imap_parse_bodystructure(
+                        ss,
+                        node->sibling,
+                        util::get_new_section(section, false),
+                        false);
+            } while (ss.peek() == '(');
+        }
+        else {              // single part body (body-type-1part)
+            ss >> node->bodypart;
+            node->section = section;
+        }
+    }
+    else {                  // multipart params (body-ext-mpart)
+        string str;
+        ss >> str;
+        cout << "multipart params: " << str << endl;
     }
 
-    if (s[0] == '(') {
-        int start = (s[1] == '(') ? 1 : 0;
-        int bp_len = util::get_body_length(
-                s.substr(start, s.length()- start));
-        string car = s.substr(start, s.length() - start);
 
-        Body *bp_child = new Body();
-        Body *bp_sib = new Body();
-
-        if (!bp_child || !bp_sib) {
-            return;
-        }
-
-        string ns_chd = util::get_new_section(section, true);
-        string ns_sbg;
-        if (is_child) {
-            ns_sbg = util::get_new_section(ns_chd, false);
-        } else {
-            ns_sbg = util::get_new_section(section, false);
-        }
-
-        if (s[1] == '(') { /* nested body(s) */
-            tree->section = section;
-            tree->child = bp_child;
-            tree->sibling = bp_sib;
-
-            imap_parse_bodystructure(car,
-                    tree->child, ns_chd, true);
-//             imap_parse_bodystructure(s.substr(bp_len, s.length()- bp_len,
-//                     tree->sibling, ns_sbg, false);
-            imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
-                    tree->sibling, ns_sbg, false);
-        } else {
-            tree->section = section;
-            tree->bodystructure = parse_bodystructure(s);
-            tree->sibling = bp_sib;
-
-//             imap_parse_bodystructure(s + bp_len-1,
-//                     tree->sibling, ns_sbg, false);
-            imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
-                    tree->sibling, ns_sbg, false);
-            imap_parse_bodystructure(s.substr(bp_len, s.length() -(bp_len-1)),
-                    tree->sibling, ns_sbg, false);
-        }
-    } else {  /* multipart trailing fields: "mixed"… / "alternative"… */
-        return;
-    }
+//     int start = (s[1] == '(') ? 1 : 0;
+//     int bp_len = util::get_body_length(
+//             s.substr(start, s.length()- start));
+//     string car = s.substr(start, s.length() - start);
+//
+//     Body *bp_child = new Body();
+//     Body *bp_sib = new Body();
+//
+//     if (!bp_child || !bp_sib) {
+//         return;
+//     }
+//
+//     string ns_chd = util::get_new_section(section, true);
+//     string ns_sbg;
+//     if (is_child) {
+//         ns_sbg = util::get_new_section(ns_chd, false);
+//     } else {
+//         ns_sbg = util::get_new_section(section, false);
+//     }
+//
+//     if (s[1] == '(') { /* nested body(s) */
+//         node->section = section;
+//         node->child = bp_child;
+//         node->sibling = bp_sib;
+//
+//         imap_parse_bodystructure(car,
+//                 node->child, ns_chd, true);
+//         //             imap_parse_bodystructure(s.substr(bp_len, s.length()- bp_len,
+//         //                     node->sibling, ns_sbg, false);
+//         imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
+//                 node->sibling, ns_sbg, false);
+//     } else {
+//         node->section = section;
+//         node->bodystructure = parse_bodystructure(s);
+//         node->sibling = bp_sib;
+//
+//         //             imap_parse_bodystructure(s + bp_len-1,
+//         //                     node->sibling, ns_sbg, false);
+//         imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
+//                 node->sibling, ns_sbg, false);
+//         imap_parse_bodystructure(s.substr(bp_len, s.length() -(bp_len-1)),
+//                 node->sibling, ns_sbg, false);
+//     }
+// } else {  /* multipart trailing fields: "mixed"… / "alternative"… */
+//     return;
+// }
 }
 
 // /* Parse a RFC822.HEADER response into a header struct
@@ -462,13 +495,13 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         env_tok = token.substr(offset, token.length() - offset);
 
 #ifdef IMAP_PARSER_DEBUG
-	debug("uid tok        : " + uid_tok );
-	debug("flags tok      : " + flags_tok );
-	debug("idate tok      : " + idate_tok );
-    debug("formatted idate: " +
-            Date::format_date(util::strip_chars(idate_tok, "\"")));
-	debug("size tok       : " + size_tok );
-	debug("env tok        : " + env_tok );
+        debug("uid tok        : " + uid_tok );
+        debug("flags tok      : " + flags_tok );
+        debug("idate tok      : " + idate_tok );
+        debug("formatted idate: " +
+                Date::format_date(util::strip_chars(idate_tok, "\"")));
+        debug("size tok       : " + size_tok );
+        debug("env tok        : " + env_tok );
 #endif
 
         Email* em = new Email();
@@ -496,70 +529,53 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
 Email*
 IMAP_parser::parse_email(string s)
 {
-	string b_start_str = "BODYSTRUCTURE ";
-	string b_end_str = "\r\nABCD";
-	size_t b_spos = s.find(b_start_str);
-	size_t b_epos = s.find(b_end_str);
-	string hdr_s = s.substr(0, b_spos-1);
-	size_t bs_start = b_spos + b_start_str.length();
-	string bs = s.substr(bs_start, b_epos - bs_start);
+//     string b_start_str = "BODYSTRUCTURE ";
+//     string b_end_str = "\r\nABCD";
+//     size_t b_spos = s.find(b_start_str);
+//     size_t b_epos = s.find(b_end_str);
+//     string hdr_s = s.substr(0, b_spos-1);
+//     size_t bs_start = b_spos + b_start_str.length();
+//     string bs = s.substr(bs_start, b_epos - bs_start);
+//
+//     //     cout << s << endl;
+//     //     cout << "hdr_s: " + hdr_s << endl;
+//     //     cout << "bs: " + bs << endl;
+//
+//     // 	RFC822_header* hdr = this->parse_header(hdr_s);
+//     //     hdr->Dump_header(hdr);
+//
+//     Body* bp = new Body();
+//     Bodystructure* bodyst = new Bodystructure();
+//
+//     bodyst->type = "/";
+//     bodyst->subtype = "/";
+//     bp->bodystructure = bodyst;
+//
+//     string base_section;
+//     //     cout << "str: " << s << endl;
+//     //     cout << "bs: " << bs << endl;
+//     if (strncmp(bs.c_str(), "(\"", 2) == 0) { /* no child or sibling */
+//         base_section = "1";
+//     } else {
+//         base_section = "0";
+//     }
+//
+//     stringstream ss(bs);
+//     imap_parse_bodystructure(ss, bp, base_section, true);
 
-//     cout << s << endl;
-//     cout << "hdr_s: " + hdr_s << endl;
-//     cout << "bs: " + bs << endl;
+    Email* em = new Email();
 
-// 	RFC822_header* hdr = this->parse_header(hdr_s);
-//     hdr->Dump_header(hdr);
-
-	Body* bp = new Body();
-	Bodystructure* bodyst = new Bodystructure();
-
-	bodyst->type = "/";
-	bodyst->subtype = "/";
-	bp->bodystructure = bodyst;
-
-    string base_section;
-//     cout << "str: " << s << endl;
-//     cout << "bs: " << bs << endl;
-	if (strncmp(bs.c_str(), "(\"", 2) == 0) { /* no child or sibling */
-		base_section = "1";
-	} else {
-		base_section = "0";
-	}
-
-	imap_parse_bodystructure(bs, bp, base_section, true);
-
-	Email* em = new Email();
-
-// 	em->rfc822_hdr = hdr;
-	em->body = bp;
-// 	em->text = NULL;
-	return em;
+    // 	em->rfc822_hdr = hdr;
+//     em->body = bp;
+    // 	em->text = NULL;
+    return em;
 }
 
-// /* Dump a prefix tree of bodys */
-// void
-// dump_body_tree(Body* bp)
-// {
-//     if (!bp) {
-//         return;
-//     }
-//
-//     if (bp->bodystructure) {
-//         debug("type/subtype [section]: "
-//             + bp->bodystructure->type
-//             + "/" + bp->bodystructure->subtype
-//             + " [" << bp->section << "]");
-//     }
-//
-//     dump_body_tree(bp->child);
-//     dump_body_tree(bp->sibling);
-// }
 
 #ifdef IMAP_PARSER_DEBUG
 
 // DEBUG
-void
+    void
 print_before_after_section(bool is_child, string old)
 {
     string new_s = util::get_new_section(old, is_child);
@@ -569,24 +585,53 @@ print_before_after_section(bool is_child, string old)
 }
 
 // Test various cases of sections labelling and nesting
-int
+    int
 main()
 {
-    string sel_resp =
-        " * FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent)\r\n * OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent \\*)] Flags permitted.\r\n * 156 EXISTS\r\n * 3 RECENT\r\n * OK [UNSEEN 140] First unseen.\r\n * OK [UIDVALIDITY 1428093624] UIDs valid\r\n * OK [UIDNEXT 410] Predicted next UID\r\n a OK [READ-WRITE] Select completed (0.000 secs).\r\n DONE";
-//  * FLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent)
-//  * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent \*)] Flags permitted.
-//  * 156 EXISTS
-//  * 3 RECENT
-//  * OK [UNSEEN 140] First unseen.
-//  * OK [UIDVALIDITY 1428093624] UIDs valid
-//  * OK [UIDNEXT 410] Predicted next UID
-//  a OK [READ-WRITE] Select completed (0.000 secs).
-//  DONE";
+    //     string sel_resp =
+    //         " * FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent)\r\n * OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft $MDNSent \\*)] Flags permitted.\r\n * 156 EXISTS\r\n * 3 RECENT\r\n * OK [UNSEEN 140] First unseen.\r\n * OK [UIDVALIDITY 1428093624] UIDs valid\r\n * OK [UIDNEXT 410] Predicted next UID\r\n a OK [READ-WRITE] Select completed (0.000 secs).\r\n DONE";
+    //  * FLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent)
+    //  * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft $MDNSent \*)] Flags permitted.
+    //  * 156 EXISTS
+    //  * 3 RECENT
+    //  * OK [UNSEEN 140] First unseen.
+    //  * OK [UIDVALIDITY 1428093624] UIDs valid
+    //  * OK [UIDNEXT 410] Predicted next UID
+    //  a OK [READ-WRITE] Select completed (0.000 secs).
+    //  DONE";
 
-    Mailbox mb {};
-    IMAP_parser::parse_mailbox_infos(mb, sel_resp);
-    mb.dump();
+    //     Mailbox* mb = new Mailbox();
+    //     IMAP_parser::parse_select(mb, sel_resp);
+    //     mb->dump();
+
+    vector<string> bodysts = {
+        "(\"text\" \"plain\" (\"charset\" \"utf-8\") NIL NIL \"quoted-printable\" 218 9 NIL NIL NIL NIL)",
+        "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 571 12 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"base64\" 10184 130 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"----=_NextPart_000_4597_4CAB1C23.F3651148\") NIL NIL NIL)",
+        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 7058 150 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_184312_21033572.1438499366814\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_184311_19245088.1438499366814\") NIL NIL NIL)",
+        "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2022.JPG\" \"x-apple-part-url\" \"51B8DB1C-5597-434B-A040-3F60D93C5A0C\") NIL NIL \"base64\" 1296668 NIL (\"inline\" (\"filename\" \"IMG_2022.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2023.JPG\" \"x-apple-part-url\" \"6E6937C2-2458-4AA1-A784-E1AFD2650D5C\") NIL NIL \"base64\" 1265448 NIL (\"inline\" (\"filename\" \"IMG_2023.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2024.JPG\" \"x-apple-part-url\" \"AAAB5971-8A83-4B3D-A682-2CD41B83AE00\") NIL NIL \"base64\" 1090466 NIL (\"inline\" (\"filename\" \"IMG_2024.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2025.JPG\" \"x-apple-part-url\" \"CB30D6AF-6F41-4544-BAF2-51F81308F968\") NIL NIL \"base64\" 1201580 NIL (\"inline\" (\"filename\" \"IMG_2025.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2026.JPG\" \"x-apple-part-url\" \"980376C3-182A-4AEE-A76B-6B90A6AE68E2\") NIL NIL \"base64\" 1523752 NIL (\"inline\" (\"filename\" \"IMG_2026.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-7E918C0D-DD6B-4A28-A18C-971836443E43\") NIL NIL NIL)",
+        "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
+        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 0 0 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932646_1390009111.1438932541709\") NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"76339561.pdf\") NIL NIL \"base64\" 14022 NIL (\"attachment\" (\"filename\" \"76339561.pdf\")) NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932645_770043819.1438932541709\") NIL NIL NIL)",
+        "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 38150 640 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3982017_1506491351.1438932567608\") NIL NIL NIL)",
+        "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6732 95 NIL NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"=?utf-8?B?UmVtcGxhY2VtZW50cyBBb8O7dCBNw6lkZWNpbnMgRy5wZGY=?=\") NIL NIL \"base64\" 300020 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"--boundary_15_c748b171-3050-408a-b256-c74d9cbd9f3c\") NIL NIL NIL)",
+        "(((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 11142 141 NIL NIL NIL NIL) \"alternative\" (\"charset\" \"UTF-8\" \"Boundary\" \"Askia-MI4C--63476056-e2d1-4797-9a6f-b4ff295576ef\") NIL NIL NIL) \"mixed\" (\"boundary\" \"Askia-MI4C--aa245807-d537-48ff-b041-193b12c4669d\") NIL NIL NIL)",
+        "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 546 16 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 1247 21 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"001a113d31bc65dcc5051d38ad5c\") NIL NIL NIL)",
+        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6448 145 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_90290_14190963.1440066396251\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_90289_8705391.1440066396251\") NIL NIL NIL)",
+    };
+
+    stringstream ss;
+    for (auto s : bodysts) {
+        ss.str(s);
+        cout << "\nNew email:" << endl;
+        cout << "string: \n" << s << endl;
+        Email *em = new Email();
+        IMAP_parser::imap_parse_bodystructure(ss, em->body, "1", false);
+        em->body->dump();
+        cout << endl;
+        delete em;
+        ss.str("");
+        ss.clear();
+    }
+
 
     return 0;
 }

@@ -46,6 +46,8 @@ class Nstring
 
         void set_str(const string& s);
         string str() const;
+
+        Nstring& operator=(const Nstring& ns);
 };
 
 istream& operator>>(istream& is, Nstring& ns);
