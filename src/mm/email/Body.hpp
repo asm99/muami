@@ -21,13 +21,14 @@ class Body
 {
     public:
         Body_type type;
+        string mbody_subtype;
         string section;
         Body* sibling;
         Body* child;
         Bodypart* bodypart;
 
         Body();
-        ~Body() {};
+        ~Body();
 
         void dump();
 };

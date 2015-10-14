@@ -303,7 +303,6 @@ IMAP_parser::imap_parse_bodystructure(
         string section,
         bool is_child)
 {
-//     cout << "bs s: " << s << "\n";
     if (ss.rdbuf()->in_avail() == 0)
         return;
 
@@ -312,83 +311,39 @@ IMAP_parser::imap_parse_bodystructure(
     if (ss.get(c) && c == '(') {        // body
         if (ss.peek() == '(') {         // multipart body (body-type-mpart)
             node->type = Body_type_mpart;
-            Body* child = new Body();
-            node->child = child;
-            IMAP_parser::imap_parse_bodystructure(
-                    ss,
-                    node->child,
-                    util::get_new_section(section, true),
-                    true);
+            is_child = true;
 
-            do {
+            while (ss.peek() == '(') {
                 node->section = section;
-                Body *sibling = new Body();
-                node->sibling = sibling;
-                IMAP_parser::imap_parse_bodystructure(
-                        ss,
-                        node->sibling,
-                        util::get_new_section(section, false),
-                        false);
-            } while (ss.peek() == '(');
+                Body *bdy = new Body();
+                if (is_child) {
+                    node->child = bdy;
+                    IMAP_parser::imap_parse_bodystructure(
+                            ss,
+                            node->child,
+                            util::get_new_section(section, false),
+                            false);
+                }
+                else {
+                    node->sibling = bdy;
+                    IMAP_parser::imap_parse_bodystructure(
+                            ss,
+                            node->sibling,
+                            util::get_new_section(section, false),
+                            false);
+                }
+            }
         }
         else {              // single part body (body-type-1part)
+            node->type = Body_type_1part;
             ss >> node->bodypart;
             node->section = section;
         }
     }
     else {                  // multipart params (body-ext-mpart)
-        string str;
-        ss >> str;
-        cout << "multipart params: " << str << endl;
+        ss >> node->mbody_subtype;
+        ss >> node->bodypart->ext_mpart();
     }
-
-
-//     int start = (s[1] == '(') ? 1 : 0;
-//     int bp_len = util::get_body_length(
-//             s.substr(start, s.length()- start));
-//     string car = s.substr(start, s.length() - start);
-//
-//     Body *bp_child = new Body();
-//     Body *bp_sib = new Body();
-//
-//     if (!bp_child || !bp_sib) {
-//         return;
-//     }
-//
-//     string ns_chd = util::get_new_section(section, true);
-//     string ns_sbg;
-//     if (is_child) {
-//         ns_sbg = util::get_new_section(ns_chd, false);
-//     } else {
-//         ns_sbg = util::get_new_section(section, false);
-//     }
-//
-//     if (s[1] == '(') { /* nested body(s) */
-//         node->section = section;
-//         node->child = bp_child;
-//         node->sibling = bp_sib;
-//
-//         imap_parse_bodystructure(car,
-//                 node->child, ns_chd, true);
-//         //             imap_parse_bodystructure(s.substr(bp_len, s.length()- bp_len,
-//         //                     node->sibling, ns_sbg, false);
-//         imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
-//                 node->sibling, ns_sbg, false);
-//     } else {
-//         node->section = section;
-//         node->bodystructure = parse_bodystructure(s);
-//         node->sibling = bp_sib;
-//
-//         //             imap_parse_bodystructure(s + bp_len-1,
-//         //                     node->sibling, ns_sbg, false);
-//         imap_parse_bodystructure(s.substr(bp_len, s.length()-bp_len),
-//                 node->sibling, ns_sbg, false);
-//         imap_parse_bodystructure(s.substr(bp_len, s.length() -(bp_len-1)),
-//                 node->sibling, ns_sbg, false);
-//     }
-// } else {  /* multipart trailing fields: "mixed"… / "alternative"… */
-//     return;
-// }
 }
 
 // /* Parse a RFC822.HEADER response into a header struct
@@ -605,8 +560,8 @@ main()
     //     mb->dump();
 
     vector<string> bodysts = {
-        "(\"text\" \"plain\" (\"charset\" \"utf-8\") NIL NIL \"quoted-printable\" 218 9 NIL NIL NIL NIL)",
-        "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 571 12 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"base64\" 10184 130 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"----=_NextPart_000_4597_4CAB1C23.F3651148\") NIL NIL NIL)",
+        "(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
+        "(\"text\" \"plain\" (\"charset\" \"utf-8\") NIL NIL \"quoted-printable\" 218 9 NIL NIL NIL NIL)", //         "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 571 12 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"base64\" 10184 130 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"----=_NextPart_000_4597_4CAB1C23.F3651148\") NIL NIL NIL)",
         "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 7058 150 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_184312_21033572.1438499366814\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_184311_19245088.1438499366814\") NIL NIL NIL)",
         "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2022.JPG\" \"x-apple-part-url\" \"51B8DB1C-5597-434B-A040-3F60D93C5A0C\") NIL NIL \"base64\" 1296668 NIL (\"inline\" (\"filename\" \"IMG_2022.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2023.JPG\" \"x-apple-part-url\" \"6E6937C2-2458-4AA1-A784-E1AFD2650D5C\") NIL NIL \"base64\" 1265448 NIL (\"inline\" (\"filename\" \"IMG_2023.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2024.JPG\" \"x-apple-part-url\" \"AAAB5971-8A83-4B3D-A682-2CD41B83AE00\") NIL NIL \"base64\" 1090466 NIL (\"inline\" (\"filename\" \"IMG_2024.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2025.JPG\" \"x-apple-part-url\" \"CB30D6AF-6F41-4544-BAF2-51F81308F968\") NIL NIL \"base64\" 1201580 NIL (\"inline\" (\"filename\" \"IMG_2025.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2026.JPG\" \"x-apple-part-url\" \"980376C3-182A-4AEE-A76B-6B90A6AE68E2\") NIL NIL \"base64\" 1523752 NIL (\"inline\" (\"filename\" \"IMG_2026.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-7E918C0D-DD6B-4A28-A18C-971836443E43\") NIL NIL NIL)",
         "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
@@ -631,7 +586,6 @@ main()
         ss.str("");
         ss.clear();
     }
-
 
     return 0;
 }

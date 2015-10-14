@@ -1,11 +1,16 @@
 #include "Body.hpp"
 
-// Constructor
+// Constructor & destructor
 Body::Body()
 {
     sibling = nullptr;
     child = nullptr;
     bodypart = new Bodypart();
+};
+
+Body::~Body()
+{
+    delete bodypart;
 };
 
 /* Dump a prefix tree of bodys */
@@ -19,6 +24,10 @@ Body::dump()
 //             + "/" + bp->bodystructure->subtype
 //             + " [" << bp->section << "]");
 //     }
+
+    if (type == Body_type_mpart) {
+        debug("mbody subtype: " + mbody_subtype);
+    }
 
     cout << "section: " << section << endl;
     if (child)

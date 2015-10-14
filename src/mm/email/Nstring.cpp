@@ -54,8 +54,10 @@ operator>>(istream& is, Nstring& ns)
 
         acc += s + " ";
 
-        if (s.back() == '"' && s[s.length()-2] != '\\')
-            break;
+        // !!!!!!!!!!!! for envelope, must be uncomment !!!!!!!!!!!!!!!
+//         if (s.back() == '"' && s[s.length()-2] != '\\')
+//         if (s.back() == '"' && is.peek() == ')')
+//             break;
 
         if (s.back() == ')') {
             break;
@@ -65,6 +67,7 @@ operator>>(istream& is, Nstring& ns)
             for (unsigned int i = s.length()-1; i > pos; --i) {
                 is.putback(s[i]);
             }
+            break;
         }
 
         count++;

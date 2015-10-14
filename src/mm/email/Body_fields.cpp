@@ -66,6 +66,7 @@ Body_fields::octets()
 void
 Body_fields::dump()
 {
+    debug("--- body_fields ---");
     debug("body_fld_id    : " + id());
     debug("body_fld_desc  : " + desc());
     debug("body_fld_enc   : " + to_string(enc()));
@@ -81,11 +82,6 @@ operator>>(stringstream& ss, Body_fields* bf)
     unsigned long ul_octets;
 
     ss >> bf->params() >> tok_id >> tok_desc >> tok_enc >> ul_octets;
-
-    cout << tok_id.str() << " - "
-         << tok_desc.str() << " - "
-         << tok_enc << " - " << ul_octets
-         << endl;
 
     bf->set_id(tok_id);
     bf->set_desc(tok_desc);
