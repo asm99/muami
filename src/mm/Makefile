@@ -38,7 +38,8 @@ SRCS = coding/base64.cpp \
 	   utils/util.cpp
 
 HDRS = $(patsubst %.cpp, %.hpp, $(SRCS)) \
-	   protocol/Protocol_manager.hpp
+	   protocol/Protocol_manager.hpp \
+	   email/flags.hpp
 
 OBJS = $(addprefix $(BLD_DIR)/, \
 	   $(notdir \

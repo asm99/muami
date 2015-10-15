@@ -574,10 +574,10 @@ main()
     };
 
     stringstream ss;
+    int count = 0;
     for (auto s : bodysts) {
         ss.str(s);
-        cout << "\nNew email:" << endl;
-        cout << "string: \n" << s << endl;
+        cout << "\n" << count++ << ". string: \n" << s << endl;
         Email *em = new Email();
         IMAP_parser::imap_parse_bodystructure(ss, em->body, "1", false);
         em->body->dump();

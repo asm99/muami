@@ -66,11 +66,14 @@ Body_fields::octets()
 void
 Body_fields::dump()
 {
-    debug("--- body_fields ---");
-    debug("body_fld_id    : " + id());
-    debug("body_fld_desc  : " + desc());
-    debug("body_fld_enc   : " + to_string(enc()));
-    debug("body_fld_octets: " + to_string(octets()));
+    cout << "+----------------+----------------"       << endl
+         << "|           Body_fields           "       << endl
+         << "+----------------+----------------"       << endl
+         << "| body_fld_id    |" + id()		           << endl
+         << "| body_fld_desc  |" + desc()		       << endl
+         << "| body_fld_enc   |" + to_string(enc())	   << endl
+         << "| body_fld_octets|" + to_string(octets()) << endl
+         << "| body_fld_param |";
     params()->dump();
 }
 

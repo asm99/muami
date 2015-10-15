@@ -17,14 +17,6 @@ Body::~Body()
 void
 Body::dump()
 {
-
-//     if (bp->bodystructure) {
-//         debug("type/subtype [section]: "
-//             + bp->bodystructure->type
-//             + "/" + bp->bodystructure->subtype
-//             + " [" << bp->section << "]");
-//     }
-
     if (type == Body_type_mpart) {
         debug("mbody subtype: " + mbody_subtype);
     }
