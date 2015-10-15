@@ -30,7 +30,7 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
             item->setWhatsThis(fileInfo.filePath());
         }
     }
-
+    delete ui->folderList->item(0);
     ui->pathAccessor->setText(way);
 }
 
@@ -42,7 +42,25 @@ AttachFileWindow::~AttachFileWindow()
 /** ++ Volet des dossiers ++ **/
 void AttachFileWindow::on_folderList_itemDoubleClicked(QListWidgetItem *item)
 {
-    QString str = item->whatsThis() ;
+    QString str = item->whatsThis();
+    QStringList test = str.split("/");
+    test.removeFirst();
+    if(test[test.size()-1] == "..")
+    {
+        QString newPath = "";
+        for(int n = 0; n < test.size()-2; n++)
+        {
+            newPath.append("/");
+            newPath.append(test[n]);
+        }
+        ui->pathAccessor->setText(newPath);
+        str = newPath ;
+    }
+    else
+    {
+        ui->pathAccessor->setText(str);
+    }
+
     QDir *path = new QDir(str) ;
     QFileInfoList filesList = path->entryInfoList();
 
@@ -59,18 +77,36 @@ void AttachFileWindow::on_folderList_itemDoubleClicked(QListWidgetItem *item)
             item->setWhatsThis(fileInfo.filePath());
         }
     }
-    ui->pathAccessor->setText(str);
+    delete ui->folderList->item(0);
 }
+
 
 void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
 {
-    QString str = item->whatsThis() ;
+    QString str = item->whatsThis();
+    QStringList test = str.split("/");
+    test.removeFirst();
+    if(test[test.size()-1] == "..")
+    {
+        QString newPath = "";
+        for(int n = 0; n < test.size()-2; n++)
+        {
+            newPath.append("/");
+            newPath.append(test[n]);
+        }
+        ui->pathAccessor->setText(newPath);
+        str = newPath ;
+    }
+    else
+    {
+        ui->pathAccessor->setText(str);
+    }
+
     QDir *path = new QDir(str) ;
     QFileInfoList filesList = path->entryInfoList();
 
     ui->contentList->clear();
     ui->fileDetails->clear();
-
     displayHelper();
 
     foreach(QFileInfo fileInfo, filesList)
@@ -95,60 +131,6 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
             item->setWhatsThis(details);
         }
     }
-}
-
-void AttachFileWindow::onBackButtonClicked()
-{
-    QString path = ui->pathAccessor->text();
-    QStringList split_path = path.split("/");
-    split_path.removeLast();
-    path = split_path.join("/");
-
-    QDir *new_path = new QDir(path) ;
-    QFileInfoList filesList = new_path->entryInfoList();
-
-    ui->folderList->clear();
-    ui->contentList->clear();
-    ui->fileDetails->clear();
-
-    foreach(QFileInfo fileInfo, filesList)
-    {
-        if (fileInfo.isDir())
-        {
-            QListWidgetItem *item = new QListWidgetItem(ui->folderList) ;
-            item->setText(fileInfo.fileName());
-            item->setWhatsThis(fileInfo.filePath());
-        }
-
-        if (!fileInfo.isDir())
-        {
-            QString file = fileInfo.fileName() ;
-            QListWidgetItem *item = new QListWidgetItem(ui->contentList) ;
-            item->setText(fileInfo.fileName());
-
-            QString details = "Chemin du fichier :\n";
-            details.append(fileInfo.filePath());
-            details.append("\n\nDate de création :\n");
-            details.append(fileInfo.created().toString());
-            details.append("\n\nDate de dernière modification :\n");
-            details.append(fileInfo.lastModified().toString());
-            details.append("\n\nType de fichier :\n");
-            details.append(fileInfo.suffix());
-
-            item->setWhatsThis(details);
-        }
-    }
-    ui->pathAccessor->setText(path);
-}
-
-void AttachFileWindow::onGoButtonClicked()
-{
-    if(ui->folderList->currentItem())
-    {
-        on_folderList_itemDoubleClicked(ui->folderList->currentItem());
-    }
-
-    displayHelper();
 }
 
 void AttachFileWindow::accessToFolder()
@@ -205,8 +187,8 @@ void AttachFileWindow::displayHelper()
 que vous souhaitez joindre au courrier en tapant le chemin dans la barre de \
 recherche en haut à gauche.\n\nLe volet de gauche affiche les dossiers du \
 répertoire dans lequel vous vous trouvez. Cliquer une fois sur un dossier \
-affiche son contenu dans le volet central. Double-cliquez ou cliquez sur \
-\"Parcourir\" pour rentrer dans un dossier, cliquez sur \"Revenir\" pour \
+affiche son contenu dans le volet central. Double-cliquez \
+pour rentrer dans un dossier, Double-cliquez sur '..' pour \
 revenir dans le dossier parent.\n\nLe volet central affiche les fichiers \
 contenus dans le dossier en cours. Pour ajouter un fichier au courrier, \
 doublez-cliquez dessus ou sélectionner le fichier puis cliquez sur \"Ajouter\"\
@@ -331,12 +313,4 @@ void AttachFileWindow::connectWidgets()
             SIGNAL(clicked()),
             this->parentWidget(),
             SLOT(openAttachFileWindow()));
-
-    connect(ui->backButton,
-            SIGNAL(clicked()),
-            SLOT(onBackButtonClicked()));
-
-    connect(ui->goButton,
-            SIGNAL(clicked()),
-            SLOT(onGoButtonClicked()));
 }

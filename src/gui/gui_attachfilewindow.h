@@ -26,8 +26,6 @@ signals:
 private slots:
     void on_folderList_itemDoubleClicked(QListWidgetItem *item);
     void on_folderList_itemClicked(QListWidgetItem *item);
-    void onBackButtonClicked();
-    void onGoButtonClicked();
     void accessToFolder();
     void findFile(QString);
     void displayPathContent(QString str);

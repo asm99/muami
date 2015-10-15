@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setStyleSheet(
-        "QMainWindow {background:#636b6b;}\
+        "QMainWindow {background:#FFFFFF;}\
 \
          QPushButton {background:#3eacd1;\
                         color:#FFFFFF;\

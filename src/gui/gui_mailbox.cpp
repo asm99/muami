@@ -1,5 +1,6 @@
 #include "ui_gui_mailbox.h"
 #include "src/gui/gui_mailbox.h"
+#include <QMovie>
 
 MailBox::MailBox(QWidget *parent) :
     QMainWindow(parent),
@@ -25,8 +26,15 @@ MailBox::MailBox(QWidget *parent) :
     ui->displayer->setReadOnly(true);
     ui->displayer->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
-    toggleFields(false) ;
+    toggleMailFields(false) ;
+    toggleAccountFields(false);
+    toggleAccountButtons(false);
     toggleButtons(false) ;
+
+    movie = new QMovie("/home/furya/Bureau/L2/Qt/mailer/src/gui/res/spinner.gif");
+    ui->spinner->setAttribute(Qt::WA_NoSystemBackground);
+    ui->spinner->setMovie(movie);
+    movie->start();
 
     try {
             currentAccount = 0;
@@ -59,15 +67,30 @@ MailBox::~MailBox()
 /** ++ Display mails ++ **/
 void MailBox::accountConnector()
 {
-    Config_manager* cm = new Config_manager();
+    ui->spinner->show();
+
+    //Config_manager* cm = new Config_manager(); /**Pour test avec renew de
+                                                 /** connexion **/
+    cm = new Config_manager();                   /** Pour test local **/
     accountListSize = cm->get_accounts_count();
+    if(accountListSize > 1)
+    {
+        ui->previousAccount->setVisible(true);
+        ui->nextAccount->setVisible(true);
+    }
+    else
+    {
+        ui->previousAccount->setVisible(false);
+        ui->nextAccount->setVisible(false);
+    }
+
     Account* acc = cm->get_account_at_index(currentAccount);
 
     acc->connect();
     acc->login();
     acc->list_mboxes();
     acc->select_mbox("INBOX");
-    acc->fetch_emails_list(5, 1);
+    acc->fetch_emails_list(5, 0);
 
     ui->mailList->clear();
 
@@ -77,8 +100,13 @@ void MailBox::accountConnector()
         em->dump();
         displayMailSubject(em);
     }
-
+    QListWidgetItem *more = new QListWidgetItem(ui->mailList);
+    more->setText("Voir plus de mails");
+    ui->mailList->addItem(more); /** Le rendre cliquable pour lui assigner
+                                   * une action **/
     acc->logout();
+    movie->stop();
+    ui->spinner->hide();
 }
 
 void MailBox::displayMailSubject(Email *mail)
@@ -106,7 +134,35 @@ void MailBox::showMailContent(QListWidgetItem* mail)
     ui->actionTransf_rer->setVisible(true);
     ui->actionR_pondre->setVisible(true);
     ui->actionIsoler->setVisible(false);
-    toggleFields(false) ;
+    toggleMailFields(false) ;
+
+    fillMailFields("ALL");
+    ui->title->setVisible(true);
+    ui->title->setReadOnly(true);
+    ui->to->setVisible(true);
+    ui->to->setReadOnly(true);
+    if(ui->cc->text() != "")
+    {
+        ui->cc->setVisible(true);
+        ui->cc->setReadOnly(true);
+    }
+    else
+    {
+        ui->cc->setVisible(false);
+        ui->cc->setReadOnly(false);
+    }
+
+    if(ui->bcc->text() != "")
+    {
+        ui->bcc->setVisible(true);
+        ui->bcc->setReadOnly(true);
+    }
+    else
+    {
+        ui->bcc->setVisible(false);
+        ui->bcc->setReadOnly(false);
+    }
+
     toggleButtons(true) ;
     ui->cancelButton->setVisible(false);
     ui->sendButton->setVisible(false);
@@ -149,7 +205,7 @@ void MailBox::on_actionNouveau_courrier_triggered()
     WriteMail *new_mail = new WriteMail(this) ;
     new_mail->show();
     new_mail->getAddressesListFromMailBox(addressesBook);
-    toggleFields(false) ;
+    toggleMailFields(false) ;
 }
 /** ~~ Create a new mail ~~ **/
 
@@ -264,6 +320,7 @@ void MailBox::on_actionR_pondre_triggered()  // REMPLIR LES CHAMPS TO, CC, ETC
 {
     if(ui->mailList->currentItem())
     {
+        ui->displayer->clear();
         ui->displayer->setReadOnly(false);
         QTextCursor cursor = ui->displayer->textCursor() ;
         cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor,1);
@@ -273,7 +330,8 @@ void MailBox::on_actionR_pondre_triggered()  // REMPLIR LES CHAMPS TO, CC, ETC
         newline.append(old);
         ui->displayer->setText(newline);
 
-        toggleFields(true) ;
+        fillMailFields("");
+        toggleMailFields(true) ;
         toggleButtons(false);
         openedMailButtons() ;
     }
@@ -288,6 +346,7 @@ void MailBox::on_actionR_pondre_tous_triggered()     // REMPLIR LES CHAMPS TO, C
 {
     if(ui->mailList->currentItem())
     {
+        ui->displayer->clear();
         ui->displayer->setReadOnly(false);
         QTextCursor cursor = ui->displayer->textCursor() ;
         cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor,1);
@@ -297,7 +356,8 @@ void MailBox::on_actionR_pondre_tous_triggered()     // REMPLIR LES CHAMPS TO, C
         newline.append(old);
         ui->displayer->setText(newline);
 
-        toggleFields(true) ;
+        fillMailFields("ALL");
+        toggleMailFields(true) ;
         toggleButtons(false) ;
         openedMailButtons() ;
     }
@@ -312,6 +372,7 @@ void MailBox::on_actionTransf_rer_triggered()
 {
     if(ui->mailList->currentItem())
     {
+        ui->displayer->clear();
         ui->displayer->setReadOnly(false);
         QTextCursor cursor = ui->displayer->textCursor() ;
         cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor,1);
@@ -321,13 +382,51 @@ void MailBox::on_actionTransf_rer_triggered()
         newline.append(old);
         ui->displayer->setText(newline);
 
-        toggleFields(true) ;
+        toggleMailFields(true) ;
         toggleButtons(false) ;
         openedMailButtons() ;
     }
 }
 /** ~~ Reply ~~ **/
 
+/** ++ Fill functions ++ **/
+
+void MailBox::fillMailFields(QString reply)
+{
+    Account *acc = cm->get_account_at_index(currentAccount);
+    for(auto em : acc->cur_mbox()->emails())
+    {
+        if(em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
+        {
+            ui->title->setText(QString::fromStdString(em->envelope().subject().str()));
+
+            QString mail = QString::fromStdString(em->envelope().from()->mailbox());
+            mail.append("@");
+            mail.append(QString::fromStdString(em->envelope().from()->host()));
+            mail.replace(" ", "");
+            ui->to->setText(mail);
+
+            if (reply == "ALL")
+                {
+                    mail = "";
+
+                    Addresses *cc = em->envelope().cc();
+                    for(unsigned int x = 0; x < cc->size(); x++)
+                    {
+                        QString name = QString::fromStdString(cc->operator [](x)->mailbox());
+                        mail.append(name.replace(" ", ""));
+                        mail.append("@");
+                        name = QString::fromStdString(cc->operator [](x)->host());
+                        mail.append(name.replace(" ", ""));
+                        mail.append("; ");
+                    }
+                    ui->cc->setText(mail);
+                }
+        }
+    }
+}
+
+/** ~~ Fill functions ~~ **/
 
 /** ++ Isolate ++ **/
 void MailBox::on_mailList_itemDoubleClicked()
@@ -463,10 +562,19 @@ void MailBox::accountOptions()
     if (ui->accountMenuBtn->isVisible()) n = false;
     else if(ui->cancelAccount->isVisible()) n = true;
 
-    ui->previousAccount->setVisible(n);
-    ui->nextAccount->setVisible(n);
-    ui->accountMenuBtn->setVisible(n);
+    if(n == true && accountListSize > 1)
+    {
+        ui->nextAccount->setVisible(n);
+        ui->previousAccount->setVisible(n);
+    }
 
+    if(n == false)
+    {
+        ui->nextAccount->setVisible(n);
+        ui->previousAccount->setVisible(n);
+    }
+
+    ui->accountMenuBtn->setVisible(n);
     ui->addAccount->setVisible(!n);
     ui->delAccount->setVisible(!n);
     ui->cancelAccount->setVisible(!n);
@@ -540,7 +648,11 @@ void MailBox::addNewAccount()
                     ui->password->text().toStdString()
                 );
         currentAccount = accountListSize;
+        movie->start();
         QtConcurrent::run(this, &MailBox::accountConnector);
+        toggleAccountFields(false);
+        accountOptions();
+        ui->submitAccount->setVisible(false);
     }
 }
 
@@ -847,7 +959,7 @@ void MailBox::addToAddressField(QString address)
 
 
 /** ++ Gestion de l'affichage ++ **/
-void MailBox::toggleFields(bool n)
+void MailBox::toggleMailFields(bool n)
 {
     //Mail fields
     ui->title->setVisible(n);
@@ -856,7 +968,10 @@ void MailBox::toggleFields(bool n)
     ui->bcc->setVisible(n);
     ui->addFileButton_2->setVisible(n);
     ui->addressBook_2->setVisible(n);
+}
 
+void MailBox::toggleAccountFields(bool n)
+{
     //Account fields
     ui->imapServer->setVisible(n);
     ui->imapPort->setVisible(n);
@@ -882,7 +997,10 @@ void MailBox::toggleButtons(bool n)
     ui->actionEnvoyer->setVisible(n);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(n);
     ui->cancelButton->setVisible(n);
+}
 
+void MailBox::toggleAccountButtons(bool n)
+{
     ui->submitAccount->setVisible(n);
     ui->cancelAccount->setVisible(n);
     ui->addAccount->setVisible(n);

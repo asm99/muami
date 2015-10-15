@@ -60,5 +60,6 @@
         <file>res/user-4-add.png</file>
         <file>res/user-4-remove.png</file>
         <file>res/windows.png</file>
+        <file>res/spinner.gif</file>
     </qresource>
 </RCC>

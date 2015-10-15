@@ -33,6 +33,8 @@ public:
     int accountListSize;
     int currentAccount;
     bool checkbox;
+    Config_manager *cm;
+    QMovie *movie;
 
 public slots:
     void getAddressesListFromBook(QStringList);
@@ -75,6 +77,10 @@ private slots:
     void on_transferButton_clicked();
     void on_actionTransf_rer_triggered();
     /** Répondre au courrier **/
+
+    /** Fill Fields **/
+    void fillMailFields(QString);
+    /** Fill Fields **/
 
     /** Isoler le courrier **/
     void on_isolateButton_clicked();
@@ -121,7 +127,9 @@ private slots:
     /** Gestion du carnet d'adresses **/
 
     /** Gestion de l'affichage dynamique **/
-    void toggleFields(bool);
+    void toggleMailFields(bool);
+    void toggleAccountFields(bool);
+    void toggleAccountButtons(bool);
     void toggleButtons(bool);
     void inboxButtonsStyle();
     void groupBoxButtonStyle();
