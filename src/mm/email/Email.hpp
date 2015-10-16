@@ -12,8 +12,8 @@ using namespace std;
 class Email
 {
     private:
-        int em_uid;
-        int em_rfc822_size;
+        unsigned long em_uid;
+        unsigned long em_rfc822_size;
         unsigned char em_flags;
         string em_friendly_time;
         string em_internaldate;
@@ -30,8 +30,8 @@ class Email
         ~Email() { delete body; };
 
         // Setters
-        void set_uid(int u);
-        void set_rfc822_size(int sz);
+        void set_uid(unsigned long u);
+        void set_rfc822_size(unsigned long sz);
         void set_flags(unsigned int fl);
         void set_friendly_time(const string& time);
         void set_internaldate(const string& date);
@@ -39,8 +39,8 @@ class Email
         void set_rfc822_header(RFC822_header* const hdr);
 
         // Getters
-        int uid();
-        int rfc822_size();
+        unsigned long uid();
+        unsigned long rfc822_size();
         unsigned int flags();
         string& friendly_time();
         string& internaldate();

@@ -7,7 +7,8 @@ BLD_DIR = build
 # DBG : debug flag used for unit testing.
 # Refer to the specific file to get the appropriate flag. 
 # Note: leave the flag blank for production.
-DBG = -DIMAP_PARSER_DEBUG 
+# DBG = -DIMAP_PARSER_DEBUG 
+DBG = -DENVELOPE_DEBUG
 
 SRCS = coding/base64.cpp \
 	   coding/coding.cpp \
@@ -69,6 +70,10 @@ $(BLD_DIR)/%.o: %.cpp
 	$(CPP) $(CFLAGS) -c -o $@ $^ $(DBG)
 
 imap_parser: $(OBJS) $(HDRS)
+	@[ -d $(BLD_DIR) ] || mkdir -p $(BLD_DIR)
+	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
+
+envelope: $(OBJS) $(HDRS)
 	@[ -d $(BLD_DIR) ] || mkdir -p $(BLD_DIR)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 

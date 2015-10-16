@@ -85,7 +85,8 @@ main()
     istringstream iss(s);
     Addresses* ads = new Addresses();
     iss >> ads;
-    ads->dump();
+    cout << "size: " << ads->size() << endl;
+//     ads->dump();
 
     return 0;
 }

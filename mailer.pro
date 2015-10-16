@@ -23,6 +23,12 @@ SOURCES += src/gui/main.cpp\
     src/mm/debug/debug.cpp \
     src/mm/email/Address.cpp \
     src/mm/email/Addresses.cpp \
+    src/mm/email/Body.cpp \
+    src/mm/email/Body_ext_1part.cpp \
+    src/mm/email/Body_ext_mpart.cpp \
+    src/mm/email/Body_fields.cpp \
+    src/mm/email/Body_params.cpp \
+    src/mm/email/Bodypart.cpp \
     src/mm/email/Email.cpp \
     src/mm/email/Envelope.cpp \
     src/mm/email/Mailbox.cpp \
@@ -51,6 +57,12 @@ HEADERS  += \
     src/mm/debug/debug.hpp \
     src/mm/email/Address.hpp \
     src/mm/email/Addresses.hpp \
+    src/mm/email/Body.hpp \
+    src/mm/email/Body_ext_1part.hpp \
+    src/mm/email/Body_ext_mpart.hpp \
+    src/mm/email/Body_fields.hpp \
+    src/mm/email/Body_params.hpp \
+    src/mm/email/Bodypart.hpp \
     src/mm/email/Email.hpp \
     src/mm/email/Envelope.hpp \
     src/mm/email/Mailbox.hpp \

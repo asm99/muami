@@ -3,13 +3,13 @@
 // Setters
 
 void
-Email::set_uid(int u)
+Email::set_uid(unsigned long u)
 {
     em_uid = u;
 }
 
 void
-Email::set_rfc822_size(int sz)
+Email::set_rfc822_size(unsigned long sz)
 {
     em_rfc822_size = sz;
 }
@@ -47,13 +47,13 @@ Email::set_rfc822_header(RFC822_header* const hdr)
 
 // Getters
 
-int
+unsigned long
 Email::uid()
 {
     return em_uid;
 }
 
-int
+unsigned long
 Email::rfc822_size()
 {
     return em_rfc822_size;
@@ -93,8 +93,8 @@ Email::rfc822_header()
 void
 Email::dump()
 {
-    debug("uid           : " + uid()          );
-    debug("rfc822_size   : " + rfc822_size()  );
+    debug("uid           : " + to_string(uid())          );
+    debug("rfc822_size   : " + to_string(rfc822_size())  );
     debug("friendly_time : " + friendly_time());
     debug("internaldate  : " + internaldate() );
     debug("flags         : " + flags()        );

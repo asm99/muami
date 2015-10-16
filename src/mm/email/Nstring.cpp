@@ -54,10 +54,9 @@ operator>>(istream& is, Nstring& ns)
 
         acc += s + " ";
 
-        // !!!!!!!!!!!! for envelope, must be uncomment !!!!!!!!!!!!!!!
-//         if (s.back() == '"' && s[s.length()-2] != '\\')
+        if (s.back() == '"' && s[s.length()-2] != '\\')
 //         if (s.back() == '"' && is.peek() == ')')
-//             break;
+            break;
 
         if (s.back() == ')') {
             break;

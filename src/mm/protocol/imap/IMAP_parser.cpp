@@ -449,7 +449,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         offset = env_pos + env_s.length();
         env_tok = token.substr(offset, token.length() - offset);
 
-#ifdef IMAP_PARSER_DEBUG
+// #ifdef IMAP_PARSER_DEBUG
         debug("uid tok        : " + uid_tok );
         debug("flags tok      : " + flags_tok );
         debug("idate tok      : " + idate_tok );
@@ -457,11 +457,11 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
                 Date::format_date(util::strip_chars(idate_tok, "\"")));
         debug("size tok       : " + size_tok );
         debug("env tok        : " + env_tok );
-#endif
+// #endif
 
         Email* em = new Email();
         em->set_uid(stol(uid_tok));
-        em->set_rfc822_size(stol(uid_tok));
+        em->set_rfc822_size(stol(size_tok));
         em->set_flags(parse_flags(util::strip_chars(flags_tok, "()")));
         string stripped_date = util::strip_chars(idate_tok, "\"");
         em->set_internaldate(stripped_date);
