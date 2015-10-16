@@ -42,7 +42,7 @@ operator>>(istream& is, Addresses* addresses)
         cout << "Addresses token: " << token << endl;
 #endif
         // Nstring is NIL
-        if (count == 0 && token.find("NIL") != string::npos)
+        if (count == 0 && token.compare(0, 3, "NIL") == 0)
             return is;
 
         cl_op_paren_pos = token.find(")(");

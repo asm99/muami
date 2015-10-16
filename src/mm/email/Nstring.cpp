@@ -35,7 +35,7 @@ operator>>(istream& is, Nstring& ns)
 
     while(is >> s) {
         if (count == 0) {
-            if (s.find("NIL") != string::npos) { // Nstring is NIL
+            if (s.compare(0, 3, "NIL") == 0) { // Nstring is NIL
                 break;
             } else if (s[0] == '{') {
                 is_raw = true;
