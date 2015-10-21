@@ -33,7 +33,7 @@
 #define NSTRING_H
 
 #include <sstream>
-#include "../utils/util.hpp"
+#include "../util/util.hpp"
 
 class Nstring
 {

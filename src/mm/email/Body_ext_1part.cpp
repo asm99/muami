@@ -142,7 +142,6 @@ operator>>(stringstream& ss, Body_ext_1part* bep)
             break;
             case 3:
             {
-                debug("tokkkk: " + tok);
                 bep->set_loc(tok);
             }
             break;

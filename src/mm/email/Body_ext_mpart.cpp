@@ -97,7 +97,7 @@ operator>>(stringstream& ss, Body_ext_mpart* bem)
         }
 
         if ((pos = token.find(")(")) != string::npos) {
-            ss.seekg(-(token.length() - pos) + 1, ss.cur);
+            ss.seekg(-(token.length() - pos)+ 1, ss.cur);
             string tmp = token.substr(0, pos+1);
             token = tmp;
             break;

@@ -19,8 +19,8 @@
 #include "../../email/Envelope.hpp"
 #include "../../email/Mailbox.hpp"
 #include "../../email/RFC822_header.hpp"
-#include "../../utils/date.hpp"
-#include "../../utils/util.hpp"
+#include "../../util/date.hpp"
+#include "../../util/util.hpp"
 #include "../../debug/debug.hpp"
 
 using namespace std;
@@ -47,8 +47,11 @@ namespace IMAP_parser
         void parse_select(Mailbox* mb, const string& s);
 
         RFC822_header* parse_header(string s);
-        void imap_parse_bodystructure(
-                stringstream& ss, Body* tree, string section, bool is_child);
+//         void imap_parse_bodystructure(
+//                 stringstream& ss, Body* tree, string section, bool is_child);
+        Body* imap_parse_bodystructure(stringstream& ss);
+//         void imap_parse_bodystructure(
+//                 stringstream& ss, vector<Body*>& bps, Body* node);
 //         Bodystructure* parse_bodystructure(string s);
         vector<Email*> parse_emails(string s);
         void parse_emails_infos(vector<Email*>& emails, string s);

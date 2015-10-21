@@ -24,7 +24,7 @@ class Email
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!! TO MAKE PRIVATE !!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Body *body;
+        Body* body;
 
         Email(): em_envelope() { body = new Body(); };
         ~Email() { delete body; };

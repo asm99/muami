@@ -2,10 +2,12 @@
 
 // Constructor
 Bodypart::Bodypart()
+//     :bp_envelope()
 {
     body_fields = new Body_fields();
     body_ext_1part = new Body_ext_1part();
     body_ext_mpart = new Body_ext_mpart();
+//     bp_body = new Body();
 }
 
 // Setters
@@ -92,14 +94,19 @@ Bodypart::ext_mpart()
     return body_ext_mpart;
 }
 
+// Envelope&
+// Bodypart::envelope()
+// {
+//     return bp_envelope;
+// }
+
 // Operator overload
 stringstream&
 operator>>(stringstream& ss, Bodypart* bp)
 {
     string token;
-    size_t pos;     // ")(" pos
-
     string type, subtype;
+
     ss >> type >> subtype;
 
     util::lower(type);
@@ -116,7 +123,6 @@ operator>>(stringstream& ss, Bodypart* bp)
     switch (bp->body_type()) {
         case BODY_1PART_TYPE_TEXT:
         {
-            cout << "BODY_1PART_TYPE_TEXT" << endl;
             unsigned long ul;
             ss >> bp->fields() >> ul;
             bp->set_lines(ul);
@@ -125,32 +131,29 @@ operator>>(stringstream& ss, Bodypart* bp)
         break;
         case BODY_1PART_TYPE_BASIC:
         {
-            cout << "BODY_1PART_TYPE_BASIC" << endl;
             ss >> bp->fields();
             ss >> bp->ext_1part();
         }
         break;
         case BODY_1PART_TYPE_MSG:
         {
+//  *  body-type-msg   = media-message SP body-fields SP envelope
+//  *                    SP body SP body-fld-lines
+            ss >> bp->fields();
+//             ss >> bp->envelope();
+
+//             vector<Body*> vec {};
+//             IMAP_parser::imap_parse_bodystructure(
+//                     ss, bp->body(), vec, "1", false);
+
+            unsigned long ul;
+            ss >> bp->fields() >> ul;
+            bp->set_lines(ul);
         }
         break;
         default:
         break;
     }
-
-//     while (ss >> token) {
-//         if ((pos = token.find(")(")) != string::npos) {
-//             for (unsigned int i = token.length()-1; i > pos; --i) {
-//                 ss.putback(token[i]);
-//             }
-//             cout << "token: " << token << endl;
-//             cout << "BREAK" << endl;
-//             break;
-//         }
-// //         cout << "token: " << token << endl;
-//     }
-
-    bp->dump();
 
     return ss;
 }
@@ -159,9 +162,9 @@ void
 Bodypart::dump()
 {
     debug("");
-    cout << "+----------------+---------------+" << endl
+    cout << "+----------------+----------------" << endl
          << "|            Bodypart             " << endl
-         << "+----------------+---------------+" << endl
+         << "+----------------+----------------" << endl
          << "| media-type     |" + type()        << endl
          << "| media-subtype  |" + subtype()     << endl;
     fields()->dump();
@@ -169,20 +172,18 @@ Bodypart::dump()
     switch (body_type()) {
         case BODY_1PART_TYPE_TEXT:
         {
-            cout << "+----------------+----------------"       << endl
+            cout << "+----------------+----------------"      << endl
                  << "| body-fld-lines |" + to_string(lines()) << endl;
         }
         break;
         case BODY_1PART_TYPE_BASIC:
-
         break;
         case BODY_1PART_TYPE_MSG:
-        {
-        }
         break;
         default:
         break;
     }
+
 
     ext_1part()->dump();
     ext_mpart()->dump();

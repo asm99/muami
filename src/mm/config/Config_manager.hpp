@@ -18,8 +18,8 @@
 #include <stdexcept>
 #include "Account.hpp"
 #include "Conf.hpp"
-#include "../utils/util.hpp"
-#include "../utils/error.hpp"
+#include "../util/util.hpp"
+#include "../util/error.hpp"
 
 using namespace std;
 

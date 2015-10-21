@@ -8,7 +8,7 @@ BLD_DIR = build
 # Refer to the specific file to get the appropriate flag. 
 # Note: leave the flag blank for production.
 # DBG = -DIMAP_PARSER_DEBUG 
-DBG = -DENVELOPE_DEBUG
+DBG = -DIMAP_PARSER_DEBUG
 
 SRCS = coding/base64.cpp \
 	   coding/coding.cpp \
@@ -34,9 +34,9 @@ SRCS = coding/base64.cpp \
 	   protocol/imap/IMAP_manager.cpp \
 	   protocol/imap/IMAP_parser.cpp \
 	   ssl/SSL_manager.cpp \
-	   utils/error.cpp \
-	   utils/date.cpp \
-	   utils/util.cpp
+	   util/error.cpp \
+	   util/date.cpp \
+	   util/util.cpp
 
 HDRS = $(patsubst %.cpp, %.hpp, $(SRCS)) \
 	   protocol/Protocol_manager.hpp \
@@ -54,7 +54,7 @@ vpath %.hpp coding \
 			protocol \
 			protocol/imap \
 			ssl \
-			utils
+			util
 
 vpath %.cpp coding \
 			config \
@@ -64,16 +64,12 @@ vpath %.cpp coding \
 			protocol \
 			protocol/imap \
 			ssl \
-			utils
+			util
 
 $(BLD_DIR)/%.o: %.cpp 
 	$(CPP) $(CFLAGS) -c -o $@ $^ $(DBG)
 
 imap_parser: $(OBJS) $(HDRS)
-	@[ -d $(BLD_DIR) ] || mkdir -p $(BLD_DIR)
-	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
-
-envelope: $(OBJS) $(HDRS)
 	@[ -d $(BLD_DIR) ] || mkdir -p $(BLD_DIR)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 

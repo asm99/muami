@@ -88,14 +88,16 @@ util::get_body_length(const string& s)
     int level = 0;
     unsigned int count;
     for (count = 0; count < s.length(); count++) {
-        if (count != 0 && level == 0)
+        if (count != 0 && level == 0) {
             break;
+        }
 
-
-        if (s[count] == '(')
+        if (s[count] == '(') {
             level++;
-        else if (s[count] == ')')
+        }
+        else if (s[count] == ')') {
             level--;
+        }
     }
     return count;
 }

@@ -26,7 +26,7 @@ void
 Body_params::dump()
 {
     if (is_nil()) {
-        cout << "nil" << endl;
+        cout << endl;
         return;
     }
 

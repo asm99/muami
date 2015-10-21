@@ -8,6 +8,7 @@
 #define BODY_H
 
 #include <sstream>
+#include <vector>
 #include "Bodypart.hpp"
 
 using namespace std;
@@ -19,18 +20,23 @@ typedef enum Body_type {
 
 class Body
 {
+    private:
+        void copy(const Body* b);       // Copy function
+
     public:
         Body_type type;
         string mbody_subtype;
         string section;
-        Body* sibling;
-        Body* child;
         Bodypart* bodypart;
+        vector<Body*> subparts;
 
-        Body();
-        ~Body();
+        // Constructors & destructor
+        Body();                         // default constructor
+        Body(const Body* b);            // copy constructor
+        ~Body();                        // default destructor
 
-        void dump();
+        // DEBUG
+        void dump(int depth=0);
 };
 
 #endif /* end of include guard: BODY_H */

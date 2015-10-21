@@ -43,7 +43,7 @@
 #include "Address.hpp"
 #include "Addresses.hpp"
 #include "Nstring.hpp"
-#include "../utils/util.hpp"
+#include "../util/util.hpp"
 #include "../coding/coding.hpp"
 #include "../debug/debug.hpp"
 

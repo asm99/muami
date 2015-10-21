@@ -14,7 +14,7 @@
 #include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
-#include "../utils/error.hpp"
+#include "../util/error.hpp"
 #include "../protocol/imap/IMAP_parser.hpp"
 #include "../debug/debug.hpp"
 

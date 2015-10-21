@@ -89,13 +89,6 @@
 //     Body_type_mpart,
 // } Body_type;
 
-typedef enum Body_1part_type {
-    BODY_1PART_TYPE_BASIC = 0,
-    BODY_1PART_TYPE_MSG,
-    BODY_1PART_TYPE_TEXT,
-    BODY_1PART_TYPE_UNKNOWN,
-} Body_1part_type;
-
 // struct body_type_basic {
 //     string type;
 //     string subtype;
@@ -139,13 +132,22 @@ typedef enum Body_1part_type {
 #ifndef BODYPART_H
 #define BODYPART_H
 
+#include <vector>
 #include "Body_fields.hpp"
 #include "Body_ext_1part.hpp"
 #include "Body_ext_mpart.hpp"
 #include "Envelope.hpp"
-#include "../utils/util.hpp"
+#include "../util/util.hpp"
+// #include "Body.hpp"
 
 using namespace std;
+
+typedef enum Body_1part_type {
+    BODY_1PART_TYPE_BASIC = 0,
+    BODY_1PART_TYPE_MSG,
+    BODY_1PART_TYPE_TEXT,
+    BODY_1PART_TYPE_UNKNOWN,
+} Body_1part_type;
 
 class Bodypart
 {
@@ -156,8 +158,8 @@ class Bodypart
         Body_fields* body_fields;
         Body_ext_1part* body_ext_1part;
         Body_ext_mpart* body_ext_mpart;
-        Envelope* bp_envelope;          // only for body-type-msg
-//         Body* body;                  // only for body-type-msg
+//         Envelope bp_envelope;           // only for body-type-msg
+//         Body* bp_body;                  // only for body-type-msg
         unsigned long body_fld_lines;   // for body-type-msg and body-type-text
 
     public:
@@ -183,6 +185,8 @@ class Bodypart
         Body_fields* fields();
         Body_ext_1part* ext_1part();
         Body_ext_mpart* ext_mpart();
+//         Envelope& envelope();
+//         Body* body();
 
         // DEBUG
         void dump();

@@ -296,54 +296,49 @@ IMAP_parser::check_server_imap_capability(string s)
  * 89 ((bp) (bp) (bp) (bp) "mixed" extp…)
  * TODO: parse mutipart/alternative types and params
  */
-void
-IMAP_parser::imap_parse_bodystructure(
-        stringstream& ss,
-        Body* node,
-        string section,
-        bool is_child)
+// mpart
+//   |-> 1part -> 1part -> mpart -> 1part
+//                           |-> 1part -> 1part
+// (((bp)(bp) "alternative" bem)(bp)(bp)(bp)(bp) "mixed" bem)
+//
+//                  /
+//                  |
+//                mixed
+//                  |
+//               alternative - bp - bp - bp - bp
+//                  |
+//               t/plain - t/html
+Body*
+IMAP_parser::imap_parse_bodystructure(stringstream& ss)
 {
-    if (ss.rdbuf()->in_avail() == 0)
-        return;
+    Body* node = nullptr;
+    if (!node) {
+        node = new Body();
+    }
+    char c;
 
-    char c; // head
+    if (ss.get(c)) {
+        if (c == '(') {                 // body
+            if (ss.peek() == '(') {     // multipart body (body-type-mpart)
 
-    if (ss.get(c) && c == '(') {        // body
-        if (ss.peek() == '(') {         // multipart body (body-type-mpart)
-            node->type = Body_type_mpart;
-            is_child = true;
+                node->type = Body_type_mpart;
 
-            while (ss.peek() == '(') {
-                node->section = section;
-                Body *bdy = new Body();
-                if (is_child) {
-                    node->child = bdy;
-                    IMAP_parser::imap_parse_bodystructure(
-                            ss,
-                            node->child,
-                            util::get_new_section(section, false),
-                            false);
+                while (ss.peek() == '(') {
+                    node->subparts.push_back(
+                        IMAP_parser::imap_parse_bodystructure(ss));
                 }
-                else {
-                    node->sibling = bdy;
-                    IMAP_parser::imap_parse_bodystructure(
-                            ss,
-                            node->sibling,
-                            util::get_new_section(section, false),
-                            false);
-                }
+
+                /* multipart params (body-ext-mpart) */
+                ss >> node->mbody_subtype;
+                ss >> node->bodypart->ext_mpart();
             }
-        }
-        else {              // single part body (body-type-1part)
-            node->type = Body_type_1part;
-            ss >> node->bodypart;
-            node->section = section;
+            else {              // single part body (body-type-1part)
+                node->type = Body_type_1part;
+                ss >> node->bodypart;
+           }
         }
     }
-    else {                  // multipart params (body-ext-mpart)
-        ss >> node->mbody_subtype;
-        ss >> node->bodypart->ext_mpart();
-    }
+    return node;
 }
 
 // /* Parse a RFC822.HEADER response into a header struct
@@ -449,7 +444,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
         offset = env_pos + env_s.length();
         env_tok = token.substr(offset, token.length() - offset);
 
-// #ifdef IMAP_PARSER_DEBUG
+#ifdef IMAP_PARSER_DEBUG
         debug("uid tok        : " + uid_tok );
         debug("flags tok      : " + flags_tok );
         debug("idate tok      : " + idate_tok );
@@ -457,7 +452,7 @@ IMAP_parser::parse_emails_infos(vector<Email*>& emails, string s)
                 Date::format_date(util::strip_chars(idate_tok, "\"")));
         debug("size tok       : " + size_tok );
         debug("env tok        : " + env_tok );
-// #endif
+#endif
 
         Email* em = new Email();
         em->set_uid(stol(uid_tok));
@@ -526,11 +521,10 @@ IMAP_parser::parse_email(string s)
     return em;
 }
 
-
 #ifdef IMAP_PARSER_DEBUG
 
 // DEBUG
-    void
+void
 print_before_after_section(bool is_child, string old)
 {
     string new_s = util::get_new_section(old, is_child);
@@ -540,7 +534,7 @@ print_before_after_section(bool is_child, string old)
 }
 
 // Test various cases of sections labelling and nesting
-    int
+int
 main()
 {
     //     string sel_resp =
@@ -560,28 +554,49 @@ main()
     //     mb->dump();
 
     vector<string> bodysts = {
-        "(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
         "(\"text\" \"plain\" (\"charset\" \"utf-8\") NIL NIL \"quoted-printable\" 218 9 NIL NIL NIL NIL)", //         "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 571 12 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"base64\" 10184 130 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"----=_NextPart_000_4597_4CAB1C23.F3651148\") NIL NIL NIL)",
-        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 7058 150 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_184312_21033572.1438499366814\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_184311_19245088.1438499366814\") NIL NIL NIL)",
-        "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2022.JPG\" \"x-apple-part-url\" \"51B8DB1C-5597-434B-A040-3F60D93C5A0C\") NIL NIL \"base64\" 1296668 NIL (\"inline\" (\"filename\" \"IMG_2022.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2023.JPG\" \"x-apple-part-url\" \"6E6937C2-2458-4AA1-A784-E1AFD2650D5C\") NIL NIL \"base64\" 1265448 NIL (\"inline\" (\"filename\" \"IMG_2023.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2024.JPG\" \"x-apple-part-url\" \"AAAB5971-8A83-4B3D-A682-2CD41B83AE00\") NIL NIL \"base64\" 1090466 NIL (\"inline\" (\"filename\" \"IMG_2024.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2025.JPG\" \"x-apple-part-url\" \"CB30D6AF-6F41-4544-BAF2-51F81308F968\") NIL NIL \"base64\" 1201580 NIL (\"inline\" (\"filename\" \"IMG_2025.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2026.JPG\" \"x-apple-part-url\" \"980376C3-182A-4AEE-A76B-6B90A6AE68E2\") NIL NIL \"base64\" 1523752 NIL (\"inline\" (\"filename\" \"IMG_2026.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-7E918C0D-DD6B-4A28-A18C-971836443E43\") NIL NIL NIL)",
-        "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
+//        "(bp)"
+        "((\"text\" \"plain\" (\"charset\" \"utf-8\") NIL NIL \"base64\" 5202 67 NIL NIL NIL NIL)(\"application\" \"x-zip-compressed\" (\"name\" \"Scan-pdf.zip\") NIL \"Scan-pdf.zip\" \"base64\" 21212 NIL (\"attachment\" (\"filename\" \"Scan-pdf.zip\" \"size\" \"15499\" \"creation-date\" \"Wed, 14 Oct 2015 15:07:56 GMT\" \"modification-date\" \"Wed, 14 Oct 2015 15:07:56 GMT\")) NIL NIL) \"mixed\" (\"boundary\" \"_002_9CBB4CB9F48C1B4391E6A6622FB5256711874E0BIBXHBE11dom801i_\") NIL (\"fr-FR\") NIL))",
+//         "((bp)(bp) \"mixed\" bem)",
+
+        "((\"text\" \"plain\" (\"charset\" \"windows-1252\" \"format\" \"flowed\") NIL NIL \"8bit\" 2016 56 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"windows-1252\") NIL NIL \"8bit\" 2917 68 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"------------010607070702040103050603\") NIL NIL NIL)",
+//         "((bp)(bp) \"alternative\" bem)",
+
+        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 12612 287 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_27208_12532565.1436873335089\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_27207_22265220.1436873335089\") NIL NIL NIL)",
+//        "(((bp) \"related\" bem) \"mixed\" bem)",
+
         "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 0 0 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932646_1390009111.1438932541709\") NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"76339561.pdf\") NIL NIL \"base64\" 14022 NIL (\"attachment\" (\"filename\" \"76339561.pdf\")) NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932645_770043819.1438932541709\") NIL NIL NIL)",
-        "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 38150 640 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3982017_1506491351.1438932567608\") NIL NIL NIL)",
-        "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6732 95 NIL NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"=?utf-8?B?UmVtcGxhY2VtZW50cyBBb8O7dCBNw6lkZWNpbnMgRy5wZGY=?=\") NIL NIL \"base64\" 300020 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"--boundary_15_c748b171-3050-408a-b256-c74d9cbd9f3c\") NIL NIL NIL)",
-        "(((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 11142 141 NIL NIL NIL NIL) \"alternative\" (\"charset\" \"UTF-8\" \"Boundary\" \"Askia-MI4C--63476056-e2d1-4797-9a6f-b4ff295576ef\") NIL NIL NIL) \"mixed\" (\"boundary\" \"Askia-MI4C--aa245807-d537-48ff-b041-193b12c4669d\") NIL NIL NIL)",
-        "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 546 16 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 1247 21 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"001a113d31bc65dcc5051d38ad5c\") NIL NIL NIL)",
-        "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6448 145 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_90290_14190963.1440066396251\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_90289_8705391.1440066396251\") NIL NIL NIL)",
+//         "(((bp) \"mixed\" bem)(bp) \"mixed\" bem)",
+
+        "(((\"text\" \"plain\" (\"charset\" \"iso-8859-1\") NIL NIL \"quoted-printable\" 1091 31 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"iso-8859-1\") NIL NIL \"quoted-printable\" 4040 99 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"0907-1346-31-03-PART_BREAK\") NIL NIL NIL)(\"application\" \"pdf\" NIL NIL NIL \"base64\" 27540 NIL (\"attachment\" (\"filename\" \"NOTICE    2015.pdf\")) NIL NIL)(\"application\" \"pdf\" NIL NIL NIL \"base64\" 133762 NIL (\"attachment\" (\"filename\" \"CONTRAT SEPTEMBRE	2015.pdf\")) NIL NIL)(\"application\" \"pdf\" NIL NIL NIL \"base64\" 91438 NIL (\"attachment\" (\"filename\" \"FICHE.pdf\")) NIL NIL)(\"application\" \"pdf\" NIL NIL NIL \"base64\" 167816 NIL (\"attachment\" (\"filename\" \"Info.pdf\")) NIL NIL) \"mixed\" (\"boundary\" \"0907-1346-31-01-PART_BREAK\") NIL NIL NIL)",
+//         "(((bp)(bp) \"alternative\" bem)(bp)(bp)(bp)(bp) \"mixed\" bem)",
     };
+
+
+//         "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 7058 150 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_184312_21033572.1438499366814\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_184311_19245088.1438499366814\") NIL NIL NIL)",
+//         "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2022.JPG\" \"x-apple-part-url\" \"51B8DB1C-5597-434B-A040-3F60D93C5A0C\") NIL NIL \"base64\" 1296668 NIL (\"inline\" (\"filename\" \"IMG_2022.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2023.JPG\" \"x-apple-part-url\" \"6E6937C2-2458-4AA1-A784-E1AFD2650D5C\") NIL NIL \"base64\" 1265448 NIL (\"inline\" (\"filename\" \"IMG_2023.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2024.JPG\" \"x-apple-part-url\" \"AAAB5971-8A83-4B3D-A682-2CD41B83AE00\") NIL NIL \"base64\" 1090466 NIL (\"inline\" (\"filename\" \"IMG_2024.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2025.JPG\" \"x-apple-part-url\" \"CB30D6AF-6F41-4544-BAF2-51F81308F968\") NIL NIL \"base64\" 1201580 NIL (\"inline\" (\"filename\" \"IMG_2025.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_2026.JPG\" \"x-apple-part-url\" \"980376C3-182A-4AEE-A76B-6B90A6AE68E2\") NIL NIL \"base64\" 1523752 NIL (\"inline\" (\"filename\" \"IMG_2026.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 6 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-7E918C0D-DD6B-4A28-A18C-971836443E43\") NIL NIL NIL)",
+//         "((\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 4 2 NIL NIL NIL NIL)(\"image\" \"jpeg\" (\"name\" \"IMG_4910.JPG\" \"x-apple-part-url\" \"4394C10A-20BB-4097-BED0-E3B7E94BC186\") NIL NIL \"base64\" 3606478 NIL (\"inline\" (\"filename\" \"IMG_4910.JPG\")) NIL NIL)(\"text\" \"plain\" (\"charset\" \"us-ascii\") NIL NIL \"7bit\" 25 3 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"Apple-Mail-1FF01B5E-D972-4C9D-9D9B-88D1BC5F8375\") NIL NIL NIL)",
+//         "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 0 0 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932646_1390009111.1438932541709\") NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"76339561.pdf\") NIL NIL \"base64\" 14022 NIL (\"attachment\" (\"filename\" \"76339561.pdf\")) NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3932645_770043819.1438932541709\") NIL NIL NIL)",
+//         "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 38150 640 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_3982017_1506491351.1438932567608\") NIL NIL NIL)",
+//         "((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6732 95 NIL NIL NIL NIL)(\"application\" \"octet-stream\" (\"name\" \"=?utf-8?B?UmVtcGxhY2VtZW50cyBBb8O7dCBNw6lkZWNpbnMgRy5wZGY=?=\") NIL NIL \"base64\" 300020 NIL NIL NIL NIL) \"mixed\" (\"boundary\" \"--boundary_15_c748b171-3050-408a-b256-c74d9cbd9f3c\") NIL NIL NIL)",
+//         "(((\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"7bit\" 11142 141 NIL NIL NIL NIL) \"alternative\" (\"charset\" \"UTF-8\" \"Boundary\" \"Askia-MI4C--63476056-e2d1-4797-9a6f-b4ff295576ef\") NIL NIL NIL) \"mixed\" (\"boundary\" \"Askia-MI4C--aa245807-d537-48ff-b041-193b12c4669d\") NIL NIL NIL)",
+//         "((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 546 16 NIL NIL NIL NIL)(\"text\" \"html\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 1247 21 NIL NIL NIL NIL) \"alternative\" (\"boundary\" \"001a113d31bc65dcc5051d38ad5c\") NIL NIL NIL)",
+//         "(((\"text\" \"plain\" (\"charset\" \"UTF-8\") NIL NIL \"quoted-printable\" 6448 145 NIL NIL NIL NIL) \"related\" (\"boundary\" \"----=_Part_90290_14190963.1440066396251\") NIL NIL NIL) \"mixed\" (\"boundary\" \"----=_Part_90289_8705391.1440066396251\") NIL NIL NIL)",
+//     };
 
     stringstream ss;
     int count = 0;
     for (auto s : bodysts) {
+        vector<Body*> bps {};
         ss.str(s);
         cout << "\n" << count++ << ". string: \n" << s << endl;
         Email *em = new Email();
-        IMAP_parser::imap_parse_bodystructure(ss, em->body, "1", false);
+        em->body = IMAP_parser::imap_parse_bodystructure(ss);
+
+        cout << "\n\n============= Body dump ================\n";
         em->body->dump();
-        cout << endl;
+        cout <<     "========================================\n";
+
         delete em;
         ss.str("");
         ss.clear();
@@ -589,5 +604,4 @@ main()
 
     return 0;
 }
-
 #endif
