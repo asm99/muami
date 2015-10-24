@@ -66,7 +66,7 @@ operator>>(istream& is, Address* a)
 
     while (is >> token) {
 #ifdef ADDRESS_DEBUG
-        cout << "Address token: " << token << endl;
+        debug("Address token: " + token);
 #endif
 
         cur_str += token + " ";
@@ -115,10 +115,15 @@ operator>>(istream& is, Address* a)
 void
 Address::dump()
 {
-    debug("addr-name    : " + name()    );
-    debug("addr-adl     : " + adl()     );
-    debug("addr-mailbox : " + mailbox() );
-    debug("addr-host    : " + host()    );
+    debug("");
+    cout << "+--------------+--------------"  << endl
+         << "|           Address           "  << endl
+         << "+--------------+--------------"  << endl
+         << "| addr-name    | " + name()      << endl
+         << "| addr-adl     | " + adl()       << endl
+         << "| addr-mailbox | " + mailbox()   << endl
+         << "| addr-host    | " + host()      << endl
+         << "+--------------+--------------"  << endl;
 }
 
 #ifdef ADDRESS_DEBUG

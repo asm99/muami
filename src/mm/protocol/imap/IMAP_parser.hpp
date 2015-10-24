@@ -47,15 +47,14 @@ namespace IMAP_parser
         void parse_select(Mailbox* mb, const string& s);
 
         RFC822_header* parse_header(string s);
-//         void imap_parse_bodystructure(
-//                 stringstream& ss, Body* tree, string section, bool is_child);
-        Body* imap_parse_bodystructure(stringstream& ss);
-//         void imap_parse_bodystructure(
-//                 stringstream& ss, vector<Body*>& bps, Body* node);
-//         Bodystructure* parse_bodystructure(string s);
+        Body* parse_bodystructure(stringstream& ss);
         vector<Email*> parse_emails(string s);
         void parse_emails_infos(vector<Email*>& emails, string s);
-        Email* parse_email(string s);
+
+        void add_sections(Body* body,
+                          bool is_first_subpart=false,
+                          int depth=0,
+                          string section="0");
 }
 
 #endif /* end of include guard: IMAP_PARSER_H */

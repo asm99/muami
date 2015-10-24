@@ -49,10 +49,10 @@ Body::dump(int depth)
     int padding_left = depth*2;
     char sep = ' ';
 
-    cout << string(padding_left, sep) << "section: " << section;
+    cout << string(padding_left, sep) << section;
 
     if (type == Body_type_mpart) {
-        cout << " - mbody subtype: " + mbody_subtype
+        cout << "mbody subtype: " + mbody_subtype
              << endl;
         depth += 1;
         padding_left *=2;
@@ -69,11 +69,10 @@ Body::dump(int depth)
              << endl;
     }
     else {
-        cout << string(padding_left, sep)
-             << " - body type, subtype: " + bodypart->type()
+        cout << " - " + bodypart->type()
                 + ", " + bodypart->subtype()
              << endl;
     }
 
-//     bodypart->dump();
+    bodypart->dump();
 }

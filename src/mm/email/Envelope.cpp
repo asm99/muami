@@ -147,12 +147,12 @@ Envelope::dump()
 {
     debug("Date: " + env_date.str());
     debug("Subject: " + env_subject.str());
-    if (env_from)     { debug("From: ");    env_from->dump();     }
-    if (env_sender)   { debug("Sender: ");  env_sender->dump();   }
-    if (env_reply_to) { debug("Reply to:"); env_reply_to->dump(); }
-    if (env_to)       { debug("To: ");      env_to->dump();       }
-    if (env_cc)       { debug("CC:");       env_cc->dump();       }
-    if (env_bcc)      { debug("BCC:");      env_bcc->dump();      }
+    if (env_from)     { debug("--- From --- ");    env_from->dump();     }
+    if (env_sender)   { debug("--- Sender --- ");  env_sender->dump();   }
+    if (env_reply_to) { debug("--- Reply to ---"); env_reply_to->dump(); }
+    if (env_to)       { debug("--- To --- ");      env_to->dump();       }
+    if (env_cc)       { debug("--- CC ---");       env_cc->dump();       }
+    if (env_bcc)      { debug("--- BCC ---");      env_bcc->dump();      }
     debug("env_in_reply_to: "); env_in_reply_to.str();
     debug("env_message_id: ");  env_message_id.str();
 }

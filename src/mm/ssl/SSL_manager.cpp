@@ -6,6 +6,9 @@
 
 #include "SSL_manager.hpp"
 
+long SSL_manager::Timeout_sec = 0;
+long SSL_manager::Timeout_usec = 100000;
+
 SSL_manager::SSL_manager()
 {
     setup_ssl();
@@ -34,8 +37,8 @@ SSL_manager::wr_sockdata(const string& cmd)
 
     FD_ZERO(&wr_fds);
     FD_SET(fd, &wr_fds);  /* add socket to write fds set */
-    tv.tv_sec  = 1;
-    tv.tv_usec = 500000;
+    tv.tv_sec  = SSL_manager::Timeout_sec;
+    tv.tv_usec = SSL_manager::Timeout_usec;
 
     ready = select(fd+1, NULL, &wr_fds, NULL, &tv);
     if (ready == -1) {
@@ -81,8 +84,8 @@ SSL_manager::rd_sockdata()
 
     FD_ZERO(&rd_fds);
     FD_SET(fd, &rd_fds);  /* add socket to read fds set */
-    tv.tv_sec  = 1;
-    tv.tv_usec = 200000;
+    tv.tv_sec  = SSL_manager::Timeout_sec;
+    tv.tv_usec = SSL_manager::Timeout_usec;
 
     char* newbuf;
 

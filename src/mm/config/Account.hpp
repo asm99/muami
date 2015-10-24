@@ -44,6 +44,8 @@ class Account
         int select_mbox(const string& nm);
         int logout();
         int fetch_emails_list(int number, int offset);
+        int fetch_email_parts(int idx);
+        string fetch_email_part(int idx, string section);
 };
 
 #endif /* end of include guard: ACCOUNT_H */

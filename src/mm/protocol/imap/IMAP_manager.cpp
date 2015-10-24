@@ -199,7 +199,7 @@ Protocol_manager::logout()
 
 /* Fetch selected mailbox n emails infos */
 string
-Protocol_manager::server_fetch_emails_list(int start, int end)
+Protocol_manager::server_fetch_emails_list(const int start, const int end)
 {
     stringstream ss;
     ss  << "FETCH "
@@ -215,7 +215,7 @@ Protocol_manager::server_fetch_emails_list(int start, int end)
 /* Fetch emails list */
 void
 Protocol_manager::fetch_emails_list(
-        vector<Email*>& emails, int start, int end)
+        vector<Email*>& emails, const int start, const int end)
 {
     string resp = server_fetch_emails_list(start, end);
     IMAP_parser::parse_emails_infos(emails, resp);
@@ -230,64 +230,82 @@ Protocol_manager::rename_mbox(const string& old_nm, const string& new_nm)
     return resp;
 }
 
-
-// /* Fetch an email IMAP RFC822.HEADER and BODYSTRUCTURE */
-// char*
-// fetch_email_infos(BIO* bio, int uid)
-// {
-//         char* uid_s = int_to_str(uid);
-//         char* resp = exec_cmd(bio, "UID FETCH %s (RFC822.HEADER BODYSTRUCTURE)",
-//                               1, uid_s);
-//         free(uid_s);
-//         return resp;
-// }
-//
-// /* Fetch an email bodypart */
-// char*
-// fetch_email_part(BIO* bio, int uid, char* section)
-// {
-//         int uid_count_digits = count_digits(uid);
-//
-//         char* uid_s = malloc(uid_count_digits + 1);
-//         if (uid_s == NULL) {
-//                 return NULL;
-//         }
-//         sprintf(uid_s, "%d", uid);
-//
-//         char* resp = exec_cmd(bio, "UID FETCH %s BODY[%s]", 2, uid_s, section);
-//         free(uid_s);
-//
-//         return resp;
-// }
-//
-#ifdef IMAP_MANAGER_DEBUG
-
-#include "../../config/Config_manager.hpp"
-#include "IMAP_parser.hpp"
-
-// Connect to server and test various IMAP commands and parsing functions
-int
-main()
+/*
+ * Flatten a Body* object into a map <section, Bodypart*>.
+ */
+void
+flatten_body(Body* body, Email* em)
 {
-//     Config_manager* cm = new Config_manager();
-//     Account* acc = cm->get_account_at_index(0); // first account
-//
-//     Protocol_manager* p_mgr =
-//         new IMAP_manager(acc->imap() + ":" + acc->iport());
-//     string login_resp = p_mgr->login(acc->user(), acc->pass());
-//     p_mgr->check_response_status(login_resp);
-//
-//     string selmb_resp = p_mgr->select_mbox("INBOX");
-//     p_mgr->check_response_status(selmb_resp);
-//
-//     vector<Email*> emails {};
-//     p_mgr->fetch_emails_list(emails, 10, 15);
-//     cout << "nb of emails: " << emails.size() << endl;
-//     for (auto em : emails) {
-//         em->dump();
-//     }
-//
-//     string logout_resp = p_mgr->logout();
-//     p_mgr->check_response_status(logout_resp);
+    if (body->type == Body_type_mpart) {
+        for (Body* b : body->subparts) {
+            flatten_body(b, em);
+        }
+    } else {
+        em->add_part(body->section, body->bodypart);
+    }
 }
+
+/*
+ * Get an email parts
+ * Right now, parts are flatten with their section into the Email* parts map
+ * for convenience use, specially iteration, in the GUI part.
+ * NOTE: An alternative would be to populate the Body* object of the Email*
+ * object and keep the structure of the bodystructure (see commented lines).
+ */
+void
+Protocol_manager::fetch_email_parts(Email* em)
+{
+    string resp = server_fetch_bodystructure(em->uid());
+
+    // Extract BODYSTRUCTURE string inside the server response
+    string needle = "BODYSTRUCTURE ";
+    size_t pos = resp.find(needle);
+
+    stringstream ss;
+
+    if (pos != string::npos) {
+        string bs = resp.substr(pos + needle.length());
+        ss.str(bs);
+    }
+
+    Body* body = IMAP_parser::parse_bodystructure(ss);
+    IMAP_parser::add_sections(body);
+#ifdef DEBUG
+    body->dump();
 #endif
+
+    // Flatten body into Email* object subparts
+    flatten_body(body, em);
+}
+
+// Fetch an email BODYSTRUCTURE
+string
+Protocol_manager::server_fetch_bodystructure(unsigned int uid)
+{
+	string cmd = "UID FETCH " + to_string(uid) + " BODYSTRUCTURE";
+	string pr_cmd = prepare_cmd(cmd);
+	string resp = ssl_mgr->fetch_response(pr_cmd);
+    return resp;
+}
+
+// Fetch an email BODY[section]
+string
+Protocol_manager::server_fetch_email_part(
+        const unsigned int uid,
+        const string section)
+{
+    string cmd = "UID FETCH " + to_string(uid) + " BODY[" + section + "]";
+	string pr_cmd = prepare_cmd(cmd);
+	string resp = ssl_mgr->fetch_response(pr_cmd);
+    return resp;
+}
+
+string
+Protocol_manager::fetch_email_part(
+        Email* const em,
+        const string section)
+{
+    string resp = server_fetch_email_part(em->uid(), section);
+    return resp;
+}
+

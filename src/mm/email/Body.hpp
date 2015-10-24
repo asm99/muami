@@ -33,6 +33,7 @@ class Body
         // Constructors & destructor
         Body();                         // default constructor
         Body(const Body* b);            // copy constructor
+//         Body* operator=(const Body* b); // assignment operator
         ~Body();                        // default destructor
 
         // DEBUG

@@ -1,5 +1,6 @@
 #include "Account.hpp"
 
+// Constructor
 Account::Account(const Conf& cf)
 {
     acc_conf = cf;
@@ -14,7 +15,6 @@ Account::Account(const Conf& cf)
 }
 
 // Getters
-
 Conf&
 Account::conf()
 {
@@ -81,8 +81,22 @@ Account::fetch_emails_list(int number, int offset)
     return 1;
 }
 
-// DEBUG
+int
+Account::fetch_email_parts(int idx)
+{
+    prtcl_mgr->fetch_email_parts(mboxes[cur_mbox_name]->emails()[idx]);
+    return 1;
+}
 
+string
+Account::fetch_email_part(int idx, string section)
+{
+    return prtcl_mgr->fetch_email_part(
+            mboxes[cur_mbox_name]->emails()[idx],
+            section);
+}
+
+// DEBUG
 void
 Account::dump() const
 {

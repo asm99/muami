@@ -95,6 +95,9 @@ Config_manager::get_conf_from_string(const string& s, const string& fname)
 
         while (ss >> tmp) {
             val += tmp;
+            if (field == "from") { // spaces are only allowed in "from" field
+                val += " ";
+            }
         }
 
         if      (field == "in_server")   { conf.set_in_server(val);   }
@@ -106,7 +109,6 @@ Config_manager::get_conf_from_string(const string& s, const string& fname)
         else if (field == "pass")        { conf.set_pass(val);        }
         else if (field == "protocol") {
             if      (val == "IMAP") { conf.set_protocol(PROTOCOL_IMAP);      }
-            else if (val == "POP3") { conf.set_protocol(PROTOCOL_POP3);      }
             else                    { conf.set_protocol(PROTOCOL_UNDEFINED); }
         }
     }
@@ -227,7 +229,6 @@ Config_manager::setup_accout(string fname,
 
     return save_config_file(cf);
 }
-
 
 void
 Config_manager::dump_accounts() const

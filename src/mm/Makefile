@@ -8,7 +8,7 @@ BLD_DIR = build
 # Refer to the specific file to get the appropriate flag. 
 # Note: leave the flag blank for production.
 # DBG = -DIMAP_PARSER_DEBUG 
-DBG = -DIMAP_PARSER_DEBUG
+DBG = -DDEBUG
 
 SRCS = coding/base64.cpp \
 	   coding/coding.cpp \
@@ -66,11 +66,14 @@ vpath %.cpp coding \
 			ssl \
 			util
 
-$(BLD_DIR)/%.o: %.cpp 
+$(BLD_DIR)/%.o: %.cpp
+	@[ -d $(BLD_DIR) ] || mkdir $(BLD_DIR)
 	$(CPP) $(CFLAGS) -c -o $@ $^ $(DBG)
 
+$(BIN): main.cpp $(OBJS) $(HDRS)
+	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ main.cpp $(OBJS) $(LIBS) -DDEBUG
+
 imap_parser: $(OBJS) $(HDRS)
-	@[ -d $(BLD_DIR) ] || mkdir -p $(BLD_DIR)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
 .PHONY:

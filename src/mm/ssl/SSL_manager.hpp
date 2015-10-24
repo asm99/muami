@@ -26,6 +26,9 @@ class SSL_manager
         BIO* bio;
         SSL_CTX* ctx;
 
+        static long Timeout_sec;
+        static long Timeout_usec;
+
         void setup_ssl();
         int wr_sockdata(const string& cmd);
         string rd_sockdata();

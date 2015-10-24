@@ -15,6 +15,10 @@ class Protocol_manager
         SSL_manager* ssl_mgr;
 
         virtual string server_fetch_emails_list(int start, int end);
+        virtual string server_fetch_bodystructure(unsigned int uid);
+        virtual string server_fetch_email_part(
+                const unsigned int uid,
+                const string section);
 
     public:
         virtual ~Protocol_manager() {};
@@ -36,10 +40,10 @@ class Protocol_manager
 
         // Emails
         virtual void fetch_emails_list(
-                vector<Email*>& emails,
-                int start, int end);
-//         virtual string fetch_email_infos(int uid);
-//         virtual string fetch_email_part(int uid, string section);
+                vector<Email*>& emails, const int start, const int end);
+        virtual void fetch_email_parts(Email* em);
+        virtual string fetch_email_part(
+                Email* const em, const string section);
 };
 
 #endif /* end of include guard: PROTOCOL_MANAGER_H */

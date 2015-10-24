@@ -57,7 +57,7 @@ operator>>(istream& is, Addresses* addresses)
         count++;
     }
 
-    cout << "s: " << s << endl;
+    debug("addresses string: " + s);
     addresses->add_addresses(s);
 
     return is;

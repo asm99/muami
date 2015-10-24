@@ -3,6 +3,8 @@
 // Constructor
 Body_fields::Body_fields()
 {
+    body_fld_enc = ENC_7BIT;
+    body_fld_octets = 0;
     body_fld_param = new Body_params();
 }
 

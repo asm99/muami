@@ -134,7 +134,7 @@ Conf::protocol() const
 void
 Conf::dump() const
 {
-    debug("--- Account ---");
+    debug(" --- Account ---");
     debug("fname      : " + fname()      );
     debug("in_server  : " + in_server()  );
     debug("in_port    : " + in_port()    );

@@ -1,6 +1,7 @@
 #ifndef EMAIL_H
 #define EMAIL_H
 
+#include <map>
 #include "flags.hpp"
 #include "RFC822_header.hpp"
 #include "Body.hpp"
@@ -19,15 +20,17 @@ class Email
         string em_internaldate;
         Envelope em_envelope;
         RFC822_header* em_rfc822_header;
+        map<string, Bodypart*> em_parts;
 
     public:
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!! TO MAKE PRIVATE !!!!!!!!!!!!!!!!!!!!!!!!!!!
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Body* body;
+//         Body* body;
 
-        Email(): em_envelope() { body = new Body(); };
-        ~Email() { delete body; };
+        Email();
+        ~Email() {};
+//         ~Email() { delete body; };
 
         // Setters
         void set_uid(unsigned long u);
@@ -37,6 +40,7 @@ class Email
         void set_internaldate(const string& date);
         void set_envelope(const Envelope& env);
         void set_rfc822_header(RFC822_header* const hdr);
+        void add_part(string section, Bodypart* bp);
 
         // Getters
         unsigned long uid();
@@ -46,9 +50,11 @@ class Email
         string& internaldate();
         Envelope& envelope();
         RFC822_header* rfc822_header();
+        map<string, Bodypart*>& parts();
 
         // DEBUG
         void dump();
+        void dump_parts();
 };
 
 #endif /* end of include guard: EMAIL_H */

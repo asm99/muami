@@ -8,6 +8,7 @@ util::lower(string& s)
 }
 
 // From string "1.2.3" to vector of ints (1, 2, 3)
+// If no dot in string, returns a vector with the string as the sole element.
 vector<int>
 util::explode_to_ints(string s, const string& delim)
 {
@@ -39,41 +40,30 @@ util::strip_chars(string& src, const string& set)
 }
 
 /*
- * Compute the next section of a body based on wether its a child or a
- * sibling within a bodys prefix tree
- * Children/Siblings scheme (nested = child):
- * (((bp) (bp)) (bp))
- * |||    |     |
- * R12    3     4
- * R: root, 1:child of R, 2/3: siblings, 1/4: siblings
+ * Compute the section of a body in a bodystructure chain
+ * mpart
+ *   |-> 1part -> 1part -> mpart -> 1part
+ *                           |-> 1part -> 1part
  */
 string
-util::get_new_section(string section, bool is_child)
+util::get_section(string section, bool is_first_subpart, int depth)
 {
-    if (section == "0")
-        return "1";
-
-    if (is_child)
+    if (is_first_subpart && depth > 1) {    // going one level down
         return section + ".1";
-
-    /* top level sibling, no dot in section */
-    if (section.find(".") != string::npos
-        || (!is_child && section.find(".") == string::npos))
-        return to_string(stoi(section) + 1);
-
+    }
+                                            // next on same level
     vector<int> arr = util::explode_to_ints(section, ".");
     arr[arr.size()-1] = arr[arr.size()-1] + 1; // increment last section number
 
-	stringstream ss;
-	for (unsigned int i = 0; i < arr.size(); i++) {
-		ss << arr[i];
-        if (i != arr.size() -1)
+    stringstream ss;
+    for (unsigned int i = 0; i < arr.size(); i++) {
+        ss << arr[i];
+        if (i != arr.size() - 1) {
             ss << ".";
-	}
-	string new_section = ss.str();
-//     new_section[new_section.length()-1] = '\0'; /* delete trailing dot */
-    new_section.back() = '\0'; /* delete trailing dot */
-    return new_section;
+        }
+    }
+
+    return ss.str();
 }
 
 /*
@@ -144,12 +134,12 @@ class TripleString {
 
 // Print sections modification facility
 void
-print_before_after_section(bool is_child, string old)
+print_before_after_section(bool is_first_subpart, string current)
 {
-	string new_s = util::get_new_section(old, is_child);
-	cout << "section old, new => " << old << ", " << new_s << ", ";
-	if (is_child) cout << "CHILD";
-	else          cout << "SIBLING";
+	string next_s = util::get_section(current, is_first_subpart);
+	cout << "section current, next => " << current << ", " << next_s << ", ";
+	if (is_first_subpart) cout << "CURRENT";
+	else                  cout << "NEXT";
 	cout << endl;
 }
 
@@ -163,6 +153,7 @@ main()
 	print_before_after_section(false, "1");
 	print_before_after_section(false, "1.2");
 	print_before_after_section(false, "1.2.3");
+    return 0;
 
     // Explode to ints test
     string s = "1.2.3";
