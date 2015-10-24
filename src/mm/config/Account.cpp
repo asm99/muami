@@ -96,6 +96,28 @@ Account::fetch_email_part(int idx, string section)
             section);
 }
 
+string
+Account::fetch_email_text(int idx)
+{
+    string section;
+
+    // First find the first bodypart of type/subtype "text/plain"
+    map<string, Bodypart*> bps = cur_mbox()->emails()[idx]->parts();
+    map<string, Bodypart*>::const_iterator it;
+    for (it = bps.begin(); it != bps.end(); ++it) {
+        if (it->second->type() == "text"
+            && it->second->subtype() == "plain") {
+            section = it->first;
+        }
+    }
+
+#ifdef DEBUG
+    debug("Section of first \"text/plain\" bodypart: " + section);
+#endif
+
+    return fetch_email_part(idx, section);
+}
+
 // DEBUG
 void
 Account::dump() const

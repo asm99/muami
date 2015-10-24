@@ -46,6 +46,7 @@ class Account
         int fetch_emails_list(int number, int offset);
         int fetch_email_parts(int idx);
         string fetch_email_part(int idx, string section);
+        string fetch_email_text(int idx);
 };
 
 #endif /* end of include guard: ACCOUNT_H */

@@ -38,7 +38,7 @@ int main()
         acc->cur_mbox()->emails()[idx]->dump_parts();
 
         // Get an e-mail part
-        string s = acc->fetch_email_part(idx, "1");
+        string s = acc->fetch_email_text(idx);
         cout << "Email part: " + qp::from_qp(s) << endl;
 
         // Logout user from the server
