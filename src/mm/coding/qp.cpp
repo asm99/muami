@@ -1,5 +1,7 @@
 #include "qp.hpp"
 
+namespace  {
+
 /*
  * Convert a QP hex value to the corresponding string
  * ie: =C3=A9 => é
@@ -22,8 +24,10 @@ from_hex_string(const string& s)
     return res;
 }
 
+} /* namespace  */
+
 string
-from_qp(const string& s)
+qp::from_qp(const string& s)
 {
     string res;
 
@@ -41,7 +45,7 @@ from_qp(const string& s)
 }
 
 string
-to_qp(string s)
+qp::to_qp(string s)
 {
     return s;
 }

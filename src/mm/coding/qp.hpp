@@ -30,7 +30,12 @@
 
 using namespace std;
 
-string from_qp(const string& s);
-string to_qp(string s);
+namespace qp {
+
+    string from_qp(const string& s);
+    string to_qp(string s);
+
+} /* namespace qp */
+
 
 #endif /* end of include guard: QP_H */

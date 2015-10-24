@@ -2,7 +2,7 @@
 
 /* Encode from a human readable string to a base64 representation */
 string
-to_base64(const string& s)
+base64::to_base64(const string& s)
 {
     int t;
 	BIO* bmem = NULL;
@@ -34,7 +34,7 @@ to_base64(const string& s)
 
 /* Decode from a base64 representation to a human readable string */
 string
-from_base64(string s)
+base64::from_base64(string s)
 {
 	BIO* b64 = NULL;
 	BIO* bmem = NULL;

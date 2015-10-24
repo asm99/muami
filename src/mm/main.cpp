@@ -39,7 +39,7 @@ int main()
 
         // Get an e-mail part
         string s = acc->fetch_email_part(idx, "1");
-        cout << "Email part: " + s << endl;
+        cout << "Email part: " + qp::from_qp(s) << endl;
 
         // Logout user from the server
         acc->logout();
