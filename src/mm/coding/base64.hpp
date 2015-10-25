@@ -1,6 +1,6 @@
 /*
  * MELKONIAN Marc - 13410425
- * base64.hpp - base64 coding
+ * base64.hpp - base64 encode/decode functions
  */
 
 #ifndef BASE64_H

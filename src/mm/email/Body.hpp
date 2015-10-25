@@ -1,7 +1,8 @@
 /*
  * MELKONIAN Marc
  * IED 13410425
- * Body.hpp: a BODY part of a message in the RFC3501 grammar
+ * Body.hpp: a class for representing a BODY part of a message in the
+ *           RFC3501 grammar
  */
 
 #ifndef BODY_H

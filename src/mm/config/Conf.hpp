@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * Conf.hpp - Configuration class holding an account file infos
+ */
+
 #ifndef CONF_H
 #define CONF_H
 

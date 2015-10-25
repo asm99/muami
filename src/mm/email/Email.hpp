@@ -1,3 +1,9 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * Email.hpp - a class representing an e-mails infos
+ *             (uid, size, envelope, parts)
+ */
+
 #ifndef EMAIL_H
 #define EMAIL_H
 

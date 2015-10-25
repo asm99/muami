@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * Body_fields.hpp - fields of a BODY common to single and multipart bodies
+ */
+
 #ifndef BODY_FIELDS_H
 #define BODY_FIELDS_H
 

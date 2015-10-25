@@ -1,6 +1,6 @@
 /*
  * MELKONIAN Marc - 13410425
- * md5.hpp - MD5 encryption algorithm
+ * md5.hpp - MD5 encryption
  * Date: 04 August 2015
  */
 

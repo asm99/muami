@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * protocols.hpp - Definitions for protocols
+ */
+
 #ifndef PROTOCOLS_H
 #define PROTOCOLS_H
 

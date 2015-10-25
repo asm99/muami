@@ -1,7 +1,8 @@
 /*
  * MELKONIAN Marc
  * IED 13410425
- * Nstring.hpp: A Nstring in the ABNF syntax of RFC 3501
+ * Nstring.hpp: A Nstring in the ABNF syntax of RFC 3501,
+ *              which can be NIL (treated as empty in this case) or a string.
  *
  * Doc: https://tools.ietf.org/html/rfc3501#section-9
  *

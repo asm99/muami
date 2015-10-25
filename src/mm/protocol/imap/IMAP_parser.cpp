@@ -17,6 +17,7 @@ parse_flags(const string& s)
         else if (token == "$Forwarded") { flags |= FL_FORWARDED; }
         else if (token == "\\Deleted")  { flags |= FL_DELETED;   }
         else if (token == "\\Drafts")   { flags |= FL_DRAFT;     }
+        else if (token == "$MDNSent")   { flags |= FL_MDNSENT;   }
     }
 
     return flags;

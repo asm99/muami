@@ -1,7 +1,7 @@
 /*
  * MELKONIAN Marc
  * IED 13410425
- * Body.hpp: a BODY part of a message in the RFC3501 grammar
+ * Body_ext_mpart.hpp: a BODY part of a message in the RFC3501 grammar
  *
  * Doc: https://tools.ietf.org/html/rfc3501#section-9
  *

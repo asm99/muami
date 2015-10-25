@@ -96,10 +96,14 @@ Account::fetch_email_part(int idx, string section)
             section);
 }
 
+/*
+ * Fetch the text of an e-mail to show at selection.
+ * By default, this text is in the first "text/plain" bodypart.
+ */
 string
 Account::fetch_email_text(int idx)
 {
-    string section;
+    string section = "1"; // Default value
 
     // First find the first bodypart of type/subtype "text/plain"
     map<string, Bodypart*> bps = cur_mbox()->emails()[idx]->parts();

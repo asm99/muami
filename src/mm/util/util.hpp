@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * util.hpp - Facilities for processing strings
+ */
+
 #ifndef UTIL_H
 #define UTIL_H
 

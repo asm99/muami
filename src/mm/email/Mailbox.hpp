@@ -1,7 +1,7 @@
 /*
  * MELKONIAN Marc
  * IED 13410425
- * Address.hpp: An envelope address as described in the RFC 3501
+ * Mailbox.hpp: a mailbox class for an IMAP account
  *
  * Doc: https://tools.ietf.org/html/rfc3501#section-6.3.1
  */

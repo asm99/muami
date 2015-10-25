@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * Addresses.hpp - a collection of Address used in CC or BCC fields
+ */
+
 #ifndef ADDRESSES_H
 #define ADDRESSES_H
 

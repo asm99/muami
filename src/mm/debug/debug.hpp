@@ -1,3 +1,8 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * debug.hpp - debugging facilities
+ */
+
 #ifndef DEBUG_H
 #define DEBUG_H
 

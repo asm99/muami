@@ -1,3 +1,9 @@
+/*
+ * MELKONIAN Marc - 13410425
+ * Protocol_manager.hpp - Abstract superclass for any e-mail protocol
+ *                        layer class
+ */
+
 #ifndef PROTOCOL_MANAGER_H
 #define PROTOCOL_MANAGER_H
 

@@ -1,6 +1,6 @@
 /*
  * MELKONIAN Marc - 13410425
- * Date_formatter.hpp - date strings formatting related things
+ * date.hpp - date strings formatting related things
  * Date: 04 August 2015
  */
 

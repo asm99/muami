@@ -1,6 +1,6 @@
 /*
  * MELKONIAN Marc - 13410425
- * flags.hpp - Email flags
+ * flags.hpp - Email flags definitions
  * Date: 04 May 2015
  */
 
