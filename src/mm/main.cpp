@@ -19,12 +19,12 @@ int main()
 //         acc->dump();
 
         acc->select_mbox("INBOX");      // switch to main inbox
-        acc->fetch_emails_list(10, 1);  // get 10 last e-mails
+        acc->fetch_emails_list(10, 2);  // get 10 last e-mails
 
         // Dump one e-mail
-        acc->cur_mbox()->emails()[0]->dump();
+//         acc->cur_mbox()->emails()[0]->dump();
 
-//         debug("nb of emails: " + to_string(acc->cur_mbox()->emails().size()));
+        debug("nb of emails: " + to_string(acc->cur_mbox()->emails().size()));
 
         // Dump all e-mails
 // 		for (auto em : acc->cur_mbox()->emails()) {
@@ -34,15 +34,20 @@ int main()
         // Fetch one e-mail bodystructure
         int idx = 0;
 
-        // Populate E-mail* parts map
-        acc->fetch_email_parts(idx);
+        for (unsigned int i = 0; i < acc->cur_mbox()->emails().size(); i++) {
+            acc->fetch_email_parts(i);
+            acc->cur_mbox()->emails()[i]->dump_parts();
+        }
 
-        // Dump an e-mail parts
-        acc->cur_mbox()->emails()[idx]->dump_parts();
+//         // Populate E-mail* parts map
+//         acc->fetch_email_parts(idx);
+//
+//         // Dump an e-mail parts
+//         acc->cur_mbox()->emails()[idx]->dump_parts();
 
         // Get an e-mail part
-        string s = acc->fetch_email_text(idx);
-        cout << "Email part: " + qp::from_qp(s) << endl;
+//         string s = acc->fetch_email_text(idx);
+//         cout << "Email part: " + qp::from_qp(s) << endl;
 
         // Logout user from the server
         acc->logout();

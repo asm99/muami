@@ -118,7 +118,7 @@ operator>>(stringstream& ss, Body_ext_mpart* bem)
             case 1:
             case 3:
             {
-                if (token.front() == '(') {  // body_fld_dsp is list, not NIL
+                if (token.front() == '(') {  // fld is list, not NIL
                     string acc = token;
                     while (ss >> token) {
                         acc += token;

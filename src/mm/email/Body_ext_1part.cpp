@@ -120,25 +120,31 @@ operator>>(stringstream& ss, Body_ext_1part* bep)
             case 0:
                 bep->set_md5(tok);
             break;
-            case 1:
+            case 1: // dsp
+            case 2: // lang
             {
-                if (tok.front() == '(') {  // body_fld_dsp is list, not NIL
-                    string acc = tok;
+                if (tok.front() == '(') {  // fld is list, not NIL
+                    string acc = tok + " ";
                     while (ss >> tok) {
-                        acc += tok;
+                        acc += tok + " ";
                         if (tok.back() == ')') {
                             break;
                         }
                     }
-                    bep->set_dsp(acc);
+                    if (count == 1) {
+                        bep->set_dsp(acc);
+                    } else {
+                        bep->set_lang(acc);
+                    }
                 }
                 else {
-                    bep->set_dsp(tok);
+                    if (count == 1) {
+                        bep->set_dsp(tok);
+                    } else {
+                        bep->set_lang(tok);
+                    }
                 }
             }
-            break;
-            case 2:
-                bep->set_lang(tok);
             break;
             case 3:
             {
