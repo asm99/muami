@@ -2,6 +2,7 @@
 #define EMAIL_H
 
 #include <map>
+#include <bitset>
 #include "flags.hpp"
 #include "RFC822_header.hpp"
 #include "Body.hpp"
@@ -23,9 +24,6 @@ class Email
         map<string, Bodypart*> em_parts;
 
     public:
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // !!!!!! TO MAKE PRIVATE !!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //         Body* body;
 
         Email();
@@ -45,12 +43,21 @@ class Email
         // Getters
         unsigned long uid();
         unsigned long rfc822_size();
-        unsigned int flags();
+//         unsigned int flags();
         string& friendly_time();
         string& internaldate();
         Envelope& envelope();
         RFC822_header* rfc822_header();
         map<string, Bodypart*>& parts();
+
+        // Flags getters
+        bool is_answered();
+        bool is_flagged();
+        bool is_deleted();
+        bool is_seen();
+        bool is_draft();
+        bool is_forwarded();
+        bool is_mdnsent();
 
         // DEBUG
         void dump();

@@ -21,6 +21,9 @@ int main()
         acc->select_mbox("INBOX");      // switch to main inbox
         acc->fetch_emails_list(10, 1);  // get 10 last e-mails
 
+        acc->cur_mbox()->emails()[0]->dump();
+        exit(0);
+
 //         debug("nb of emails: " + to_string(acc->cur_mbox()->emails().size()));
 
         // Dump e-mails

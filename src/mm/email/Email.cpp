@@ -71,10 +71,46 @@ Email::rfc822_size()
     return em_rfc822_size;
 }
 
-unsigned int
-Email::flags()
+bool
+Email::is_answered()
 {
-    return em_flags;
+    return em_flags & FL_ANSWERED;
+}
+
+bool
+Email::is_flagged()
+{
+    return em_flags & FL_FLAGGED;
+}
+
+bool
+Email::is_deleted()
+{
+    return em_flags & FL_DELETED;
+}
+
+bool
+Email::is_seen()
+{
+    return em_flags & FL_SEEN;
+}
+
+bool
+Email::is_draft()
+{
+    return em_flags & FL_DRAFT;
+}
+
+bool
+Email::is_forwarded()
+{
+    return em_flags & FL_FORWARDED;
+}
+
+bool
+Email::is_mdnsent()
+{
+    return em_flags & FL_MDNSENT;
 }
 
 string&
@@ -116,7 +152,9 @@ Email::dump()
     debug("rfc822_size   : " + to_string(rfc822_size())  );
     debug("friendly_time : " + friendly_time());
     debug("internaldate  : " + internaldate() );
-    debug("flags         : " + flags()        );
+//     debug("flags         : " + flags()        );
+    bitset<8> bin(em_flags);
+    cout << "flags: " << bin << endl;
     envelope().dump();
 }
 

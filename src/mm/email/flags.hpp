@@ -18,6 +18,7 @@ enum Flags {
     FL_SEEN      = 0x08,
     FL_DRAFT     = 0x10,
     FL_FORWARDED = 0x20,
+    FL_MDNSENT   = 0x40,
 };
 
 /*
