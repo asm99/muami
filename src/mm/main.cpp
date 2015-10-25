@@ -21,18 +21,18 @@ int main()
         acc->select_mbox("INBOX");      // switch to main inbox
         acc->fetch_emails_list(10, 1);  // get 10 last e-mails
 
+        // Dump one e-mail
         acc->cur_mbox()->emails()[0]->dump();
-        exit(0);
 
 //         debug("nb of emails: " + to_string(acc->cur_mbox()->emails().size()));
 
-        // Dump e-mails
+        // Dump all e-mails
 // 		for (auto em : acc->cur_mbox()->emails()) {
 // 			em->dump();
 // 		}
 
         // Fetch one e-mail bodystructure
-        int idx = 3;
+        int idx = 0;
 
         // Populate E-mail* parts map
         acc->fetch_email_parts(idx);
