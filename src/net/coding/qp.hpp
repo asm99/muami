@@ -32,8 +32,8 @@ using namespace std;
 
 namespace qp {
 
-    string from_qp(const string& s);
-    string to_qp(string s);
+    string decode(const string& s);
+    string encode(string s);
 
 } /* namespace qp */
 

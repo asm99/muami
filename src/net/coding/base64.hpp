@@ -18,8 +18,8 @@ using namespace std;
 
 namespace base64 {
 
-    string to_base64(const string& s);
-    string from_base64(string s);
+    string encode(const string& s);
+    string decode(string s);
 
 } /* namespace base64 */
 

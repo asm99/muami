@@ -19,7 +19,8 @@ int main()
 //         acc->dump();
 
         acc->select_mbox("INBOX");      // switch to main inbox
-        acc->fetch_emails_list(10, 2);  // get 10 last e-mails
+        acc->fetch_emails_list(1, 30);  // get 10 last e-mails
+                                        // get the message/rfc822, n°168
 
         // Dump one e-mail
 //         acc->cur_mbox()->emails()[0]->dump();
@@ -47,7 +48,7 @@ int main()
 
         // Get an e-mail part
 //         string s = acc->fetch_email_text(idx);
-//         cout << "Email part: " + qp::from_qp(s) << endl;
+//         cout << "Email part: " + qp::decode(s) << endl;
 
         // Logout user from the server
         acc->logout();

@@ -1,6 +1,12 @@
 #include "Addresses.hpp"
 
 void
+Addresses::add_address(Address* a)
+{
+    addrs.push_back(a);
+}
+
+void
 Addresses::add_addresses(string s)
 {
     Address* a = new Address();
@@ -16,6 +22,12 @@ unsigned int
 Addresses::size()
 {
     return addrs.size();
+}
+
+Address*
+Addresses::at(unsigned int i)
+{
+    return addrs[i];
 }
 
 // Operators overloading

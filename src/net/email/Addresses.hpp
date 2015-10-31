@@ -21,11 +21,13 @@ class Addresses
 
     public:
         Addresses(): addrs() {};
-        ~Addresses();
+        ~Addresses() {};
 
         unsigned int size();
+        void add_address(Address* a);
         void add_addresses(string s);
         void dump();
+        Address* at(unsigned int i);
         Address* operator[](unsigned int i);
 };
 

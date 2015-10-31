@@ -36,6 +36,7 @@ class Config_manager
         vector<Account*> accounts;
 
         static const string Conf_dir_rel_path;
+
         string get_conf_dir_abs_path();
         vector<string> list_conf_dir(const string& path);
         string read_conf_file(const string& path, const string& fname);

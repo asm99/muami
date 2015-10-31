@@ -27,29 +27,47 @@ Address::set_name(const string& name)
 
 // Getters
 string
-Address::adl()
+Address::adl() const
 {
     return addr_adl;
 }
 
 string
-Address::host()
+Address::host() const
 {
     return addr_host;
 }
 
 string
-Address::mailbox()
+Address::mailbox() const
 {
     return addr_mailbox;
 }
 
 string
-Address::name()
+Address::name() const
 {
     return addr_name;
 }
 
+string
+Address::email() const
+{
+    return addr_mailbox + "@" + addr_host;
+}
+
+string
+Address::usermail() const
+{
+    string address;
+    if (!addr_name.empty()) {
+        address += "\"" + addr_name + "\" ";
+    }
+    address += "<" + email() + ">";
+    return address;
+}
+
+// Operators overloading
 istream&
 operator>>(istream& is, Address* a)
 {

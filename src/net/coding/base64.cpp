@@ -2,7 +2,7 @@
 
 /* Encode from a human readable string to a base64 representation */
 string
-base64::to_base64(const string& s)
+base64::encode(const string& s)
 {
     int t;
 	BIO* bmem = NULL;
@@ -34,7 +34,7 @@ base64::to_base64(const string& s)
 
 /* Decode from a base64 representation to a human readable string */
 string
-base64::from_base64(string s)
+base64::decode(string s)
 {
 	BIO* b64 = NULL;
 	BIO* bmem = NULL;
@@ -77,7 +77,7 @@ main()
 
     for (map<string, string>::const_iterator it = m.begin();
             it != m.end(); ++it) {
-        string encoded = to_base64(it->first);
+        string encoded = base64::encode(it->first);
         if (encoded != it->second) {
             cerr << "Error encoding: " << it->first
                  << "\n  =>          " << encoded
@@ -88,7 +88,7 @@ main()
 
     for (map<string, string>::const_iterator it = m.begin();
             it != m.end(); ++it) {
-        string decoded = from_base64(it->second);
+        string decoded = base64::decode(it->second);
         if (decoded != it->first) {
             cerr << "Error decoding: " << it->second
                  << "\n  =>          " << decoded
@@ -101,3 +101,4 @@ main()
 }
 
 #endif
+

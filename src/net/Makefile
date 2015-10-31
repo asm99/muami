@@ -9,8 +9,10 @@ BLD_DIR = build
 # Note: leave the flag blank for production.
 # DBG = -DIMAP_PARSER_DEBUG 
 DBG = -DDEBUG
+#DBG = -DBASE36_DEBUG
 
-SRCS = coding/base64.cpp \
+SRCS = coding/base36.cpp \
+	   coding/base64.cpp \
 	   coding/coding.cpp \
 	   coding/qp.cpp \
 	   config/Conf.cpp \
@@ -33,6 +35,9 @@ SRCS = coding/base64.cpp \
 	   email/RFC822_header.cpp \
 	   protocol/imap/IMAP_manager.cpp \
 	   protocol/imap/IMAP_parser.cpp \
+	   smtp/Out_email.cpp \
+	   smtp/SMTP_manager.cpp \
+	   smtp/SMTP_parser.cpp \
 	   ssl/SSL_manager.cpp \
 	   util/error.cpp \
 	   util/date.cpp \
@@ -53,6 +58,7 @@ vpath %.hpp coding \
 			email \
 			protocol \
 			protocol/imap \
+			smtp \
 			ssl \
 			util
 
@@ -63,6 +69,7 @@ vpath %.cpp coding \
 			email \
 			protocol \
 			protocol/imap \
+			smtp \
 			ssl \
 			util
 
@@ -74,6 +81,9 @@ $(BIN): main.cpp $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ main.cpp $(OBJS) $(LIBS) -DDEBUG
 
 imap_parser: $(OBJS) $(HDRS)
+	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
+
+base36: $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
 .PHONY:

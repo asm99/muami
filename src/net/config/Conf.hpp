@@ -20,7 +20,8 @@ class Conf
         string conf_in_port;           // IMAPS port
         string conf_smtp_server;       // SMTP server address
         string conf_smtp_port;         // SMTPS port
-        string conf_from;              // username + email "Marc" <marc@ok.com>
+        string conf_from;              // username
+        string conf_email;             // e-mail address
         string conf_user;              // username to connect to server
         string conf_pass;              // password
         Email_Protocol conf_protocol;  // IMAP, POP3, etc.
@@ -38,6 +39,7 @@ class Conf
         void set_smtp_server(const string& s);
         void set_smtp_port(const string& s);
         void set_from(const string& s);
+        void set_email(const string& s);
         void set_user(const string& s);
         void set_pass(const string& s);
         void set_protocol(Email_Protocol ep);
@@ -49,9 +51,12 @@ class Conf
         string smtp_server() const;
         string smtp_port() const;
         string from() const;
+        string email() const;
         string user() const;
         string pass() const;
         Email_Protocol protocol() const;
+
+        string usermail() const; // full address, ie: "Me" <me@blah.com>
 
         // DEBUG
         void dump() const;

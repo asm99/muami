@@ -62,10 +62,12 @@ class Address
         void set_name(const string& name);
 
         // Getters
-        string adl();
-        string host();
-        string mailbox();
-        string name();
+        string adl() const;
+        string host() const;
+        string mailbox() const;
+        string name() const;
+        string email() const;    // e-mail address, ie: me@blah.com
+        string usermail() const; // full address, ie: "Me" <me@blah.com>
 
         // DEBUG
         void dump();

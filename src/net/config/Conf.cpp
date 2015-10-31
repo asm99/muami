@@ -1,5 +1,9 @@
 #include "Conf.hpp"
 
+/*
+ * Ensure configuration is valid, that is every required field is filled.
+ * Only from field can be empty.
+ */
 bool
 Conf::is_complete() const
 {
@@ -53,6 +57,12 @@ void
 Conf::set_from(const string& s)
 {
 	conf_from = s;
+}
+
+void
+Conf::set_email(const string& s)
+{
+	conf_email = s;
 }
 
 void
@@ -111,6 +121,12 @@ Conf::from() const
 }
 
 string
+Conf::email() const
+{
+    return conf_email;
+}
+
+string
 Conf::user() const
 {
 	return conf_user;
@@ -128,9 +144,18 @@ Conf::protocol() const
     return conf_protocol;
 }
 
+string
+Conf::usermail() const
+{
+    string address;
+    if (!conf_from.empty()) {
+        address += conf_from + " ";
+    }
+    address += email();
+    return address;
+}
 
 // DEBUG
-
 void
 Conf::dump() const
 {
@@ -141,6 +166,7 @@ Conf::dump() const
     debug("smtp_server: " + smtp_server());
     debug("smtp_port  : " + smtp_port()  );
     debug("from       : " + from()       );
+    debug("email      : " + email()      );
     debug("user       : " + user()       );
     debug("pass       : " + pass()       );
 }

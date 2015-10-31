@@ -57,10 +57,10 @@ mmdecode(string s, bool is_hdr)
         else {
             if (enc_word.length() > 0) {
                 if (encoding == "Q" || encoding == "q") {
-                    res += qp::from_qp(enc_word);
+                    res += qp::decode(enc_word);
                 }
                 else if (encoding == "B" || encoding == "b") {
-                    res += base64::from_base64(enc_word);
+                    res += base64::decode(enc_word);
                 }
 
 #ifdef CODING_DEBUG
