@@ -25,21 +25,21 @@ class Out_email
         ~Out_email();
 
         // Setters
-        void set_to(string s);
+        void set_to(const Address& a);
         void set_subject(string s);
         void set_content(string s);
         void add_cc(Address* a);
         void add_bcc(Address* a);
 
         // Getters
-        Address& to();
+        const Address& to() const;
         Addresses* cc();
         Addresses* bcc();
-        string subject();
-        string content();
+        string subject() const;
+        string content() const;
 
         // DEBUG
-        void dump();
+        void dump() const;
 };
 
 #endif /* end of include guard: OUT_EMAIL_H */

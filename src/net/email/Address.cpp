@@ -131,7 +131,7 @@ operator>>(istream& is, Address* a)
 
 // DEBUG
 void
-Address::dump()
+Address::dump() const
 {
     debug("");
     cout << "+--------------+--------------"  << endl

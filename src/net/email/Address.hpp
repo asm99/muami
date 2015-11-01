@@ -46,13 +46,18 @@ using namespace std;
 class Address
 {
     private:
-        string addr_adl;
-        string addr_host;
-        string addr_mailbox;
         string addr_name;
+        string addr_adl;
+        string addr_mailbox;
+        string addr_host;
 
     public:
         Address() {};
+        Address(string s_name, string s_adl, string s_mailbox, string s_host):
+            addr_name(s_name),
+            addr_adl(s_adl),
+            addr_mailbox(s_mailbox),
+            addr_host(s_host) {}
         ~Address() {};
 
         // Setters
@@ -70,7 +75,7 @@ class Address
         string usermail() const; // full address, ie: "Me" <me@blah.com>
 
         // DEBUG
-        void dump();
+        void dump() const;
 };
 
 istream& operator>>(istream& is, Address* a);

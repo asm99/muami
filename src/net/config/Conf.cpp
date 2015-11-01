@@ -12,6 +12,7 @@ Conf::is_complete() const
         || conf_smtp_server.empty()
         || conf_smtp_port.empty()
         || conf_from.empty()
+        || conf_email.empty()
         || conf_user.empty()
         || conf_pass.empty()
         || conf_protocol == PROTOCOL_UNDEFINED)
@@ -149,9 +150,9 @@ Conf::usermail() const
 {
     string address;
     if (!conf_from.empty()) {
-        address += conf_from + " ";
+        address += "\"" + conf_from + "\" ";
     }
-    address += email();
+    address += "<" + email() + ">";
     return address;
 }
 

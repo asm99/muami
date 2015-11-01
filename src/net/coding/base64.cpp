@@ -80,8 +80,8 @@ main()
         string encoded = base64::encode(it->first);
         if (encoded != it->second) {
             cerr << "Error encoding: " << it->first
-                 << "\n  =>          " << encoded
-                 << "\n  (should be: " << it->second << ")"
+                 << "  =>          " << encoded
+                 << " (should be: " << it->second << ")"
                  << endl;
         }
     }
@@ -91,11 +91,15 @@ main()
         string decoded = base64::decode(it->second);
         if (decoded != it->first) {
             cerr << "Error decoding: " << it->second
-                 << "\n  =>          " << decoded
-                 << "\n  (should be: " << it->first << ")"
+                 << "  =>          " << decoded
+                 << " (should be: " << it->first << ")"
                  << endl;
         }
     }
+
+    string s = "Echoes99";
+    string encoded = base64::encode(s);
+    cout << s << " => " << encoded << " (" << encoded.length() << ")" << endl;
 
     return 0;
 }

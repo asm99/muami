@@ -8,8 +8,9 @@ BLD_DIR = build
 # Refer to the specific file to get the appropriate flag. 
 # Note: leave the flag blank for production.
 # DBG = -DIMAP_PARSER_DEBUG 
-DBG = -DDEBUG
-#DBG = -DBASE36_DEBUG
+#DBG = -DDEBUG
+DBG = -DSMTP_MANAGER_DEBUG
+#DBG = -DBASE64_DEBUG
 
 SRCS = coding/base36.cpp \
 	   coding/base64.cpp \
@@ -83,7 +84,10 @@ $(BIN): main.cpp $(OBJS) $(HDRS)
 imap_parser: $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
-base36: $(OBJS) $(HDRS)
+smtp_manager: $(OBJS) $(HDRS)
+	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
+
+base64: $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
 .PHONY:

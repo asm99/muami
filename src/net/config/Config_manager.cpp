@@ -105,6 +105,7 @@ Config_manager::get_conf_from_string(const string& s, const string& fname)
         else if (field == "smtp_server") { conf.set_smtp_server(val); }
         else if (field == "smtp_port")   { conf.set_smtp_port(val);   }
         else if (field == "from")        { conf.set_from(val);        }
+        else if (field == "email")       { conf.set_email(val);       }
         else if (field == "user")        { conf.set_user(val);        }
         else if (field == "pass")        { conf.set_pass(val);        }
         else if (field == "protocol") {
@@ -189,6 +190,7 @@ Config_manager::save_config_file(Conf& cf)
         << "smtp_server : " << cf.smtp_server() << "\n"
         << "smtp_port   : " << cf.smtp_port()   << "\n"
         << "from        : " << cf.from()        << "\n"
+        << "email        : " << cf.email()        << "\n"
         << "user        : " << cf.user()        << "\n"
         << "pass        : " << cf.pass()        << "\n"
         << "protocol    : " << "IMAP"           << "\n";
@@ -208,9 +210,14 @@ Config_manager::save_config_file(Conf& cf)
 // Account creation/modification
 int
 Config_manager::setup_accout(string fname,
-                             string in_server, string in_port,
-                             string smtp_server, string smtp_port,
-                             string from, string user, string pass)
+                             string in_server,
+                             string in_port,
+                             string smtp_server,
+                             string smtp_port,
+                             string from,
+                             string email,
+                             string user,
+                             string pass)
 {
     Conf cf {};
     cf.set_fname(fname);
@@ -219,6 +226,7 @@ Config_manager::setup_accout(string fname,
     cf.set_smtp_server(smtp_server);
     cf.set_smtp_port(smtp_port);
     cf.set_from(from);
+    cf.set_email(email);
     cf.set_user(user);
     cf.set_pass(pass);
     cf.set_protocol(PROTOCOL_IMAP);

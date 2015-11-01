@@ -55,9 +55,15 @@ class Config_manager
         ~Config_manager() {};
 
         // Account creation/modification
-        int setup_accout(string fname, string in_server, string in_port,
-                         string smtp_server, string smtp_port,
-                         string from, string user, string pass);
+        int setup_accout(string fname,
+                         string in_server,
+                         string in_port,
+                         string smtp_server,
+                         string smtp_port,
+                         string from,
+                         string email,
+                         string user,
+                         string pass);
 
         unsigned int get_accounts_count() const;
         Account* get_account_at_index(unsigned int idx);

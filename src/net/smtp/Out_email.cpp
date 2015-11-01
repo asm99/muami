@@ -4,8 +4,8 @@
 Out_email::Out_email()
     :em_to()
 {
-    em_cc = new Addresses();
-    em_bcc = new Addresses();
+    em_cc = nullptr;
+    em_bcc = nullptr;
 }
 
 Out_email::~Out_email()
@@ -15,6 +15,12 @@ Out_email::~Out_email()
 }
 
 // Setters
+void
+Out_email::set_to(const Address& a)
+{
+    em_to = a;
+}
+
 void
 Out_email::set_subject(string s)
 {
@@ -40,20 +46,20 @@ Out_email::add_bcc(Address* a)
 }
 
 // Getters
-Address&
-Out_email::to()
+const Address&
+Out_email::to() const
 {
     return em_to;
 }
 
 string
-Out_email::subject()
+Out_email::subject() const
 {
     return em_subject;
 }
 
 string
-Out_email::content()
+Out_email::content() const
 {
     return em_content;
 }
@@ -72,7 +78,7 @@ Out_email::bcc()
 
 // DEBUG
 void
-Out_email::dump()
+Out_email::dump() const
 {
     debug("");
     cout << "--- Out e-mail ---" << endl;
