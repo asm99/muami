@@ -95,7 +95,7 @@ Config_manager::get_conf_from_string(const string& s, const string& fname)
 
         while (ss >> tmp) {
             val += tmp;
-            if (field == "from") { // spaces are only allowed in "from" field
+            if (field == "from" && isspace(ss.peek())) { // spaces are only allowed in "from" field
                 val += " ";
             }
         }
