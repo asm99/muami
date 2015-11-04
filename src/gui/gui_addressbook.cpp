@@ -310,7 +310,7 @@ void AddressBook::saveModification()
     file.close();
 }
 
-void AddressBook::modificationAdded(QTreeWidgetItem* item,int n)
+void AddressBook::modificationAdded(QTreeWidgetItem*,int)
 {
     modified = true ;
 }

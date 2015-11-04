@@ -8,13 +8,14 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFuture>
-#include "src/gui/gui_writemail.h"
-#include "src/gui/gui_handleissues.h"
-#include "src/gui/gui_attachfilewindow.h"
-#include "src/gui/gui_addressbook.h"
-#include "../mm/config/Config_manager.hpp"
-#include "../mm/protocol/Protocol_manager.hpp"
-#include "../mm/protocol/imap/IMAP_manager.hpp"
+#include "../gui/gui_writemail.h"
+#include "../gui/gui_handleissues.h"
+#include "../gui/gui_attachfilewindow.h"
+#include "../gui/gui_addressbook.h"
+#include "../net/config/Config_manager.hpp"
+#include "../net/protocol/Protocol_manager.hpp"
+#include "../net/protocol/imap/IMAP_manager.hpp"
+#include "../net/smtp/Out_email.hpp"
 
 namespace Ui {
 class MailBox;
@@ -29,9 +30,15 @@ public:
     ~MailBox();
     QList<QStringList> accountList;
     QStringList addressesBook;
+    QString details;
+    QString unchangedBody;
+
+private:
     vector<Email*> emails;
     int accountListSize;
     int currentAccount;
+    vector<int> offsetPerAcc;
+    vector<int> displayedEmailsPerAcc;
     bool checkbox;
     Config_manager *cm;
     QMovie *movie;
@@ -41,16 +48,17 @@ public slots:
     void getAddressesListFromNewMail(QStringList);
 
 private slots:
-
     /** Recherche et info **/
     void findMail(QString);
     /** Recherche et info **/
 
     /** Gestion des dossiers + mails **/
     void accountConnector();
+    void runRefreshThread();
     void displayMailSubject(Email*);
     void showMailContent(QListWidgetItem*);
     void showMailMenu(const QPoint &pos);
+    void showMoreEmails();
     /** Gestion des dossiers + mails **/
 
     /** Nouveau courrier **/
@@ -79,7 +87,8 @@ private slots:
     /** Répondre au courrier **/
 
     /** Fill Fields **/
-    void fillMailFields(QString);
+    QString fillMailFields(QString);
+    QString emailFormatting(QString);
     /** Fill Fields **/
 
     /** Isoler le courrier **/
@@ -98,6 +107,7 @@ private slots:
     void nextAccount();
     void accountOptions();
     void displayAccountFields();
+    void on_actionAdd();
     void addNewAccount() ;
     void on_actionSupprimer_le_compte_triggered();
     void delAccount();
@@ -109,6 +119,7 @@ private slots:
     void on_sendButton_clicked();
     void on_actionEnvoyer_triggered();
     void on_actionAlert_triggered();
+    void sendConfirmed();
     /** Envoi de courrier **/
 
     /** Gestion des pièces jointes **/

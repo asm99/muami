@@ -61,7 +61,7 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
                 SLOT(close())) ;
     }
 
-    if(type == "cancelFromNew")
+    if(type == "closeFromNew")
     {
         ui->okButton->setVisible(false);
 
@@ -69,6 +69,16 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
                 SIGNAL(clicked()),
                 parentWidget(),
                 SLOT(close())) ;
+    }
+
+    if(type == "cancelModifFromNew")
+    {
+        ui->okButton->setVisible(false);
+
+        connect(ui->ouiButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(displayCleanBody())) ;
     }
 
     if(type == "deleteFromBox")
