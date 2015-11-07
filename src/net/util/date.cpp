@@ -69,6 +69,15 @@ Date::current_date()
     return res;
 }
 
+string
+Date::smtp_current_date()
+{
+    struct tm lt = date_localtime();
+    char res[40];
+    strftime(res, sizeof(res), "%a, %d %b %Y %T %z", &lt);
+    return res;
+}
+
 /*
  * Get the current time to print debug infos
  * Output: 14:25:43.789 (hour:minutes:seconds.milliseconds)
@@ -88,7 +97,7 @@ Date::debug_date()
     return currentTime;
 }
 
-#ifdef DATE_FORMATTER_DEBUG
+#ifdef DATE_DEBUG
 int
 main()
 {
@@ -107,6 +116,9 @@ main()
     // Print current date
     string cur_date = Date::current_date();
     cout << "Current date: " << cur_date << endl;
+
+    string smtp_cur_date = Date::smtp_current_date();
+    cout << "SMTP current date: " << smtp_cur_date << endl;
 
     return 0;
 }

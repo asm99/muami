@@ -199,9 +199,9 @@ SMTP_manager::gen_msg_id()
  * Doc: https://tools.ietf.org/html/rfc2822#page-18 (header fields)
  */
 string
-SMTP_manager::build_email_body(const Out_email em)
+SMTP_manager::build_email_body(Out_email em)
 {
-    string date = Date::current_date();
+    string date = Date::smtp_current_date();
     string msgid = gen_msg_id();
     string from = account->conf().usermail();
     string sender = account->conf().email();
@@ -215,8 +215,23 @@ SMTP_manager::build_email_body(const Out_email em)
         + "From: " + from + "\r\n"
         + "Date: " + date + "\r\n"
         + "Message-ID: " + msgid + "\r\n"
-        + "Sender: " + sender + "\r\n"
-        + "MIME-Version: " + Mime_version + "\r\n"
+        + "Sender: " + sender + "\r\n";
+
+    Addresses& cc = em.cc();
+    unsigned int ccsz = cc.size();
+    if (ccsz > 0) {
+        body += "Cc: ";
+        for (unsigned int i = 0; i < ccsz; i++) {
+            body += cc.at(i)->usermail();
+            if (i < ccsz - 1) {
+                body += ", ";
+            }
+        }
+        body += "\r\n";
+    }
+
+    body +=
+        "MIME-Version: " + Mime_version + "\r\n"
         + "User-Agent: " + User_agent + "\r\n"
         + "Content-Type: text/plain; charset=UTF-8\r\n"
         + "Subject: " + subject + "\r\n"
@@ -289,7 +304,6 @@ SMTP_manager::send_email(Out_email em)
 
     string helo = get_helo_cmd();
     string body = build_email_body(em);
-
     string data = "DATA\r\n";
     string quit = "QUIT\r\n";
     string login = "AUTH LOGIN\r\n";
@@ -303,17 +317,17 @@ SMTP_manager::send_email(Out_email em)
 
     vector<string> cmds = { helo, login, user, pass, mail_from, rcpt_to, };
 
-    Addresses* cc = em.cc();
-    if (cc && cc->size() > 0) {
-        for (unsigned int i = 0; i < cc->size(); i++) {
-            cmds.push_back("RCPT TO:<" + cc->at(i)->email() + ">\r\n");
+    Addresses& cc = em.cc();
+    if (cc.size() > 0) {
+        for (unsigned int i = 0; i < cc.size(); i++) {
+            cmds.push_back("RCPT TO:<" + cc.at(i)->email() + ">\r\n");
         }
     }
 
-    Addresses* bcc = em.bcc();
-    if (bcc && bcc->size() > 0) {
-        for (unsigned int i = 0; i < bcc->size(); i++) {
-            cmds.push_back("RCPT TO:<" + em.bcc()->at(i)->email() + ">\r\n");
+    Addresses& bcc = em.bcc();
+    if (bcc.size() > 0) {
+        for (unsigned int i = 0; i < bcc.size(); i++) {
+            cmds.push_back("RCPT TO:<" + em.bcc().at(i)->email() + ">\r\n");
         }
     }
 
@@ -358,8 +372,10 @@ main()
     em.set_subject("Test blah blah");
     em.set_content("Ceci est un texte de test.");
 
-    Address* cc1 = new Address("This man", "", "mm", "asm35.info");
-    em.add_cc(cc1);
+    Address cc1("This man", "", "mm", "asm35.info");
+    Address cc2("This man", "", "mm", "asm35.info");
+    em.add_cc(&cc1);
+    em.add_bcc(&cc2);
 
     // Send the e-mail
     smtp_mgr.send_email(em);

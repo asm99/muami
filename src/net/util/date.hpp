@@ -19,6 +19,7 @@ namespace Date {
 
     string format_date(string s);
     string current_date();
+    string smtp_current_date();
     string debug_date();
 
 } /* namespace Date */

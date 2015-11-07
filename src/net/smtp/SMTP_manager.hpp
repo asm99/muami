@@ -26,7 +26,7 @@ class SMTP_manager
 
         Account* account;
 
-        string build_email_body(const Out_email em);
+        string build_email_body(Out_email em);
         string get_helo_cmd();
         int smtp_connect(int* fd);
         int smtp_starttls(int sockfd);

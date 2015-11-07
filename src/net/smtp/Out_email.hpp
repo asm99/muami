@@ -15,14 +15,14 @@ class Out_email
 {
     private:
         Address em_to;
-        Addresses* em_cc;
-        Addresses* em_bcc;
+        Addresses em_cc;
+        Addresses em_bcc;
         string em_subject;
         string em_content;
 
     public:
-        Out_email();
-        ~Out_email();
+        Out_email(): em_to(), em_cc(), em_bcc() {};
+        ~Out_email() {};
 
         // Setters
         void set_to(const Address& a);
@@ -33,8 +33,8 @@ class Out_email
 
         // Getters
         const Address& to() const;
-        Addresses* cc();
-        Addresses* bcc();
+        Addresses& cc();
+        Addresses& bcc();
         string subject() const;
         string content() const;
 

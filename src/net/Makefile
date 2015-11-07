@@ -10,6 +10,7 @@ BLD_DIR = build
 # DBG = -DIMAP_PARSER_DEBUG 
 #DBG = -DDEBUG
 DBG = -DSMTP_MANAGER_DEBUG
+#DBG = -DDATE_DEBUG
 #DBG = -DBASE64_DEBUG
 
 SRCS = coding/base36.cpp \
@@ -87,7 +88,7 @@ imap_parser: $(OBJS) $(HDRS)
 smtp_manager: $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
-base64: $(OBJS) $(HDRS)
+date: $(OBJS) $(HDRS)
 	$(CPP) $(CFLAGS) -o $(BLD_DIR)/$@ $(OBJS) $(LIBS) $(DBG)
 
 .PHONY:
