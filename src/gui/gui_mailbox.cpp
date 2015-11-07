@@ -607,6 +607,11 @@ void MailBox::displayAccountFields()
     ui->password->setVisible(true);
 }
 
+/*
+ * FIXME: add email variable of account->conf()
+ * "from" is now only the wanted username   "FROM" (<email@address.com>)
+ * "email" is the e-mail address, ie: email@address.com
+ */
 void MailBox::addNewAccount()
 {
     QRegExp mailRegex("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
@@ -644,6 +649,7 @@ void MailBox::addNewAccount()
                     ui->smtpServer->text().toStdString(),
                     ui->smtpPort->text().toStdString(),
                     ui->name->text().toStdString(),
+                    "", // !!!!!!!! TO FIX !!!!!!!! (email address)
                     ui->mailAccount->text().toStdString(),
                     ui->password->text().toStdString()
                 );

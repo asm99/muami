@@ -1,0 +1,21 @@
+HELO [...]
+
+MAIL FROM:<moi@moi.net>
+
+RCPT TO:<un_to@test.net>
+
+RCPT TO:<un_cc@test.net>
+
+RCPT TO:<un_bcc@test.net>
+
+DATA
+From: "Moi" <moi@moi.net>
+To: "Un to" <un_to@test.net>
+Cc: "Un CC" <un_cc@test.net>
+Bcc: "Un BCC" <un_bcc@test.net>
+Subject: Ceci est un test
+
+Blablabla
+.
+
+QUIT

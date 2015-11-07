@@ -10,8 +10,13 @@ Out_email::Out_email()
 
 Out_email::~Out_email()
 {
-    delete em_cc;
-    delete em_bcc;
+    if (em_cc) {
+        delete em_cc;
+    }
+
+    if (em_bcc) {
+        delete em_bcc;
+    }
 }
 
 // Setters
@@ -36,12 +41,20 @@ Out_email::set_content(string s)
 void
 Out_email::add_cc(Address* a)
 {
+    if (!em_cc) {
+        em_cc = new Addresses();
+    }
+
     em_cc->add_address(a);
 }
 
 void
 Out_email::add_bcc(Address* a)
 {
+    if (!em_bcc) {
+        em_bcc = new Addresses();
+    }
+
     em_bcc->add_address(a);
 }
 

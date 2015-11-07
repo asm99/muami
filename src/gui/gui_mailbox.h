@@ -12,9 +12,9 @@
 #include "src/gui/gui_handleissues.h"
 #include "src/gui/gui_attachfilewindow.h"
 #include "src/gui/gui_addressbook.h"
-#include "../mm/config/Config_manager.hpp"
-#include "../mm/protocol/Protocol_manager.hpp"
-#include "../mm/protocol/imap/IMAP_manager.hpp"
+#include "../net/config/Config_manager.hpp"
+#include "../net/protocol/Protocol_manager.hpp"
+#include "../net/protocol/imap/IMAP_manager.hpp"
 
 namespace Ui {
 class MailBox;
@@ -23,7 +23,7 @@ class MailBox;
 class MailBox : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MailBox(QWidget *parent = 0);
     ~MailBox();
