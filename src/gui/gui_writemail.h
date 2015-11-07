@@ -18,9 +18,14 @@ class WriteMail : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit WriteMail(QWidget *parent = 0, bool display = true);
+    explicit WriteMail(QWidget *parent = 0,
+                       bool display = true,
+                       QString detail = "",
+                       QString unchangedBody = "");
     ~WriteMail();
 
+    QString details;
+    QString cleanBody;
     QStringList addresses ;
     void addContent(QStringList content);
     void addFileToMail(QString);
@@ -41,9 +46,11 @@ private slots:
     void on_actionTransfer_triggered();
     void on_actionDelete_triggered();
     void on_actionCancel_triggered();
+    void displayCleanBody();
     void on_actionSave_triggered();
     void on_actionClose_triggered();
     void setStuff() ;
+    QString emailFormatting(QString);
     void sendConfirmed();
     void on_sendButton_clicked();
     void on_actionEnvoyer_triggered();
