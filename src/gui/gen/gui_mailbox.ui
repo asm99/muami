@@ -340,12 +340,15 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>Afficher plus de mails</string>
+           </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
             <iconset resource="../icons.qrc">
-             <normaloff>:/icon/res/refresh.png</normaloff>:/icon/res/refresh.png</iconset>
+             <normaloff>:/icon/res/add.png</normaloff>:/icon/res/add.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -391,6 +394,35 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="shortcut">
             <string>Esc</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="saveButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icon/res/stiffy.png</normaloff>:/icon/res/stiffy.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
            </property>
           </widget>
          </item>

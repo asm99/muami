@@ -52,7 +52,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="" native="true">
+    <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -141,29 +141,6 @@
         <property name="icon">
          <iconset resource="../icons.qrc">
           <normaloff>:/icon/res/close-circle-outline.png</normaloff>:/icon/res/close-circle-outline.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="saveButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icon/res/stiffy.png</normaloff>:/icon/res/stiffy.png</iconset>
         </property>
         <property name="iconSize">
          <size>

@@ -38,7 +38,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     {
         ui->ouiButton->setVisible(false);
         ui->nonButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->okButton,
                 SIGNAL(clicked()),
@@ -48,7 +47,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "deleteFromNew")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),
@@ -84,12 +82,36 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "deleteFromBox")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),
                 parentWidget(),
                 SLOT(deleteItem())) ;
+
+        connect(ui->nonButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(removeCheckbox()));
+    }
+
+    if(type == "saveMail")
+    {
+        ui->okButton->setVisible(false);
+
+        connect(ui->ouiButton,
+                SIGNAL(clicked()),
+                parentWidget(),
+                SLOT(openExplorerToSave())) ;
+    }
+
+    if(type == "denySave")
+    {
+        ui->ouiButton->setVisible(false);
+        ui->nonButton->setVisible(false);
+
+        connect(ui->okButton,
+                SIGNAL(clicked()),
+                SLOT(close())) ;
     }
 
     if(type == "cancelFromBox")
@@ -105,7 +127,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "leave")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),
@@ -117,7 +138,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     {
         ui->ouiButton->setVisible(false);
         ui->nonButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->okButton,
                 SIGNAL(clicked()),
@@ -127,7 +147,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "delAccount")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),
@@ -139,7 +158,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     {
         ui->ouiButton->setVisible(false);
         ui->nonButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->okButton,
                 SIGNAL(clicked()),
@@ -149,7 +167,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "deleteAddress")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),
@@ -160,7 +177,6 @@ HandleIssues::HandleIssues(QWidget *parent, QString str, QString type) :
     if(type == "confirmModifAddBook")
     {
         ui->okButton->setVisible(false);
-        ui->saveButton->setVisible(false);
 
         connect(ui->ouiButton,
                 SIGNAL(clicked()),

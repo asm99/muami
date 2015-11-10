@@ -21,14 +21,18 @@ public:
     explicit WriteMail(QWidget *parent = 0,
                        bool display = true,
                        QString detail = "",
-                       QString unchangedBody = "");
+                       QString unchangedBody = "",
+                       QStringList fullMail = {"", "", "", "", "", "", ""});
     ~WriteMail();
 
+    QStringList addresses ;
+    void addFileToMail(QString);
+
+private:
+    bool display;
     QString details;
     QString cleanBody;
-    QStringList addresses ;
-    void addContent(QStringList content);
-    void addFileToMail(QString);
+    QStringList mail;
 
 signals:
     void sendAddressesListToMailBox(QStringList);
@@ -38,6 +42,7 @@ public slots:
     void getAddressesListFromMailBox(QStringList);
 
 private slots:
+    void addContent();
     void on_cancelButton_clicked();
     void openAddressBook();
     void on_actionSend_triggered();
@@ -48,6 +53,7 @@ private slots:
     void on_actionCancel_triggered();
     void displayCleanBody();
     void on_actionSave_triggered();
+    void closeMe();
     void on_actionClose_triggered();
     void setStuff() ;
     QString emailFormatting(QString);
@@ -63,7 +69,8 @@ private slots:
     void on_deleteButton_clicked();
     void on_saveButton_clicked();
     void on_closeButton_clicked();
-    void openAttachFileWindow();
+    void openExplorerToAttach();
+    void openExplorerToSave();
     void on_attachButton_clicked();
     void addFile(QString);
     void deleteAttachedFile();

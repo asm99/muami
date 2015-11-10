@@ -3,16 +3,23 @@
 #include "src/gui/gui_writemail.h"
 #include "src/gui/gui_handleissues.h"
 
-AttachFileWindow::AttachFileWindow(QWidget *parent) :
+AttachFileWindow::AttachFileWindow(QWidget *parent,
+                                   QString windowType,
+                                   QStringList mailDetails) :
     QMainWindow(parent),
     ui(new Ui::AttachFileWindow)
 {
     ui->setupUi(this);
 
+    type = windowType;
+    mail = mailDetails; /* Structure : subject, body, sender name
+                         * mailbox, host, cc, internal date, uid */
+
     ui->fileDetails->setReadOnly(true);
     ui->fileDetails->setVisible(true);
 
-    displayHelper();
+    if(type =="Attach") displayHelper();
+
     objStyle();
     connectWidgets();
 
@@ -36,7 +43,18 @@ AttachFileWindow::AttachFileWindow(QWidget *parent) :
 
 AttachFileWindow::~AttachFileWindow()
 {
+    HandleIssues *child = this->findChild<HandleIssues *>();
+    if(child) child->close();
+
     delete ui;
+}
+
+void AttachFileWindow::closeMe()
+{
+    HandleIssues *child = this->findChild<HandleIssues *>();
+    if(child) delete child;
+
+    close();
 }
 
 /** ++ Volet des dossiers ++ **/
@@ -80,7 +98,6 @@ void AttachFileWindow::on_folderList_itemDoubleClicked(QListWidgetItem *item)
     delete ui->folderList->item(0);
 }
 
-
 void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
 {
     QString str = item->whatsThis();
@@ -107,7 +124,8 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
 
     ui->contentList->clear();
     ui->fileDetails->clear();
-    displayHelper();
+
+    if(type == "Attach") displayHelper();
 
     foreach(QFileInfo fileInfo, filesList)
     {
@@ -115,8 +133,11 @@ void AttachFileWindow::on_folderList_itemClicked(QListWidgetItem *item)
         {
             QString file = fileInfo.fileName() ;
             QListWidgetItem *item = new QListWidgetItem(ui->contentList) ;
-            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-            item->setCheckState(Qt::Unchecked);
+            if(type == "Attach")
+            {
+                item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+                item->setCheckState(Qt::Unchecked);
+            }
             item->setText(file);
 
             QString details = "Chemin du fichier :\n";
@@ -203,8 +224,16 @@ void AttachFileWindow::showDetails(QListWidgetItem *item)
 {
     ui->fileDetails->clear();
     ui->fileDetails->setText(item->whatsThis());
-    if (item->checkState() == Qt::Unchecked) item->setCheckState(Qt::Checked);
-    else item->setCheckState(Qt::Unchecked);
+    if(type == "Attach")
+    {
+        if (item->checkState() == Qt::Unchecked) item->setCheckState(Qt::Checked);
+        else item->setCheckState(Qt::Unchecked);
+    }
+}
+
+void AttachFileWindow::displayName(QListWidgetItem *)
+{
+    ui->findFile->setText(ui->contentList->currentItem()->text());
 }
 
 void AttachFileWindow::findFile(QString toFind)
@@ -228,6 +257,50 @@ void AttachFileWindow::findFile(QString toFind)
     }
 }
 
+void AttachFileWindow::saveConfirmed()
+{
+    QString fileName = ui->pathAccessor->text();
+    fileName.append("/");
+    fileName.append(ui->findFile->text());
+
+    QStringList extension = fileName.split(".");
+    if(extension.at(extension.size()-1) != "mail")
+        fileName.append(".mail");
+
+    QStringList files;
+    for(int x = 0; x < ui->contentList->count(); x++)
+    {
+        files.append(ui->contentList->item(x)->text());
+    }
+
+    if(!files.contains(ui->findFile->text()))
+    {
+        QFile file(fileName);
+        if(file.open(QIODevice::ReadWrite))
+        {
+            QTextStream out(&file);
+
+            QStringList dateLine = mail[6].split(" ");
+            QString date = dateLine.at(0) + " - " + dateLine.at(1);
+
+            out << "From : " << mail[2] << "<" << mail[3] << "@" << mail[4] << ">\n"
+                << "Date : " << date << "\n\n"
+                << "Subject : " << mail[0] << "\n\n"
+                << mail[1];
+
+            file.close();
+        }
+        displayPathContent(ui->pathAccessor->text());
+    }
+    else if(files.contains(ui->findFile->text()))
+    {
+        QString str = "Impossible de sauvegarder car un fichier "
+                      "portant le même nom existe déjà.";
+        HandleIssues *box = new HandleIssues(this, str, "denySave");
+        box->show();
+    }
+}
+
 /** ~~ Volet des fichiers + description ~~ **/
 
 
@@ -248,7 +321,7 @@ void AttachFileWindow::addFile()
     }
 }
 
-void AttachFileWindow::on_contentList_itemDoubleClicked(QListWidgetItem *itm)
+void AttachFileWindow::onFileDoubleClicked(QListWidgetItem *itm)
 {
     QString item = itm->whatsThis();
     QStringList pieces = item.split("\n");
@@ -261,16 +334,31 @@ void AttachFileWindow::objStyle()
 {
     QString style = "background-color: #FFFFFF;\
                         border:0px;";
-    ui->findFile->setStyleSheet(style);
-    ui->pathAccessor->setStyleSheet(style);
+    ui->findFile->setStyleSheet("background-color: #FFFFFF;"
+                                "border:0px;"
+                                "border-top:1px solid qlineargradient"
+                                  "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                                      "stop:0 rgba(139, 153, 153, 255), "
+                                      "stop:1 rgba(139, 153, 153, 255));"
+                                "border-right:1px solid qlineargradient"
+                                  "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                                      "stop:0 rgba(139, 153, 153, 255), "
+                                      "stop:1 rgba(139, 153, 153, 255));");
+
+    ui->pathAccessor->setStyleSheet("background-color: #FFFFFF;"
+                                    "border:0px;"
+                                    "border-left:1px solid qlineargradient"
+                                      "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                                          "stop:0 rgba(139, 153, 153, 255),"
+                                          "stop:1 rgba(139, 153, 153, 255));");
 
     ui->fileDetails->setStyleSheet("background-color:#252b2b;"
                                    "color:#9fabaa;"
                                    "border:0px;\
                                     border-left:1px solid qlineargradient"
                                       "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
-                                      "stop:0 rgba(139, 153, 153, 255), "
-                                      "stop:1 rgba(139, 153, 153, 255));");
+                                          "stop:0 rgba(139, 153, 153, 255), "
+                                          "stop:1 rgba(139, 153, 153, 255));");
 
     ui->contentList->setStyleSheet("background-color: #FFFFFF;"
                                    "color:#252b2b;\
@@ -280,6 +368,18 @@ void AttachFileWindow::objStyle()
     ui->folderList->setStyleSheet("background-color:#252b2b;"
                                   "color:#9fabaa;"
                                   "border:0px;");
+
+    if(type == "Save")
+    {
+        ui->addButton->setVisible(false);
+        ui->saveButton->setVisible(true);
+    }
+
+    else if(type == "Attach")
+    {
+        ui->addButton->setVisible(true);
+        ui->saveButton->setVisible(false);
+    }
 }
 
 void AttachFileWindow::connectWidgets()
@@ -288,29 +388,47 @@ void AttachFileWindow::connectWidgets()
             SIGNAL(returnPressed()),
             SLOT(accessToFolder())) ;
 
-    connect(ui->findFile,
-            SIGNAL(textChanged(QString)),
-            SLOT(findFile(QString)));
-
     connect(ui->contentList,
             SIGNAL(itemClicked(QListWidgetItem*)),
             SLOT(showDetails(QListWidgetItem*)));
 
-    connect(ui->addButton,
-            SIGNAL(clicked()),
-            SLOT(addFile())) ;
-
-    connect(this,
-            SIGNAL(sendFileToMail(QString)),
-            this->parentWidget(),
-            SLOT(addFile(QString)));
-
     connect(ui->leaveButton,
             SIGNAL(clicked()),
-            SLOT(close()));
+            SLOT(closeMe()));
 
     connect(ui->leaveButton,
             SIGNAL(clicked()),
             this->parentWidget(),
             SLOT(openAttachFileWindow()));
+
+    if(type == "Attach")
+    {
+        connect(this,
+                SIGNAL(sendFileToMail(QString)),
+                this->parentWidget(),
+                SLOT(addFile(QString)));
+
+        connect(ui->addButton,
+                SIGNAL(clicked()),
+                SLOT(addFile())) ;
+
+        connect(ui->contentList,
+                SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                SLOT(onFileDoubleClicked(QListWidgetItem*)));
+
+        connect(ui->findFile,
+                SIGNAL(textChanged(QString)),
+                SLOT(findFile(QString)));
+    }
+
+    if(type == "Save")
+    {
+        connect(ui->findFile,
+                SIGNAL(returnPressed()),
+                SLOT(saveConfirmed()));
+
+        connect(ui->contentList,
+                SIGNAL(itemClicked(QListWidgetItem*)),
+                SLOT(displayName(QListWidgetItem*)));
+    }
 }

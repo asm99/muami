@@ -11,9 +11,10 @@
  */
 
 WriteMail::WriteMail(QWidget *parent,
-                     bool display,
+                     bool displayFields,
                      QString detail,
-                     QString unchangedBody) :
+                     QString unchangedBody,
+                     QStringList fullMail) :
     QMainWindow(parent),
     ui(new Ui::WriteMail)
 {
@@ -27,8 +28,11 @@ WriteMail::WriteMail(QWidget *parent,
             )
         ) ;
 
+    display = displayFields;
     details = detail;
     cleanBody = unchangedBody;
+    mail = fullMail;
+
     ui->attachedFiles->setStyleSheet("QListWidget::item{border-bottom:0px}");
     ui->title->setMaxLength(80);
     ui->displayer->setFontPointSize(11);
@@ -74,6 +78,9 @@ WriteMail::WriteMail(QWidget *parent,
         ui->closeButton->setVisible(false);
         ui->deleteButton->setVisible(false);
     }
+
+    if(mail[3] != "") addContent();
+
 }
 
 WriteMail::~WriteMail()
@@ -81,27 +88,28 @@ WriteMail::~WriteMail()
     delete ui;
 }
 
-void WriteMail::addContent(QStringList content)
-{
-    ui->to->setText(content[0]);
-    ui->cc->setText(content[1]);
-    ui->bcc->setText(content[2]);
-    ui->title->setText(content[3]);
-    ui->displayer->setText(content[4]);
-    if(ui->cc->text() != "")
+void WriteMail::addContent()
+{/* Structure : subject, body, sender name
+  * mailbox, host, cc, internal date, uid */
+    ui->cc->setText(mail[5]);
+    ui->title->setText(mail[0]);
+    ui->displayer->setText(mail[1]);
+
+    if(display)
     {
         ui->cc->setVisible(true);
+        ui->bcc->setVisible(true);
+        ui->to->setText(mail[3] + "@" + mail[4]);
     }
-    else
+    if(!display)
+    {
+        ui->to->setText(mail[2] + "<" + mail[3] + "@" + mail[4] + ">");
+    }
+    if(ui->cc->text() == "" && !display)
     {
         ui->cc->setVisible(false);
     }
-
-    if(ui->bcc->text() != "")
-    {
-        ui->bcc->setVisible(true);
-    }
-    else
+    if(ui->bcc->text() == "" && !display)
     {
         ui->bcc->setVisible(false);
     }
@@ -179,7 +187,7 @@ void WriteMail::on_actionSend_triggered()
     mailRegex.setCaseSensitivity(Qt::CaseInsensitive);
     mailRegex.setPatternSyntax(QRegExp::RegExp);
 
-    for(int mails_list = 0; mails_list < lists.size(); mails_list++)
+    for(unsigned int mails_list = 0; mails_list < lists.size(); mails_list++)
     {
         QStringList current_list = lists[mails_list];
         for(int email = 0; email < current_list.count(); email++)
@@ -254,7 +262,7 @@ void WriteMail::sendConfirmed()    // PARSER LES DONNEES POUR GESTION PAR LES FO
         emails.push_back(email);
     }
 
-    for(int email = 0; email < emails.size(); email++)
+    for(unsigned int email = 0; email < emails.size(); email++)
     {
         emails[email]->dump();
     }
@@ -372,23 +380,14 @@ void WriteMail::displayCleanBody()
     ui->replyAllButton->setVisible(true);
     ui->replyButton->setVisible(true);
     ui->transferButton->setVisible(true);
-    if(ui->cc->text() != "")
-    {
-        ui->cc->setVisible(true);
-    }
-    else
-    {
-        ui->cc->setVisible(false);
-    }
+    ui->to->setReadOnly(true);
+    ui->to->setText(mail[2] + "<" + mail[3] + "@" + mail[4] + ">");
 
-    if(ui->bcc->text() != "")
-    {
-        ui->bcc->setVisible(true);
-    }
-    else
-    {
-        ui->bcc->setVisible(false);
-    }
+    if(ui->cc->text() != "")  ui->cc->setVisible(true);
+    else ui->cc->setVisible(false);
+
+    if(ui->bcc->text() != "") ui->bcc->setVisible(true);
+    else ui->bcc->setVisible(false);
 }
 
 void WriteMail::on_saveButton_clicked()
@@ -396,9 +395,41 @@ void WriteMail::on_saveButton_clicked()
     on_actionSave_triggered();
 }
 
-void WriteMail::on_actionSave_triggered()       // Sauvegarder sur DD ou brouillon ?
+void WriteMail::on_actionSave_triggered()
 {
+    QString str = "";
+    if(ui->displayer->isReadOnly())
+    {
+        str = "Voulez-vous sauvegarder ce courrier ?" ;
+    }
 
+    else
+    {
+        str = "Ce courrier contient des modifications.\n"
+                "Souhaitez-vous tout de même le sauvegarder ?";
+    }
+    HandleIssues *box = new HandleIssues(this, str, "saveMail") ;
+    box->show();
+}
+
+void WriteMail::openExplorerToSave()
+{
+    AttachFileWindow *b = new AttachFileWindow(this, "Save", mail);
+    b->show();
+}
+
+void WriteMail::closeMe()
+{
+    AddressBook *child0 = this->findChild<AddressBook *>();
+    if(child0) delete child0;
+
+    AttachFileWindow *child1 = this->findChild<AttachFileWindow *>();
+    if(child1) delete child1;
+
+    HandleIssues *child2 = this->findChild<HandleIssues *>();
+    if(child2) delete child2;
+
+    close();
 }
 
 void WriteMail::on_closeButton_clicked()
@@ -408,7 +439,7 @@ void WriteMail::on_closeButton_clicked()
 
 void WriteMail::on_actionClose_triggered()
 {
-    this->close();
+    closeMe();
 }
 
 void WriteMail::setStuff()
@@ -421,10 +452,14 @@ void WriteMail::setStuff()
     ui->replyAllButton->setVisible(false);
     ui->replyButton->setVisible(false);
     ui->transferButton->setVisible(false);
-    ui->displayer->setReadOnly(false);
     ui->cc->setVisible(true);
     ui->bcc->setVisible(true);
 
+    ui->to->setText(mail[3] + "@" + mail[4]);
+    ui->to->setReadOnly(false);
+    ui->cc->setReadOnly(false);
+    ui->bcc->setReadOnly(false);
+    ui->displayer->setReadOnly(false);
     QString writter = details;
     QString old = emailFormatting(ui->displayer->toPlainText());
     writter.append(old);
@@ -436,7 +471,7 @@ QString WriteMail::emailFormatting(QString old)
 {
     unsigned int pos = 0;
     old.insert(0, '>');
-    for(unsigned int letter = 0; letter < old.size(); letter++)
+    for(int letter = 0; letter < old.size(); letter++)
     {
         if(pos < 79)
         {
@@ -477,20 +512,20 @@ QString WriteMail::emailFormatting(QString old)
 /** ++ Gestion des pièces jointes et carnet d'adresses ++ **/
 void WriteMail::on_actionAttachFiletriggered()
 {
-    openAttachFileWindow();
+    openExplorerToAttach();
 }
 
 void WriteMail::on_attachButton_clicked()
 {
-    openAttachFileWindow() ;
+    openExplorerToAttach() ;
 }
 
-void WriteMail::openAttachFileWindow()
+void WriteMail::openExplorerToAttach()
 {
     AttachFileWindow *child = this->findChild<AttachFileWindow *>();
     if (!child)
     {
-        AttachFileWindow *box = new AttachFileWindow(this) ;
+        AttachFileWindow *box = new AttachFileWindow(this, "Attach") ;
         box->show();
         delete child ;
     }

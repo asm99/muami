@@ -77,6 +77,7 @@ MailBox::~MailBox()
 /** ++ Display mails ++ **/
 void MailBox::accountConnector()
 {
+    ui->refreshButton->setEnabled(false);
     ui->spinner->show();
 
     //Config_manager* cm = new Config_manager(); /**Pour test avec renew de
@@ -112,10 +113,13 @@ void MailBox::accountConnector()
 
         for (int i = acc->cur_mbox()->emails().size()-1; i > -1; i--)
         {
+            Email *em = acc->cur_mbox()->emails()[i];
             acc->fetch_email_parts(i);
-            displayMailSubject(acc->cur_mbox()->emails()[i]);
+            QString body = QString::fromStdString(acc->fetch_email_text(i));
+            toLocalMemory(em, body);
+            QStringList toWidget = bodies[currentAccount][em->uid()];
+            displayMailSubject(toWidget);
         }
-
         acc->logout();
     }
 
@@ -128,6 +132,8 @@ void MailBox::accountConnector()
         ui->cancelAccount->setVisible(false);
         ui->delAccount->setVisible(false);
         ui->addAccount->setVisible(false);
+
+        ui->refreshButton->setEnabled(true);
     }
     else if(accountListSize == 1)
     {
@@ -156,7 +162,42 @@ void MailBox::accountConnector()
     ui->spinner->hide();
 }
 
-void MailBox::displayMailSubject(Email *mail)
+void MailBox::toLocalMemory(Email *em, QString body)
+{
+    QStringList email_details; /* Structure : subject, body, sender name
+                                * mailbox, host, cc, internal date, uid */
+    QString ccs = ccConstructor(em);
+
+    email_details   << QString::fromStdString(em->envelope().subject().str())
+                    << body
+                    << QString::fromStdString(em->envelope().from()->name())
+                    << QString::fromStdString(em->envelope().from()->mailbox()).split(" ")[0]
+                    << QString::fromStdString(em->envelope().from()->host())
+                    << ccs
+                    << QString::fromStdString(em->internaldate())
+                    << QString::number(em->uid());
+
+    bodies[currentAccount][em->uid()] = email_details;
+}
+
+QString MailBox::ccConstructor(Email *em)
+{
+    Addresses *cc = em->envelope().cc();
+    QString ccs = "";
+
+    for(unsigned int x = 0; x < cc->size(); x++)
+    {
+        QString name = QString::fromStdString(cc->operator [](x)->mailbox());
+        ccs.append(name.replace(" ", ""));
+        ccs.append("@");
+        name = QString::fromStdString(cc->operator [](x)->host());
+        ccs.append(name.replace(" ", ""));
+        ccs.append("; ");
+    }
+    return ccs;
+}
+
+void MailBox::displayMailSubject(QStringList em_details)
 {
     ui->actionTransf_rer->setVisible(false);
     ui->actionR_pondre->setVisible(false);
@@ -164,14 +205,16 @@ void MailBox::displayMailSubject(Email *mail)
     ui->actionSupprimer->setVisible(false);
     ui->mailField->setVisible(true);
 
-    QListWidgetItem *item = new QListWidgetItem(ui->mailList);
-    QString subject = QString::fromStdString(mail->envelope().subject().str());
-    QString from = QString::fromStdString(mail->envelope().from()->name());
-    QStringList dateLine = QString::fromStdString(mail->internaldate()).split(" ");
+    QString subject = em_details[0];
+    QString from = em_details[2];
+    QStringList dateLine = em_details[6].split(" ");
     QString date = dateLine.at(0) + " - " + dateLine.at(1);
+
     QString toDisplay = from + "\n" + date + "\n" + subject ;
+
+    QListWidgetItem *item = new QListWidgetItem(ui->mailList);
     item->setText(toDisplay);
-    item->setWhatsThis(QString::number(mail->uid()));
+    item->setWhatsThis(em_details[7]);
     ui->mailList->addItem(item);
 }
 
@@ -185,6 +228,7 @@ void MailBox::showMailContent(QListWidgetItem*)
     toggleMailFields(false) ;
 
     details = fillMailFields("ALL");
+
     unchangedBody = ui->displayer->toPlainText();
     ui->title->setVisible(true);
     ui->title->setReadOnly(true);
@@ -240,6 +284,7 @@ void MailBox::runRefreshThread()
 
 void MailBox::showMoreEmails()
 {
+    ui->refreshButton->setEnabled(false);
     offsetPerAcc[currentAccount] += 10;
     displayedEmailsPerAcc[currentAccount] += 10;
 
@@ -256,13 +301,17 @@ void MailBox::showMoreEmails()
 
     for (int i = 9; i > -1; i--)
     {
+        Email *em = acc->cur_mbox()->emails()[i];
         acc->fetch_email_parts(i);
-        displayMailSubject(acc->cur_mbox()->emails()[i]);
+        QString body = QString::fromStdString(acc->fetch_email_text(i));
+        toLocalMemory(em, body);
+        QStringList toWidget = bodies[currentAccount][em->uid()];
+        displayMailSubject(toWidget);
     }
     acc->logout();
     ui->spinner->hide();
+    ui->refreshButton->setEnabled(true);
 }
-
 /** ~~ Display mails ~~ **/
 
 
@@ -334,6 +383,7 @@ void MailBox::on_actionSupprimer_triggered()
                 checkbox = false;
             }
         }
+        checkbox = false;
     }
 }
 
@@ -345,11 +395,18 @@ void MailBox::deleteItem()
         QListWidgetItem *mail = ui->mailList->item(x) ;
         if (mail->checkState() == Qt::Checked)
         {
+            int id = mail->whatsThis().toInt();
+            bodies[currentAccount].remove(id);
             delete mail ;
             x = 0;
         }
         else x++ ;
     }
+    removeCheckbox();
+}
+
+void MailBox::removeCheckbox()
+{
     for(int y = 0; y < ui->mailList->count(); y++)
     {
         QListWidgetItem *mail = ui->mailList->item(y);
@@ -361,7 +418,44 @@ void MailBox::deleteItem()
 /** ~~ Delete mails ~~ **/
 
 
-/** ++ Cancel operation ++ **/
+/** ++ Saving functions ++ **/
+void MailBox::on_saveButton_clicked()
+{
+    askToSaveMail();
+}
+
+void MailBox::askToSaveMail()
+{
+    if(ui->mailList->currentItem())
+    {
+        QString str = "";
+        if(ui->displayer->isReadOnly())
+        {
+            str = "Voulez-vous sauvegarder ce courrier ?" ;
+        }
+
+        else
+        {
+            str = "Ce courrier contient des modifications.\n"
+                    "Souhaitez-vous tout de même le sauvegarder ?";
+        }
+        HandleIssues *box = new HandleIssues(this, str, "saveMail") ;
+        box->show();
+    }
+}
+
+void MailBox::openExplorerToSave()
+{
+    int id = ui->mailList->currentItem()->whatsThis().toInt();
+    QStringList mail = bodies[currentAccount][id];
+    if(!ui->displayer->isReadOnly()) mail[1] = ui->displayer->toPlainText();
+    AttachFileWindow *b = new AttachFileWindow(this, "Save", mail);
+    b->show();
+}
+/** ~~ Saving functions ~~ **/
+
+
+/** ++ Cancelling functions ++ **/
 void MailBox::on_cancelButton_clicked()
 {
     QString str = "Voulez-vous annuler les modifications ?" ;
@@ -379,10 +473,10 @@ void MailBox::on_actionCancel_confirmed_triggered()
     ui->actionSupprimer_la_pi_ce_jointe->setVisible(false);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(false);
 }
-/** ~~ Cancel operation ~~ **/
+/** ~~ Cancelling functions ~~ **/
 
 
-/** ++ Reply ++ **/
+/** ++ Replying functions ++ **/
 void MailBox::on_repButton_clicked()
 {
     on_actionR_pondre_triggered();
@@ -403,6 +497,13 @@ void MailBox::on_actionR_pondre_triggered()
         ui->displayer->setText(writter);
         toggleMailFields(true) ;
         toggleButtons(false) ;
+        QString from_addr = ui->to->text().split("<")[1];
+        from_addr = from_addr.split(">")[0];
+        ui->to->setText(from_addr);
+        ui->to->setReadOnly(false);
+        ui->cc->setReadOnly(false);
+        ui->bcc->setReadOnly(false);
+        ui->title->setReadOnly(false);
         openedMailButtons() ;
     }
 }
@@ -427,6 +528,13 @@ void MailBox::on_actionR_pondre_tous_triggered()
         ui->displayer->setTextCursor(cursor);
         toggleMailFields(true) ;
         toggleButtons(false) ;
+        QString from_addr = ui->to->text().split("<")[1];
+        from_addr = from_addr.split(">")[0];
+        ui->to->setText(from_addr);
+        ui->to->setReadOnly(false);
+        ui->cc->setReadOnly(false);
+        ui->bcc->setReadOnly(false);
+        ui->title->setReadOnly(false);
         openedMailButtons() ;
     }
 }
@@ -459,79 +567,89 @@ void MailBox::on_actionTransf_rer_triggered()
         openedMailButtons() ;
     }
 }
-/** ~~ Reply ~~ **/
+/** ~~ Replying functions ~~ **/
 
-/** ++ Fill functions ++ **/
+
+/** ++ Filling functions ++ **/
 QString MailBox::fillMailFields(QString reply)
 {
-    Config_manager *conf = new Config_manager(); // A virer
-    Account *acc = conf->get_account_at_index(currentAccount); // mettre cm
-    acc->connect();
-    acc->login();
-    acc->list_mboxes();
-    acc->select_mbox("INBOX");
-    acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
-
-    QStringList details;
-
-    int rank = 0;
-    for(auto em : acc->cur_mbox()->emails())
+    int id = ui->mailList->currentItem()->whatsThis().toInt();
+    if(bodies[currentAccount][id][3] != "")
     {
-        if(em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
-        {
-            ui->title->setText(QString::fromStdString(em->envelope().subject().str()));
+        QStringList em = bodies[currentAccount][id];
+        /* Structure : subject, body, sender name
+         * mailbox, host, cc, internal date */
+        ui->to->setText(em[2] + "<" + em[3] + "@" + em[4] + ">");
+        ui->title->setText(em[0]);
+        ui->displayer->setText(em[1]);
+        ui->cc->setText(em[5]);
 
-            QString mail = QString::fromStdString(em->envelope().from()->mailbox());
-            mail.append("@");
-            mail.append(QString::fromStdString(em->envelope().from()->host()));
-            mail.replace(" ", "");
-            ui->to->setText(mail);
-            ui->to->setReadOnly(false);
-            ui->cc->setReadOnly(false);
-            ui->bcc->setReadOnly(false);
-
-            details.append(QString::fromStdString(em->envelope().from()->name()));
-            QStringList dateLine = QString::fromStdString(em->internaldate()).split(" ");
-            details.append(dateLine[0]);
-            details.append(dateLine[1]);
-
-            if (reply == "ALL")
-            {
-                mail = "";
-
-                Addresses *cc = em->envelope().cc();
-                for(unsigned int x = 0; x < cc->size(); x++)
-                {
-                    QString name = QString::fromStdString(cc->operator [](x)->mailbox());
-                    mail.append(name.replace(" ", ""));
-                    mail.append("@");
-                    name = QString::fromStdString(cc->operator [](x)->host());
-                    mail.append(name.replace(" ", ""));
-                    mail.append("; ");
-                }
-                ui->cc->setText(mail);
-            }
-
-            string body = acc->fetch_email_text(rank);
-            ui->displayer->setText(QString::fromStdString(body));
-            break;
-        }
-        else
-        {
-            rank += 1;
-        }
+        QStringList dateLine = em[6].split(" ");
+        QString writter = "\n\nLe " + dateLine[0] + " à " + dateLine[1] + ", " +
+                            em[2] + " a écrit :\n";
+        return writter;
     }
-    acc->logout();
-    QString writter = "\n\nLe " + details[1] + " à " + details[2] + ", " +
-                        details[0] + " a écrit :\n";
-    return writter;
+
+    else
+    {
+        Config_manager *conf = new Config_manager(); // A virer
+        Account *acc = conf->get_account_at_index(currentAccount); // mettre cm
+        acc->connect();
+        acc->login();
+        acc->list_mboxes();
+        acc->select_mbox("INBOX");
+        acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
+
+        QStringList details;
+
+        int rank = 0;
+        for(auto em : acc->cur_mbox()->emails())
+        {
+            if(em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
+            {
+                ui->title->setText(QString::fromStdString(em->envelope().subject().str()));
+
+                QString sender = QString::fromStdString(em->envelope().from()->mailbox());
+                sender.append("@");
+                sender.append(QString::fromStdString(em->envelope().from()->host()));
+                sender.replace(" ", "");
+                ui->to->setText(sender);
+                ui->to->setReadOnly(false);
+                ui->cc->setReadOnly(false);
+                ui->bcc->setReadOnly(false);
+
+                details.append(QString::fromStdString(em->envelope().from()->name()));
+                QStringList dateLine = QString::fromStdString(em->internaldate()).split(" ");
+                details.append(dateLine[0]);
+                details.append(dateLine[1]);
+
+                if (reply == "ALL")
+                {
+                    QString ccs = ccConstructor(em);
+                    ui->cc->setText(ccs);
+                }
+
+                string body = acc->fetch_email_text(rank);
+                ui->displayer->setText(QString::fromStdString(body));
+                break;
+            }
+            else
+            {
+                rank += 1;
+            }
+        }
+        acc->logout();
+        QString writter = "\n\nLe " + details[1] + " à " + details[2] + ", " +
+                            details[0] + " a écrit :\n";
+        return writter;
+    }
 }
 
 QString MailBox::emailFormatting(QString old)
 {
     unsigned int pos = 0;
     old.insert(0, '>');
-    for(unsigned int letter = 0; letter < old.size(); letter++)
+    for(int letter = 0; letter < old.size(); letter++)
     {
         if(pos < 79)
         {
@@ -545,7 +663,7 @@ QString MailBox::emailFormatting(QString old)
 
         else if(pos == 79)
         {
-            if(old.at(letter) == ' ') old.replace(letter, 1, "\n>");
+            if(old.at(letter) == ' ') old.replace(letter, 2, "\n>");
             else if (old.at(letter) == '\n')
             {
                 pos = 0;
@@ -559,17 +677,17 @@ QString MailBox::emailFormatting(QString old)
                     letter--;
                 }
                 pos = 0;
-                old.replace(letter, 1, "\n>");
+                old.replace(letter, 2, "\n>");
             }
         }
     }
 
     return old;
 }
+/** ~~ Filling functions ~~ **/
 
-/** ~~ Fill functions ~~ **/
 
-/** ++ Isolate ++ **/
+/** ++ Isolating functions ++ **/
 void MailBox::on_mailList_itemDoubleClicked()
 {
     on_actionIsoler_triggered();
@@ -582,27 +700,24 @@ void MailBox::on_isolateButton_clicked()
 
 void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
 {
-    QString to = ui->to->text() ;
-    QString cc = ui->cc->text() ;
-    QString bcc = ui->bcc->text() ;
-    QString title = ui->title->text() ;
-    QString content = ui->displayer->toPlainText() ;
-    QStringList list ;
-    list << to << cc << bcc << title << content ;
+    int id = ui->mailList->currentItem()->whatsThis().toInt();
+    QStringList fullMail = bodies[currentAccount][id];
+
+    if(!ui->displayer->isReadOnly()) fullMail[1] = ui->displayer->toPlainText();
 
     WriteMail *new_mail ;
     if (ui->displayer->isReadOnly())
     {
-        new_mail = new WriteMail(this, false, details, unchangedBody) ;
+        new_mail = new WriteMail(this, false, details, unchangedBody, fullMail);
     }
     else if (!ui->displayer->isReadOnly())
     {
-        new_mail = new WriteMail(this, true, "", unchangedBody) ;
+        new_mail = new WriteMail(this, true, "", unchangedBody, fullMail);
     }
 
     new_mail->getAddressesListFromMailBox(addressesBook);
     new_mail->show() ;
-    new_mail->addContent(list);
+
     int count = ui->attachedFileList->count();
     if (count > 0)
     {
@@ -626,9 +741,10 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     ui->mailList->resize(resizer/2, ui->mailList->height());
     ui->displayer->resize(resizer/2, ui->displayer->height());
 }
-/** ~~ Isolate ~~ **/
+/** ~~ Isolating functions ~~ **/
 
-/** ++ Mail finder ++ **/
+
+/** ++ Finder ++ **/
 void MailBox::findMail(QString toFind)
 {
     QRegExp finder(".*"+toFind+".*") ;
@@ -649,10 +765,10 @@ void MailBox::findMail(QString toFind)
         }
     }
 }
-/** ~~ Mail finder ~~ **/
+/** ~~ Finder ~~ **/
 
 
-/** ++ Quit ++ **/
+/** ++ Close app ++ **/
 void MailBox::on_actionQuitter_triggered()
 {
     QString str = "Voulez-vous quitter l'application ?" ;
@@ -664,7 +780,7 @@ void MailBox::get_actionQuitter_triggered()
 {
     qApp->quit();
 }
-/** ~~ Quit ~~ **/
+/** ~~ Close app ~~ **/
 
 
 /** ++ Account monitoring functions ++ **/
@@ -679,7 +795,28 @@ void MailBox::previousAccount()
         currentAccount -= 1;
     }
 
-    QtConcurrent::run(this, &MailBox::accountConnector);
+    ui->mailList->clear();
+    ui->to->clear();
+    ui->cc->clear();
+    ui->bcc->clear();
+    ui->displayer->clear();
+
+    if(bodies[currentAccount].size() == 0)
+    {
+        QtConcurrent::run(this, &MailBox::accountConnector);
+    }
+    else
+    {
+        vector<QStringList> temp;
+        foreach(QStringList em, bodies[currentAccount])
+        {
+            temp.push_back(em);
+        }
+        for(int x = temp.size(); x > 0; x--)
+        {
+            displayMailSubject(temp[x-1]);
+        }
+    }
 }
 
 void MailBox::nextAccount()
@@ -693,7 +830,28 @@ void MailBox::nextAccount()
         currentAccount += 1;
     }
 
-    QtConcurrent::run(this, &MailBox::accountConnector);
+    ui->mailList->clear();
+    ui->to->clear();
+    ui->cc->clear();
+    ui->bcc->clear();
+    ui->displayer->clear();
+
+    if(bodies[currentAccount].size() == 0)
+    {
+        QtConcurrent::run(this, &MailBox::accountConnector);
+    }
+    else
+    {
+        vector<QStringList> temp;
+        foreach(QStringList em, bodies[currentAccount])
+        {
+            temp.push_back(em);
+        }
+        for(int x = temp.size(); x > 0; x--)
+        {
+            displayMailSubject(temp[x-1]);
+        }
+    }
 }
 
 void MailBox::accountOptions()
@@ -786,10 +944,9 @@ void MailBox::addNewAccount()
                     ui->imapPort->text().toStdString(),
                     ui->smtpServer->text().toStdString(),
                     ui->smtpPort->text().toStdString(),
-                    ui->name->text().toStdString(),
-                    "", // !!!!!!!! TO FIX !!!!!!!! (email address)
+                    ui->name->text().toStdString(),     // Avatar
                     ui->mailAccount->text().toStdString(),
-                    ui->name->text().toStdString(),
+                    ui->name->text().toStdString(),     // Login for server
                     ui->password->text().toStdString()
                 );
         currentAccount = accountListSize;
@@ -852,7 +1009,7 @@ void MailBox::submitAccountRequisite(QString)
 /** ~~ Account monitoring functions ~~ **/
 
 
-/** ++ Send ++ **/
+/** ++ Sending functions ++ **/
 void MailBox::on_sendButton_clicked()
 {
     on_actionAlert_triggered() ;
@@ -951,30 +1108,26 @@ void MailBox::on_actionAlert_triggered()
 
     else if (block.length() == 0)
     {
-        sendConfirmed();
+        sendConfirmed(lists);
     }
 }
 
-void MailBox::sendConfirmed()
+void MailBox::sendConfirmed(vector<QStringList> lists)
 {
-    vector<Out_email*> emails;
-    QStringList to_list = ui->to->text().split("; ");
-    QStringList cc_list = ui->cc->text().split("; ");
-    QStringList bcc_list = ui->bcc->text().split("; ");
+    vector<Out_email> emails;
 
-    for(int to_mail = 0; to_mail < to_list.count(); to_mail++)
+    for(int to_mail = 0; to_mail < lists[0].count(); to_mail++)
     {
-        Address *to = new Address();
-        to->set_adl("NIL");
-        to->set_name((to_list[to_mail].split("@")[0]).toStdString());
-        to->set_host((to_list[to_mail].split("@")[1]).toStdString());
-        to->set_mailbox("test");
+        Address to;
+        to.set_name((lists[0][to_mail].split("@")[0]).toStdString());
+        to.set_adl("");
+        to.set_host((lists[0][to_mail].split("@")[1]).toStdString());
+        to.set_mailbox((lists[0][to_mail].split("@")[0]).toStdString());
 
-        Out_email *email = new Out_email();
-        email->set_to(*to);
-        email->set_subject(ui->title->text().toStdString());
-        email->set_content(ui->displayer->toPlainText().toStdString());
-
+        Out_email email;
+        email.set_to(to);
+        email.set_subject(ui->title->text().toStdString());
+        email.set_content(ui->displayer->toPlainText().toStdString());
 /* PROBLEMES DE PUSHBACK DES FONCTIONS add_cc et add_bcc      
         for(int cc_mail = 0; cc_mail < cc_list.count(); cc_mail++)
         {
@@ -999,9 +1152,15 @@ void MailBox::sendConfirmed()
         emails.push_back(email);
     }
 
+    Config_manager* cm = new Config_manager();
+    Account* acc = cm->get_account_at_index(currentAccount);
+
+    SMTP_manager manager(acc);
+
     for(unsigned int email = 0; email < emails.size(); email++)
     {
-        emails[email]->dump();
+        emails[email].dump();
+        manager.send_email(emails[email]);
     }
 
 /*    Address *to = new Address();
@@ -1015,8 +1174,7 @@ void MailBox::sendConfirmed()
     email->dump();*/
     showMailContent(ui->mailList->item(0));
 }
-
-/** ~~ Send ~~ **/
+/** ~~ Sending functions ~~ **/
 
 
 /** ++ Attached files functions ++ **/
@@ -1030,7 +1188,7 @@ void MailBox::openAttachFileWindow()
     AttachFileWindow *child = this->findChild<AttachFileWindow *>();
     if (!child)
     {
-        AttachFileWindow *box = new AttachFileWindow(this) ;
+        AttachFileWindow *box = new AttachFileWindow(this, "Attach") ;
         box->show();
         delete child ;
     }
@@ -1227,7 +1385,7 @@ void MailBox::addToAddressField(QString address)
 /** ~~ Address Book functions ~~ **/
 
 
-/** ++ Gestion de l'affichage ++ **/
+/** ++ Display functions ++ **/
 void MailBox::toggleMailFields(bool n)
 {
     //Mail fields
@@ -1265,6 +1423,7 @@ void MailBox::toggleButtons(bool n)
     ui->sendButton->setVisible(n);
     ui->actionEnvoyer->setVisible(n);
     ui->actionAttacher_des_pi_ces_jointes->setVisible(n);
+    ui->saveButton->setVisible(n);
     ui->cancelButton->setVisible(n);
 }
 
@@ -1288,6 +1447,7 @@ void MailBox::openedMailButtons()
     ui->cancelButton->setVisible(true);
     ui->addFileButton_2->setVisible(true);
     ui->addressBook_2->setVisible(true);
+    ui->saveButton->setVisible(true);
 }
 
 void MailBox::inboxButtonsStyle()
@@ -1332,6 +1492,7 @@ void MailBox::groupBoxButtonStyle()
                     << ui->deleteFile
                     << ui->addFileButton_2
                     << ui->addressBook_2
+                    << ui->saveButton
                     << ui->refreshButton;
 
     foreach(QPushButton *button, groupBoxButtons)
@@ -1392,7 +1553,7 @@ void MailBox::listStyle()
                                      "stop:0 rgba(38, 124, 153, 255), "
                                      "stop:1 rgba(38, 124, 153, 255));");
 }
-/** ~~ Gestion de l'affichage ~~ **/
+/** ~~ Display functions ~~ **/
 
 void MailBox::connectWidgets()
 {

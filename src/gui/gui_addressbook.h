@@ -23,7 +23,7 @@ public:
                     // to ask the user to save before closing the window
                     // or not
     void loadAddressFile(QString);
-    
+
 signals:
     void addToMail(QString);
     void sendAddressesList(QStringList);
