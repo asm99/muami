@@ -16,6 +16,7 @@
 #include "../net/protocol/Protocol_manager.hpp"
 #include "../net/protocol/imap/IMAP_manager.hpp"
 #include "../net/smtp/SMTP_manager.hpp"
+#include "../net/smtp/Out_email.hpp"
 
 namespace Ui {
 class MailBox;
@@ -24,7 +25,7 @@ class MailBox;
 class MailBox : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MailBox(QWidget *parent = 0);
     ~MailBox();

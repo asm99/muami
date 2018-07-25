@@ -6,7 +6,11 @@
 
 #include "SSL_manager.hpp"
 
-long SSL_manager::Timeout_sec = 0;
+/* !!! IMPORTANT !!!
+ * In case of delayed responses from the server, increase timeout vars
+ * to avoid bad command/response timings and premature logouts
+ */
+long SSL_manager::Timeout_sec = 2;
 long SSL_manager::Timeout_usec = 100000;
 
 SSL_manager::SSL_manager()

@@ -217,6 +217,8 @@ void
 Protocol_manager::fetch_emails_list(
         vector<Email*>& emails, const int start, const int end)
 {
+    cout << start << endl;
+    cout << end << endl;
     string resp = server_fetch_emails_list(start, end);
     IMAP_parser::parse_emails_infos(emails, resp);
 }

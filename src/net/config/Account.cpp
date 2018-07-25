@@ -75,8 +75,14 @@ Account::logout()
 int
 Account::fetch_emails_list(int number, int offset)
 {
-    int start = mboxes[cur_mbox_name]->exists() - number - offset + 1;
-    int end = mboxes[cur_mbox_name]->exists() - offset;
+    //int start = mboxes[cur_mbox_name]->exists() - number - offset + 1;
+    //int end = mboxes[cur_mbox_name]->exists() - offset;
+    int start = number;
+    int end = number + offset;
+    int max = mboxes[cur_mbox_name]->exists();
+    if (end > max) {
+        end = max;
+    }
     prtcl_mgr->fetch_emails_list(mboxes[cur_mbox_name]->emails(), start, end);
     return 1;
 }

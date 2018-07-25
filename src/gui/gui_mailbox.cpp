@@ -12,13 +12,13 @@ MailBox::MailBox(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setGeometry(
-        QStyle::alignedRect(
-            Qt::LeftToRight,
-            Qt::AlignCenter,
-            this->size(),
-            qApp->desktop()->availableGeometry()
-        )
-    ) ;
+            QStyle::alignedRect(
+                Qt::LeftToRight,
+                Qt::AlignCenter,
+                this->size(),
+                qApp->desktop()->availableGeometry()
+                )
+            ) ;
 
     this->setWindowFlags(Qt::FramelessWindowHint) ;
 
@@ -48,20 +48,20 @@ MailBox::MailBox(QWidget *parent) :
     connectWidgets();
 
     try {
-            currentAccount = 0;
-            offsetPerAcc.push_back(1);
-            offsetPerAcc.push_back(0);
-            displayedEmailsPerAcc.push_back(10);
-            displayedEmailsPerAcc.push_back(0);
-            QtConcurrent::run(this, &MailBox::accountConnector);
-            /** Repasser cm en globale lorsque la commande NOOP sera implémentée
-             * ça permet de maintenir les sockets, ne nécessitant plus la
-             * création de cm à la demande
-             */
-        }
-        catch (const exception& e) {
-            cerr << e.what() << endl;
-        }
+        currentAccount = 0;
+        offsetPerAcc.push_back(1);
+        offsetPerAcc.push_back(0);
+        displayedEmailsPerAcc.push_back(10);
+        displayedEmailsPerAcc.push_back(0);
+        QtConcurrent::run(this, &MailBox::accountConnector);
+        /** Repasser cm en globale lorsque la commande NOOP sera implémentée
+         * ça permet de maintenir les sockets, ne nécessitant plus la
+         * création de cm à la demande
+         */
+    }
+    catch (const exception& e) {
+        cerr << e.what() << endl;
+    }
 
     checkbox = false ;
     ui->mailList->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -81,7 +81,7 @@ void MailBox::accountConnector()
     ui->spinner->show();
 
     //Config_manager* cm = new Config_manager(); /**Pour test avec renew de
-                                                 /** connexion **/
+    /** connexion **/
 
     cm = new Config_manager();                   /** Pour test local **/
     accountListSize = cm->get_accounts_count();
@@ -105,7 +105,8 @@ void MailBox::accountConnector()
         acc->login();
         acc->list_mboxes();
         acc->select_mbox("INBOX");
-        acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
+        //acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
+        acc->fetch_emails_list(1, displayedEmailsPerAcc[currentAccount]);
 
         ui->mailList->clear();
 
@@ -169,13 +170,13 @@ void MailBox::toLocalMemory(Email *em, QString body)
     QString ccs = ccConstructor(em);
 
     email_details   << QString::fromStdString(em->envelope().subject().str())
-                    << body
-                    << QString::fromStdString(em->envelope().from()->name())
-                    << QString::fromStdString(em->envelope().from()->mailbox()).split(" ")[0]
-                    << QString::fromStdString(em->envelope().from()->host())
-                    << ccs
-                    << QString::fromStdString(em->internaldate())
-                    << QString::number(em->uid());
+        << body
+        << QString::fromStdString(em->envelope().from()->name())
+        << QString::fromStdString(em->envelope().from()->mailbox()).split(" ")[0]
+        << QString::fromStdString(em->envelope().from()->host())
+        << ccs
+        << QString::fromStdString(em->internaldate())
+        << QString::number(em->uid());
 
     bodies[currentAccount][em->uid()] = email_details;
 }
@@ -295,7 +296,8 @@ void MailBox::showMoreEmails()
     acc->login();
     acc->list_mboxes();
     acc->select_mbox("INBOX");
-    acc->fetch_emails_list(10, offsetPerAcc[currentAccount]);
+    //acc->fetch_emails_list(10, offsetPerAcc[currentAccount]);
+    acc->fetch_emails_list(1, displayedEmailsPerAcc[currentAccount]);
 
     cout << "nb of emails: " << acc->cur_mbox()->emails().size() << endl;
 
@@ -437,7 +439,7 @@ void MailBox::askToSaveMail()
         else
         {
             str = "Ce courrier contient des modifications.\n"
-                    "Souhaitez-vous tout de même le sauvegarder ?";
+                "Souhaitez-vous tout de même le sauvegarder ?";
         }
         HandleIssues *box = new HandleIssues(this, str, "saveMail") ;
         box->show();
@@ -586,7 +588,7 @@ QString MailBox::fillMailFields(QString reply)
 
         QStringList dateLine = em[6].split(" ");
         QString writter = "\n\nLe " + dateLine[0] + " à " + dateLine[1] + ", " +
-                            em[2] + " a écrit :\n";
+            em[2] + " a écrit :\n";
         return writter;
     }
 
@@ -598,7 +600,8 @@ QString MailBox::fillMailFields(QString reply)
         acc->login();
         acc->list_mboxes();
         acc->select_mbox("INBOX");
-        acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
+    //    acc->fetch_emails_list(displayedEmailsPerAcc[currentAccount], 1);
+        acc->fetch_emails_list(1, displayedEmailsPerAcc[currentAccount]);
 
         QStringList details;
 
@@ -607,9 +610,11 @@ QString MailBox::fillMailFields(QString reply)
         {
             if(em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
             {
-                ui->title->setText(QString::fromStdString(em->envelope().subject().str()));
+                ui->title->setText(
+                        QString::fromStdString(em->envelope().subject().str()));
 
-                QString sender = QString::fromStdString(em->envelope().from()->mailbox());
+                QString sender =
+                    QString::fromStdString(em->envelope().from()->mailbox());
                 sender.append("@");
                 sender.append(QString::fromStdString(em->envelope().from()->host()));
                 sender.replace(" ", "");
@@ -640,7 +645,7 @@ QString MailBox::fillMailFields(QString reply)
         }
         acc->logout();
         QString writter = "\n\nLe " + details[1] + " à " + details[2] + ", " +
-                            details[0] + " a écrit :\n";
+            details[0] + " a écrit :\n";
         return writter;
     }
 }
@@ -728,8 +733,8 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
     }
 
     int resizer = ui->mailList->width()
-                + ui->displayer->width()
-                + ui->attachedFileList->width() ;
+        + ui->displayer->width()
+        + ui->attachedFileList->width() ;
 
     showMailContent(ui->mailList->currentItem()) ;
     ui->attachedFileList->clear();
@@ -939,15 +944,15 @@ void MailBox::addNewAccount()
     {
         Config_manager* new_account = new Config_manager();
         new_account->setup_accout(
-                    "",
-                    ui->imapServer->text().toStdString(),
-                    ui->imapPort->text().toStdString(),
-                    ui->smtpServer->text().toStdString(),
-                    ui->smtpPort->text().toStdString(),
-                    ui->name->text().toStdString(),     // Avatar
-                    ui->mailAccount->text().toStdString(),
-                    ui->name->text().toStdString(),     // Login for server
-                    ui->password->text().toStdString()
+                "",
+                ui->imapServer->text().toStdString(),
+                ui->imapPort->text().toStdString(),
+                ui->smtpServer->text().toStdString(),
+                ui->smtpPort->text().toStdString(),
+                ui->name->text().toStdString(),     // Avatar
+                ui->mailAccount->text().toStdString(),
+                ui->name->text().toStdString(),     // Login for server
+                ui->password->text().toStdString()
                 );
         currentAccount = accountListSize;
         movie->start();
@@ -1128,27 +1133,27 @@ void MailBox::sendConfirmed(vector<QStringList> lists)
         email.set_to(to);
         email.set_subject(ui->title->text().toStdString());
         email.set_content(ui->displayer->toPlainText().toStdString());
-/* PROBLEMES DE PUSHBACK DES FONCTIONS add_cc et add_bcc      
-        for(int cc_mail = 0; cc_mail < cc_list.count(); cc_mail++)
-        {
-            Address *cc = new Address();
-            cc->set_adl("NIL");
-            cc->set_name((cc_list[cc_mail].split("@")[0]).toStdString());
-            cc->set_host((cc_list[cc_mail].split("@")[1]).toStdString());
-            cc->set_mailbox("test");
-            email->add_cc(cc);
-        }
+        /* PROBLEMES DE PUSHBACK DES FONCTIONS add_cc et add_bcc
+           for(int cc_mail = 0; cc_mail < cc_list.count(); cc_mail++)
+           {
+           Address *cc = new Address();
+           cc->set_adl("NIL");
+           cc->set_name((cc_list[cc_mail].split("@")[0]).toStdString());
+           cc->set_host((cc_list[cc_mail].split("@")[1]).toStdString());
+           cc->set_mailbox("test");
+           email->add_cc(cc);
+           }
 
-        for(int bcc_mail = 0; bcc_mail < bcc_list.count(); bcc_mail++)
-        {
-            Address *bcc = new Address();
-            bcc->set_adl("NIL");
-            bcc->set_name((bcc_list[bcc_mail].split("@")[0]).toStdString());
-            bcc->set_host((bcc_list[bcc_mail].split("@")[1]).toStdString());
-            bcc->set_mailbox("test");
-            email->add_bcc(bcc);
-        }
-*/
+           for(int bcc_mail = 0; bcc_mail < bcc_list.count(); bcc_mail++)
+           {
+           Address *bcc = new Address();
+           bcc->set_adl("NIL");
+           bcc->set_name((bcc_list[bcc_mail].split("@")[0]).toStdString());
+           bcc->set_host((bcc_list[bcc_mail].split("@")[1]).toStdString());
+           bcc->set_mailbox("test");
+           email->add_bcc(bcc);
+           }
+           */
         emails.push_back(email);
     }
 
@@ -1163,15 +1168,15 @@ void MailBox::sendConfirmed(vector<QStringList> lists)
         manager.send_email(emails[email]);
     }
 
-/*    Address *to = new Address();
-    to->set_adl("NIL");
-    to->set_host((ui->to->text().split("@")[1]).toStdString());
-    to->set_mailbox("test");
-    to->set_name((ui->to->text().split("@")[0]).toStdString());
-    email->set_to(*to);
-    email->set_subject(ui->title->text().toStdString());
-    email->set_content(ui->displayer->toPlainText().toStdString());
-    email->dump();*/
+    /*    Address *to = new Address();
+          to->set_adl("NIL");
+          to->set_host((ui->to->text().split("@")[1]).toStdString());
+          to->set_mailbox("test");
+          to->set_name((ui->to->text().split("@")[0]).toStdString());
+          email->set_to(*to);
+          email->set_subject(ui->title->text().toStdString());
+          email->set_content(ui->displayer->toPlainText().toStdString());
+          email->dump();*/
     showMailContent(ui->mailList->item(0));
 }
 /** ~~ Sending functions ~~ **/
@@ -1454,25 +1459,25 @@ void MailBox::inboxButtonsStyle()
 {
     QList<QPushButton*> inboxButtons ;
     inboxButtons << ui->previousAccount
-                 << ui->addAccount
-                 << ui->delAccount
-                 << ui->nextAccount
-                 << ui->refreshButton
-                 << ui->submitAccount
-                 << ui->cancelAccount
-                 << ui->accountMenuBtn;
+        << ui->addAccount
+        << ui->delAccount
+        << ui->nextAccount
+        << ui->refreshButton
+        << ui->submitAccount
+        << ui->cancelAccount
+        << ui->accountMenuBtn;
     foreach(QPushButton *button, inboxButtons)
     {
         button->setStyleSheet("border:0px; "
-                              "border-right:1px solid qlineargradient"
-                                          "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                          "stop:0 rgba(38, 124, 153, 255), "
-                                          "stop:1 rgba(38, 124, 153, 255));"
-                              "border-top:1px solid qlineargradient"
-                                          "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                          "stop:0 rgba(38, 124, 153, 255), "
-                                          "stop:1 rgba(38, 124, 153, 255));"
-                              "font-weight:600;");
+                "border-right:1px solid qlineargradient"
+                "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                "stop:0 rgba(38, 124, 153, 255), "
+                "stop:1 rgba(38, 124, 153, 255));"
+                "border-top:1px solid qlineargradient"
+                "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                "stop:0 rgba(38, 124, 153, 255), "
+                "stop:1 rgba(38, 124, 153, 255));"
+                "font-weight:600;");
     }
 
     ui->nextAccount->setStyleSheet("border-right:0px; border-bottom:0px;");
@@ -1482,76 +1487,76 @@ void MailBox::groupBoxButtonStyle()
 {
     QList<QPushButton*> groupBoxButtons ;
     groupBoxButtons << ui->newButton
-                    << ui->isolateButton
-                    << ui->cancelButton
-                    << ui->deleteButton
-                    << ui->repAllButton
-                    << ui->repButton
-                    << ui->sendButton
-                    << ui->transferButton
-                    << ui->deleteFile
-                    << ui->addFileButton_2
-                    << ui->addressBook_2
-                    << ui->saveButton
-                    << ui->refreshButton;
+        << ui->isolateButton
+        << ui->cancelButton
+        << ui->deleteButton
+        << ui->repAllButton
+        << ui->repButton
+        << ui->sendButton
+        << ui->transferButton
+        << ui->deleteFile
+        << ui->addFileButton_2
+        << ui->addressBook_2
+        << ui->saveButton
+        << ui->refreshButton;
 
     foreach(QPushButton *button, groupBoxButtons)
     {
         button->setStyleSheet("border:0px; "
-                              "border-bottom:1px solid qlineargradient"
-                                          "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                          "stop:0 rgba(38, 124, 153, 255), "
-                                          "stop:1 rgba(38, 124, 153, 255));"
-                              "border-left:1px solid qlineargradient"
-                                          "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
-                                          "stop:0 rgba(38, 124, 153, 255), "
-                                          "stop:1 rgba(38, 124, 153, 255));"
-                              "border-right:1px solid qlineargradient"
-                                          "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
-                                          "stop:0 rgba(38, 124, 153, 255), "
-                                          "stop:1 rgba(38, 124, 153, 255));"
-                              "font-weight:600;");
+                "border-bottom:1px solid qlineargradient"
+                "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                "stop:0 rgba(38, 124, 153, 255), "
+                "stop:1 rgba(38, 124, 153, 255));"
+                "border-left:1px solid qlineargradient"
+                "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                "stop:0 rgba(38, 124, 153, 255), "
+                "stop:1 rgba(38, 124, 153, 255));"
+                "border-right:1px solid qlineargradient"
+                "(spread:pad, x1:0 y1:0, x2:0 y2:1,"
+                "stop:0 rgba(38, 124, 153, 255), "
+                "stop:1 rgba(38, 124, 153, 255));"
+                "font-weight:600;");
     }
 }
 
 void MailBox::listStyle()
 {
     ui->displayer->setStyleSheet("background-color: #FFFFFF;\
-                                  border:0px;\
-                                  border-left:1px solid qlineargradient"
-                                      "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                      "stop:0 rgba(139, 153, 153, 255), "
-                                      "stop:1 rgba(139, 153, 153, 255));");
+            border:0px;\
+            border-left:1px solid qlineargradient"
+            "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+            "stop:0 rgba(139, 153, 153, 255), "
+            "stop:1 rgba(139, 153, 153, 255));");
 
     ui->mailList->setStyleSheet("background-color: #FFFFFF;"
-                                "color:#252b2b;\
-                                 font-weight:600;\
-                                 border:0px;");
+            "color:#252b2b;\
+            font-weight:600;\
+            border:0px;");
 
     QString style = "background-color: #FFFFFF;\
-                        border:0px;\
-                        border-left:1px solid qlineargradient"
-                           "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                           "stop:0 rgba(139, 153, 153, 255), "
-                           "stop:1 rgba(139, 153, 153, 255));"
-                       "border-bottom:1px solid qlineargradient"
-                           "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                           "stop:0 rgba(139, 153, 153, 255), "
-                           "stop:1 rgba(139, 153, 153, 255));";
+                     border:0px;\
+                     border-left:1px solid qlineargradient"
+                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                     "stop:0 rgba(139, 153, 153, 255), "
+                     "stop:1 rgba(139, 153, 153, 255));"
+                     "border-bottom:1px solid qlineargradient"
+                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+                     "stop:0 rgba(139, 153, 153, 255), "
+                     "stop:1 rgba(139, 153, 153, 255));";
     ui->cc->setStyleSheet(style);
     ui->bcc->setStyleSheet(style);
     ui->title->setStyleSheet(style);
     ui->to->setStyleSheet(style);
     ui->imapServer->setStyleSheet("background-color: #FFFFFF;\
-                                  border:0px;\
-                                  border-top:1px solid qlineargradient"
-                                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                     "stop:0 rgba(38, 124, 153, 255), "
-                                     "stop:1 rgba(38, 124, 153, 255));"
-                                 "border-bottom:1px solid qlineargradient"
-                                     "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
-                                     "stop:0 rgba(38, 124, 153, 255), "
-                                     "stop:1 rgba(38, 124, 153, 255));");
+            border:0px;\
+            border-top:1px solid qlineargradient"
+            "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+            "stop:0 rgba(38, 124, 153, 255), "
+            "stop:1 rgba(38, 124, 153, 255));"
+            "border-bottom:1px solid qlineargradient"
+            "(spread:pad, x1:0 y1:0, x2:1 y2:0,"
+            "stop:0 rgba(38, 124, 153, 255), "
+            "stop:1 rgba(38, 124, 153, 255));");
 }
 /** ~~ Display functions ~~ **/
 
@@ -1569,9 +1574,9 @@ void MailBox::connectWidgets()
             SIGNAL(clicked()),
             SLOT(nextAccount())),
 
-    connect(ui->mailList,
-            SIGNAL(customContextMenuRequested(const QPoint &)),
-            SLOT(showMailMenu(const QPoint &)));
+        connect(ui->mailList,
+                SIGNAL(customContextMenuRequested(const QPoint &)),
+                SLOT(showMailMenu(const QPoint &)));
 
     connect(ui->mailList,
             SIGNAL(itemClicked(QListWidgetItem*)),

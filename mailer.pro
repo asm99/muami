@@ -11,11 +11,11 @@ LIBS	+= -lcrypto -lssl
 TARGET	= mailer
 TEMPLATE= app
 
+OBJECTS_DIR = builds/objects
+MOC_DIR = builds/moc
+UI_DIR = builds/ui
 
 SOURCES += src/gui/main.cpp\
-    src/net/coding/base64.cpp \
-    src/net/coding/coding.cpp \
-    src/net/coding/qp.cpp \
     src/net/config/Account.cpp \
     src/net/config/Conf.cpp \
     src/net/config/Config_manager.cpp \
@@ -34,6 +34,14 @@ SOURCES += src/gui/main.cpp\
     src/net/email/Mailbox.cpp \
     src/net/email/Nstring.cpp \
     src/net/email/RFC822_header.cpp \
+    src/net/smtp/Out_email.cpp \
+    src/net/smtp/SMTP_manager.cpp \
+    src/net/smtp/SMTP_parser.cpp \
+    src/net/coding/base36.cpp \
+    src/net/coding/base64.cpp \
+    src/net/coding/coding.cpp \
+    src/net/coding/qp.cpp \
+    src/net/coding/qp.hpp \
     src/net/protocol/imap/IMAP_manager.cpp \
     src/net/protocol/imap/IMAP_parser.cpp \
     src/net/ssl/SSL_manager.cpp \
@@ -47,9 +55,6 @@ SOURCES += src/gui/main.cpp\
     src/gui/gui_writemail.cpp
 
 HEADERS  += \
-    src/net/coding/base64.hpp \
-    src/net/coding/coding.hpp \
-    src/net/coding/qp.hpp \
     src/net/config/Account.hpp \
     src/net/config/Conf.hpp \
     src/net/config/Config_manager.hpp \
@@ -68,6 +73,14 @@ HEADERS  += \
     src/net/email/Mailbox.hpp \
     src/net/email/Nstring.hpp \
     src/net/email/RFC822_header.hpp \
+    src/net/smtp/Out_email.hpp \
+    src/net/smtp/SMTP_manager.hpp \
+    src/net/smtp/SMTP_parser.hpp \
+    src/net/coding/base36.hpp \
+    src/net/coding/base64.hpp \
+    src/net/coding/coding.hpp \
+    src/net/coding/qp.hpp \
+    src/net/coding/qp.hpp \
     src/net/protocol/imap/IMAP_manager.hpp \
     src/net/protocol/imap/IMAP_parser.hpp \
     src/net/protocol/Protocol_manager.hpp \
@@ -81,7 +94,7 @@ HEADERS  += \
     src/gui/gui_mailbox.h \
     src/gui/gui_writemail.h
 	
-FORMS    += \
+FORMS += \
     src/gui/gen/gui_addressbook.ui \
     src/gui/gen/gui_attachfilewindow.ui \
     src/gui/gen/gui_handleissues.ui \
