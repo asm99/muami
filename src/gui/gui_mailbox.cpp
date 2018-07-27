@@ -275,7 +275,8 @@ void MailBox::showMailMenu(const QPoint &pos)
     myMenu.addAction("Supprimer", this, SLOT(on_actionSupprimer_triggered()));
 
     if (ui->mailList->currentItem())
-        QAction *selectedItem = myMenu.exec(globalPos);
+        //QAction *selectedItem = myMenu.exec(globalPos);
+        myMenu.exec(globalPos);
 }
 
 void MailBox::runRefreshThread()
@@ -608,7 +609,7 @@ QString MailBox::fillMailFields(QString reply)
         int rank = 0;
         for(auto em : acc->cur_mbox()->emails())
         {
-            if(em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
+            if((long)em->uid() == ui->mailList->currentItem()->whatsThis().toInt())
             {
                 ui->title->setText(
                         QString::fromStdString(em->envelope().subject().str()));
@@ -710,7 +711,7 @@ void MailBox::on_actionIsoler_triggered()     // REMPLIR LES CHAMPS TO, CC, ETC
 
     if(!ui->displayer->isReadOnly()) fullMail[1] = ui->displayer->toPlainText();
 
-    WriteMail *new_mail ;
+    WriteMail *new_mail = NULL;
     if (ui->displayer->isReadOnly())
     {
         new_mail = new WriteMail(this, false, details, unchangedBody, fullMail);
@@ -861,7 +862,7 @@ void MailBox::nextAccount()
 
 void MailBox::accountOptions()
 {
-    bool n ;
+    bool n = true;
     if (ui->accountMenuBtn->isVisible()) n = false;
     else if(ui->cancelAccount->isVisible()) n = true;
 

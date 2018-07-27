@@ -257,11 +257,12 @@ int main()
     Account* acc = cm->get_account_at_index(0);
     acc->dump();
 
-
     cm->setup_accout(
-            "", "imap.server.com", "993",
+            "",
+            "imap.server.com", "993",
             "smtp.server.com", "25",
-            "boloss", "bl@boloss.com", "passwd");
+            "test", "bl@test.com",
+            "me", "passwd");
 
     return 0;
 }
